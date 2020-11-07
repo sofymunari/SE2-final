@@ -3,7 +3,7 @@
 ```plantuml
 @startuml
 package "Backend" {
-   package "com.polito.BookingSystem"{
+   package "com.polito.bookingsystem"{
       package "entity"{
          class "Student"{
             - studentId
