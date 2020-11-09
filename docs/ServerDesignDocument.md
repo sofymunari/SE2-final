@@ -13,7 +13,7 @@ package "Backend" {
            - email (String)
            - password (String)
          }
-         class "Student" extend "User"{
+         class "Student" extends "User"{
             - dateOfBirth (Date)
             - courses (List<Course>)
          }
@@ -278,14 +278,14 @@ package "Backend" {
      primary_key(HOLIDAY_ID)
      DATE
    }
-   table(NOTIFICATION_PROF){
+   table(NOTIFICATION_PROFESSOR){
      primary_key(NOTIFICATION_ID)
      USER_ID
      DATE
      NOTIFICATION_TYPE
      DESCRIPTION
    }
-   table(NOTIFICATION_STUD){
+   table(NOTIFICATION_STUDENT){
      primary_key(NOTIFICATION_ID)
      USER_ID
      DATE
