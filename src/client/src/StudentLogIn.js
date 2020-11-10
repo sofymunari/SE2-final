@@ -53,6 +53,7 @@ class StudentLogin extends React.Component {
                 </div>
                 </form>
                 </div>
+                {this.props.loginError?<h2><span className="badge badge-secondary bg-danger">wrong username or password</span></h2>:null}
                 </div>
                 </div>
                 ); 
