@@ -322,99 +322,74 @@ package "Backend" {
    
    package DataBase{
    !define table(x) class x << (T,#FFAAAA) >>
-   !define primary_key(x) <u>x</u>
+   !define primary_key(x) <u><b>x</b></u>
+   !define foreign_key(x) <u>**x</u>
    hide methods
    hide stereotypes
-   table(STUDENT) {
-      primary_key(USER_ID)
-      NAME
-      SURNAME
+
+   table(USER) {
+      primary_key(ID)
+      foreign_key(USER_TYPE)
+      FIRST_NAME
+      LAST_NAME
       ADDRESS
       DATE_OF_BIRTH
       EMAIL
       PASSWORD
    }
-   table(PROFESSOR) {
-      primary_key(USER_ID)
+   table(USER_TYPE){
+      primary_key(ID)
       NAME
-      SURNAME
-      ADDRESS
-      EMAIL
-      PASSWORD
    }
-   table(OFFICER) {
-      primary_key(USER_ID)
+   table(COURSE){
+      primary_key(ID)
       NAME
-      SURNAME
-      ADDRESS
-      EMAIL
-      PASSWORD
-   }
-   table(MANAGER){
-      primary_key(USER_ID)
-      NAME
-      SURNAME
-      ADDRESS
-      EMAIL
-      PASSWORD
-   }
-   table(PROFESSOR_COURSE) {
-      USER_ID
-      COURSE_ID
+      CREDITS
    }
    table(CLASS) {
-      COURSE_ID
-      USER_ID
+      primary_key(ID)
+      NAME
+      NUMBER_OF_SEATS
    }
    table(LECTURE) {
-      primary_key(LECTURE_ID)
-      NUMBER_OF_LESSON
-      COURSE_ID
-      USER_ID
-      REMOTLY
+      primary_key(ID)
+      foreign_key(COURSE_ID)
+      foreign_key(PROFESSOR_ID)
+      REMOTE
       DATE
-      PROGRAM_DETAILS
-      NUMBER_OF_SEAT
+      DURATION
+      LECTURE_NOTES
    }
    table(BOOKING){
-      primary_key(BOOKING_ID)
-      USER_ID
-      LECTURE_ID
-      INFORMATION_TYPE
+      primary_key(ID)
+      foreign_key(STUDENT_ID)
+      foreign_key(LECTURE_ID)
    }
+   table(PROFESSOR_COURSE) {
+      primary_key(ID)
+      foreign_key(PROFESSOR_ID)
+      foreign_key(COURSE_ID)
+   }
+   table(STUDENT_COURSE) {
+      primary_key(ID)
+      foreign_key(STUDENT_ID)
+      foreign_key(COURSE_ID)
+   }
+   
    table(HOLIDAY){
-     primary_key(HOLIDAY_ID)
+     primary_key(ID)
      DATE
    }
-   table(NOTIFICATION_PROFESSOR){
-     primary_key(NOTIFICATION_ID)
-     USER_ID
-     DATE
-     NOTIFICATION_TYPE
-     DESCRIPTION
-   }
-   table(NOTIFICATION_STUDENT){
-     primary_key(NOTIFICATION_ID)
-     USER_ID
-     DATE
-     NOTIFICATION_TYPE
-     DESCRIPTION
+
+   table(NOTIFICATION){
+      primary_key(ID)
+      foreign_key(TO_ID)
+      TYPE
+      CONTENT
+      DATE
    }
 
-   PROFESSOR -- PROFESSOR_COURSE
-   COURSE -- PROFESSOR_COURSE
-   USER "*"--"*" COURSE
-
-   STUDENT -- CLASS
-   COURSE -- CLASS
-   STUDENT "*"--"*" COURSE
-
-   PROFESSOR "1"--"*" LECTURE
-   COURSE "1"--"*" LECTURE
-   STUDENT "1" -- "*" BOOKING
-   LECTURE "1" -- "*" BOOKING
-   STUDENT "1" -- "*" NOTIFICATION_STUDENT
-   PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
+   
 }
 }
 @enduml
