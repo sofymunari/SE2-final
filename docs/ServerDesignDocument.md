@@ -313,3 +313,114 @@ package "Backend" {
 ```
 
 
+
+
+# tony saliba
+```plantuml
+@startuml
+package "Backend" {
+   
+   package DataBase{
+   !define table(x) class x << (T,#FFAAAA) >>
+   !define primary_key(x) <u>x</u>
+   hide methods
+   hide stereotypes
+   table(STUDENT) {
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      DATE_OF_BIRTH
+      EMAIL
+      PASSWORD
+   }
+   table(PROFESSOR) {
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
+   }
+   table(OFFICER) {
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
+   }
+   table(MANAGER){
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
+   }
+   table(PROFESSOR_COURSE) {
+      USER_ID
+      COURSE_ID
+   }
+   table(CLASS) {
+      COURSE_ID
+      USER_ID
+   }
+   table(LECTURE) {
+      primary_key(LECTURE_ID)
+      NUMBER_OF_LESSON
+      COURSE_ID
+      USER_ID
+      REMOTLY
+      DATE
+      PROGRAM_DETAILS
+      NUMBER_OF_SEAT
+   }
+   table(BOOKING){
+      primary_key(BOOKING_ID)
+      USER_ID
+      LECTURE_ID
+      INFORMATION_TYPE
+   }
+   table(HOLIDAY){
+     primary_key(HOLIDAY_ID)
+     DATE
+   }
+   table(NOTIFICATION_PROFESSOR){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     NOTIFICATION_TYPE
+     DESCRIPTION
+   }
+   table(NOTIFICATION_STUDENT){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     NOTIFICATION_TYPE
+     DESCRIPTION
+   }
+
+   PROFESSOR -- PROFESSOR_COURSE
+   COURSE -- PROFESSOR_COURSE
+   USER "*"--"*" COURSE
+
+   STUDENT -- CLASS
+   COURSE -- CLASS
+   STUDENT "*"--"*" COURSE
+
+   PROFESSOR "1"--"*" LECTURE
+   COURSE "1"--"*" LECTURE
+   STUDENT "1" -- "*" BOOKING
+   LECTURE "1" -- "*" BOOKING
+   STUDENT "1" -- "*" NOTIFICATION_STUDENT
+   PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
+}
+}
+@enduml
+```
+
+
+
+
+
