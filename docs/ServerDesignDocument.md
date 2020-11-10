@@ -5,62 +5,74 @@
 package "Backend" {
    package "com.polito.bookingsystem"{
       package "entity"{
-         class "Student"{
-            - studentId(String)//SXXXXXX
-            - name(String)
-            - surname(String)
-            - address(String)
-            - dateOfBirth(Date)
-            - email(String)
-            - password(String)
-            - courses(List<Course>)
+	 class abstract "User"{
+           - userId (String)
+           - name (String)
+           - surname (String)
+           - address (String)
+           - email (String)
+           - password (String)
          }
-         class "Professor"{
-            - professorId(string)//PXXXXXX
-            - name(String)
-            - surname(String)
-            - address(String)
-            - email(String)
-            - password(String)
-            - courses(List<Course)
+         class "Student" extends "User"{
+            - dateOfBirth (Date)
+            - courses (List<Course>)
+         }
+         class "Professor" extends "User"{
+            - courses (List<Course)
+         }
+         class "Officer" extends "User"{
+            
+         }
+          class "Manager" extends "User"{
+            
          }
          class "Course"{
-            - courseId(String)//C...
-            - name(String)
-            - description(String)
-            - professors(List<Professor>)
-            - students(List<Student>)
+            - courseId (String)
+            - name (String)
+            - description (String)
+            - professors (List<Professor>)
+            - students (List<Student>)
          }
          class "Lecture"{
-            - lectureId(String)//L..
-            - numberOfLesson(Integer)
-            - courseId(String)
-            - professorId(String)
-            - remotly(Bool)
-            - date(Date)
-            - programDetails(String)
-            - numberOfSeat(Integer)
+            - lectureId (String)//L..
+            - numberOfLesson (Integer)
+            - courseId (String)
+            - userId (String)
+            - remotly (Bool)
+            - date (Date)
+            - programDetails (String)
+            - numberOfSeat (Integer)
          }
          class "Booking"{
-            - bookingId(Integer)
-            - studentId(String)
-            - lectureId(String)
-            - informationType(Enum INFO_BOOKING)
+            - bookingId (Integer)
+            - userId (String)
+            - lectureId (String)
+            - informationType (Enum BOOKING_INFO)
          }
       }
       package "controller"{
    
       }
       package "converter"{
-         interface StudentConverter{
+         interface UserConverter{
 
          }
-         interface LectureConverter{
+         interface StudentConverter extends UserConverter{
 
          }
-         interface ProfessorConverter{
+         interface OfficerConverter extends OfficerConverter{
 
          }
+         interface ManagerConverter extends ManagerConverter{
+
+         }
+         interface ProfessorConverter extends UserConverter{
+
+         }
+         interface LectureConverter {
+
+         }
+         
          interface CourseConverter{
 
          }
@@ -69,13 +81,22 @@ package "Backend" {
          }
       }
       package "dto"{
-        interface StudentDto{
+         interface UserDto{
+
+         }
+         interface StudentDto extends UserDto{
+
+         }
+	 interface OfficerDto extends UserDto{
+
+         }
+         interface ManagerDto extends UserDto{
+
+         } 
+         interface ProfessorDto extends UserDto{
 
          }
          interface LectureDto{
-
-         }
-         interface ProfessorDto{
 
          }
          interface CourseDto{
@@ -86,13 +107,22 @@ package "Backend" {
          }
       }
       package "entity"{
-        interface Student{
+         interface User{
+
+         }
+         interface Student extends User{
+
+         }
+         interface Officer extends User{
+
+         }
+         interface Manager extends User{
+
+         }
+         interface Professor extends User{
 
          }
          interface Lecture{
-
-         }
-         interface Professor{
 
          }
          interface Course{
@@ -103,13 +133,22 @@ package "Backend" {
          }
       }
       package "repository"{
-         interface StudentRepository{
+         interface UserRepository{
+
+         }
+         interface StudentRepository extends UserRepository{
+
+         }
+         interface OfficerRepository extends UserRepository{
+
+         }
+         interface ManagerRepository extends UserRepository{
+
+         }
+         interface ProfessorRepository extends UserRepository{
 
          }
          interface LectureRepository{
-
-         }
-         interface ProfessorRepository{
 
          }
          interface CourseRepository{
@@ -121,13 +160,22 @@ package "Backend" {
 
       }
       package "service"{
-         interface StudentService{
+         interface UserService{
+
+         }
+         interface StudentService extends UserService{
+
+         }
+         interface OfficerService extends UserService{
+
+         }
+         interface ManagerService extends UserService{
+
+         }
+         interface ProfessorService extends UserService{
 
          }
          interface LectureService{
-
-         }
-         interface ProfessorService{
 
          }
          interface CourseService{
@@ -138,7 +186,30 @@ package "Backend" {
          }
       }
       package "service.impl"{
+	interface UserServiceImp{
 
+         }
+         interface StudentServiceImp extends UserServiceImp{
+
+         }
+         interface OfficerServiceImp extends UserServiceImp{
+
+         }
+         interface ManagerServiceImp extends UserServiceImp{
+
+         }
+         interface ProfessorServiceImp extends UserServiceImp{
+
+         }
+         interface LectureServiceImp{
+ 
+         }
+         interface CourseServiceImp{
+
+         }
+         interface BookingServiceImp{
+
+         }
       }
    }
    package DataBase{
@@ -147,7 +218,7 @@ package "Backend" {
    hide methods
    hide stereotypes
    table(STUDENT) {
-      primary_key(STUDENT_ID)
+      primary_key(USER_ID)
       NAME
       SURNAME
       ADDRESS
@@ -156,31 +227,42 @@ package "Backend" {
       PASSWORD
    }
    table(PROFESSOR) {
-      primary_key(PROFESSOR_ID)
+      primary_key(USER_ID)
       NAME
       SURNAME
       ADDRESS
       EMAIL
       PASSWORD
    }
-   table(COURSE) {
-      primary_key(COURSE_ID)
+   table(OFFICER) {
+      primary_key(USER_ID)
       NAME
-      DESCRIPTION
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
+   }
+   table(MANAGER){
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
    }
    table(PROFESSOR_COURSE) {
-      PROFESSOR_ID
-      STUDENT_ID
+      USER_ID
+      COURSE_ID
    }
-   table(STUDENT_COURSE) {
-      PROFESSOR_ID
-      STUDENT_ID
+   table(CLASS) {
+      COURSE_ID
+      USER_ID
    }
    table(LECTURE) {
       primary_key(LECTURE_ID)
       NUMBER_OF_LESSON
       COURSE_ID
-      PROFESSOR_ID
+      USER_ID
       REMOTLY
       DATE
       PROGRAM_DETAILS
@@ -188,23 +270,132 @@ package "Backend" {
    }
    table(BOOKING){
       primary_key(BOOKING_ID)
-      STUDENT_ID
+      USER_ID
       LECTURE_ID
       INFORMATION_TYPE
    }
+   table(HOLIDAY){
+     primary_key(HOLIDAY_ID)
+     DATE
+   }
+   table(NOTIFICATION_PROFESSOR){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     NOTIFICATION_TYPE
+     DESCRIPTION
+   }
+   table(NOTIFICATION_STUDENT){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     NOTIFICATION_TYPE
+     DESCRIPTION
+   }
+
    PROFESSOR -- PROFESSOR_COURSE
    COURSE -- PROFESSOR_COURSE
-   PROFESSOR "*"--"*" COURSE
-   STUDENT -- STUDENT_COURSE
-   COURSE -- STUDENT_COURSE
+   USER "*"--"*" COURSE
+
+   STUDENT -- CLASS
+   COURSE -- CLASS
    STUDENT "*"--"*" COURSE
+
    PROFESSOR "1"--"*" LECTURE
    COURSE "1"--"*" LECTURE
    STUDENT "1" -- "*" BOOKING
    LECTURE "1" -- "*" BOOKING
+   STUDENT "1" -- "*" NOTIFICATION_STUDENT
+   PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
 }
 }
 @enduml
 ```
+
+
+
+
+# tony saliba
+```plantuml
+@startuml
+package "Backend" {
+   
+   package DataBase{
+   !define table(x) class x << (T,#FFAAAA) >>
+   !define primary_key(x) <u><b>x</b></u>
+   !define foreign_key(x) <u>**x</u>
+   hide methods
+   hide stereotypes
+
+   table(USER) {
+      primary_key(ID)
+      foreign_key(USER_TYPE)
+      FIRST_NAME
+      LAST_NAME
+      ADDRESS
+      DATE_OF_BIRTH
+      EMAIL
+      PASSWORD
+   }
+   table(USER_TYPE){
+      primary_key(ID)
+      NAME
+   }
+   table(COURSE){
+      primary_key(ID)
+      NAME
+      CREDITS
+   }
+   table(CLASS) {
+      primary_key(ID)
+      NAME
+      NUMBER_OF_SEATS
+   }
+   table(LECTURE) {
+      primary_key(ID)
+      foreign_key(COURSE_ID)
+      foreign_key(PROFESSOR_ID)
+      REMOTE
+      DATE
+      DURATION
+      LECTURE_NOTES
+   }
+   table(BOOKING){
+      primary_key(ID)
+      foreign_key(STUDENT_ID)
+      foreign_key(LECTURE_ID)
+   }
+   table(PROFESSOR_COURSE) {
+      primary_key(ID)
+      foreign_key(PROFESSOR_ID)
+      foreign_key(COURSE_ID)
+   }
+   table(STUDENT_COURSE) {
+      primary_key(ID)
+      foreign_key(STUDENT_ID)
+      foreign_key(COURSE_ID)
+   }
+   
+   table(HOLIDAY){
+     primary_key(ID)
+     DATE
+   }
+
+   table(NOTIFICATION){
+      primary_key(ID)
+      foreign_key(TO_ID)
+      TYPE
+      CONTENT
+      DATE
+   }
+
+   
+}
+}
+@enduml
+```
+
+
+
 
 
