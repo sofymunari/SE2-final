@@ -355,7 +355,7 @@ package "Backend" {
       primary_key(ID)
       foreign_key(COURSE_ID)
       foreign_key(PROFESSOR_ID)
-      REMOTE
+      foreign_key(CLASS_ID)
       DATE
       DURATION
       LECTURE_NOTES
@@ -388,7 +388,15 @@ package "Backend" {
       CONTENT
       DATE
    }
-
+   USER "*"--"*" COURSE
+   USER -- STUDENT_COURSE
+   COURSE -- STUDENT_COURSE
+   USER -- PROFESSOR_COURSE
+   COURSE -- PROFESSOR_COURSE
+   USER_TYPE "1" -- "*" USER
+   USER "1"-- "*" LECTURE
+   "CLASS" "1"-- "*" LECTURE
+   COURSE "1"-- "*" LECTURE
    
 }
 }
