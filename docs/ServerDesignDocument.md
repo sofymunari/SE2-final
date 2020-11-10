@@ -397,6 +397,9 @@ package "Backend" {
    USER "1"-- "*" LECTURE
    "CLASS" "1"-- "*" LECTURE
    COURSE "1"-- "*" LECTURE
+   BOOKING "*"--"1" USER
+   BOOKING "*"-- "1" LECTURE
+   NOTIFICATION "*"--"1" USER
    
 }
 }
