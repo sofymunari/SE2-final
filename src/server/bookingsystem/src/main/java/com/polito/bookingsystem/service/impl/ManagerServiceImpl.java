@@ -1,4 +1,8 @@
 package com.polito.bookingsystem.service.impl;
 
-public class ManagerServiceImpl {
+import com.polito.bookingsystem.service.ManagerService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ManagerServiceImpl implements ManagerService {
 }

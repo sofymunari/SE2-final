@@ -1,4 +1,4 @@
 package com.polito.bookingsystem.service;
 
-public interface ClassService {
+public interface RoomService {
 }
