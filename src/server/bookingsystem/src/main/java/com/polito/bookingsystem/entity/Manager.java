@@ -1,8 +1,10 @@
 package com.polito.bookingsystem.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public class Manager extends User {
 
 	public Manager() {

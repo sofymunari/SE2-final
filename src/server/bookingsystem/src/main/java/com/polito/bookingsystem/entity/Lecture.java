@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 
 @Entity
+@Table
 public class Lecture {
 	
 	@Column
@@ -41,17 +43,16 @@ public class Lecture {
 	@Column
 	private String programDetails;
 	
-	@Column
-	private Integer numberOfSeat;
-	
-	@Column
-	private String room;
+	@ManyToOne
+    @JoinColumn(name ="roomId")
+	private Room room;
+    
 	
 	public Lecture() {
 	}
 	
 	public Lecture(Integer lectureId, Integer numberOfLesson, Course course, Professor professor, Boolean remotly,
-			Date date, String programDetails, Integer numberOfSeat, String room) {
+			Date date, String programDetails, Room room) {
 		super();
 		this.lectureId = lectureId;
 		this.numberOfLesson = numberOfLesson;
@@ -60,8 +61,8 @@ public class Lecture {
 		this.remotly = remotly;
 		this.date = date;
 		this.programDetails = programDetails;
-		this.numberOfSeat = numberOfSeat;
 		this.room = room;
+;
 	}
 	public Integer getLectureId() {
 		return this.lectureId;
@@ -106,12 +107,15 @@ public class Lecture {
 	public void setProgramDetails(String programDetails) {
 		this.programDetails = programDetails;
 	}
-	public Integer getNumberOfSeat() {
-		return numberOfSeat;
+
+	public Room getRoom() {
+		return room;
 	}
-	public void setNumberOfSeat(Integer numberOfSeat) {
-		this.numberOfSeat = numberOfSeat;
+
+	public void setRoom(Room room) {
+		this.room = room;
 	}
+	
 	
 
 

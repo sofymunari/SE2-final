@@ -5,43 +5,45 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Class {
+@Table
+public class Room {
 	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
-	private Integer classId;
+	private Integer roomId;
 	
 	@Column
-	private String room;
+	private String name;
 	
 	@Column
 	private Integer numberOfSeat;
 	
-	public Class() {}
+	public Room() {}
 	
-	public Class(Integer classId, String room, Integer numberOfSeat) {
+	public Room(Integer roomId, String name, Integer numberOfSeat) {
 		super();
-		this.classId = classId;
-		this.room = room;
+		this.roomId = roomId;
+		this.name = name;
 		this.numberOfSeat = numberOfSeat;
 	}
 
-	public Integer getClassId() {
-		return classId;
+	public Integer getRoomId() {
+		return roomId;
 	}
 
-	public void setClassId(Integer classId) {
-		this.classId = classId;
+	public void setClassId(Integer roomId) {
+		this.roomId = roomId;
 	}
 
-	public String getRoom() {
-		return room;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoom(String room) {
-		this.room = room;
+	public void setRoom(String name) {
+		this.name = name;
 	}
 
 	public Integer getNumberOfSeat() {

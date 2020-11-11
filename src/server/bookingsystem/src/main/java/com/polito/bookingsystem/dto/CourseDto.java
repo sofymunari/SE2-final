@@ -7,21 +7,21 @@ public class CourseDto {
 	private Integer courseId;
 	private String name;
 	private String descriptions;
-	private List<ProfessorDto> professors = new ArrayList<>();
-	private List<StudentDto> students = new ArrayList<>();
+	/*private List<ProfessorDto> professors = new ArrayList<>();
+	private List<StudentDto> students = new ArrayList<>();*/
 	
 	public CourseDto() {
 		
 	}
 	
-	public CourseDto(Integer courseId, String name, String descriptions, List<ProfessorDto> professors,
-			List<StudentDto> students) {
+	public CourseDto(Integer courseId, String name, String descriptions/*, List<ProfessorDto> professors,
+			List<StudentDto> students*/) {
 		super();
 		this.courseId = courseId;
 		this.name = name;
 		this.descriptions = descriptions;
-		this.professors = professors;
-		this.students = students;
+		/*this.professors = professors;
+		this.students = students;*/
 	}
 
 	public Integer getCourseId() {
@@ -48,7 +48,7 @@ public class CourseDto {
 		this.descriptions = descriptions;
 	}
 
-	public List<ProfessorDto> getProfessors() {
+	/*public List<ProfessorDto> getProfessors() {
 		return professors;
 	}
 
@@ -62,6 +62,6 @@ public class CourseDto {
 
 	public void setStudents(List<StudentDto> students) {
 		this.students = students;
-	}
+	}*/
 	
 }

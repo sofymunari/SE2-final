@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public class Course {
 	
 	@Column
@@ -26,7 +28,7 @@ public class Course {
 	@Column
 	private String descriptions;
 	
-	@ManyToMany
+	/*@ManyToMany
 	@JoinTable(name = "course_professor",
 	    joinColumns = @JoinColumn(name = "course_id"),
 	    inverseJoinColumns = @JoinColumn(name = "professor_id")
@@ -38,20 +40,20 @@ public class Course {
 	    joinColumns = @JoinColumn(name = "course_id"),
 	    inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
-	private List<Student> students = new ArrayList<>();
+	private List<Student> students = new ArrayList<>();*/
 	
 	public Course() {
 		
 	}
 	
-	public Course(Integer courseId, String name, String descriptions, List<Professor> professors,
-			List<Student> students) {
+	public Course(Integer courseId, String name, String descriptions/*, List<Professor> professors,
+			List<Student> students*/) {
 		super();
 		this.courseId = courseId;
 		this.name = name;
 		this.descriptions = descriptions;
-		this.professors = professors;
-		this.students = students;
+		//this.professors = professors;
+		//this.students = students;
 	}
 
 	public Integer getCourseId() {
@@ -78,7 +80,7 @@ public class Course {
 		this.descriptions = descriptions;
 	}
 
-	public List<Professor> getProfessors() {
+	/*public List<Professor> getProfessors() {
 		return professors;
 	}
 
@@ -92,6 +94,6 @@ public class Course {
 
 	public void setStudents(List<Student> students) {
 		this.students = students;
-	}
+	}*/
 	
 }
