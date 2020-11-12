@@ -31,7 +31,7 @@ async function getStudentInfo(username){
     return student.pop();
 }
 
-async function addBooking(id){
+async function addBooking(id,username){
     let lect=lectures.filter((lecture)=>{return lecture.lecture_id === id}).pop()
     lectures=lectures.filter((lecture)=>{return lecture.lecture_id!==id})
     let booking={"booking_id":1,"lecture_id":lect.lecture_id,"number_of_lesson":lect.number_of_lesson,"course_name": lect.course_name,"professor_name":"none","remotly":lect.remotly,"date":lect.date,"number_of_seat":lect.number_of_seat}
@@ -47,7 +47,7 @@ async function getStudentBookings(username){
         reject ("error")});
 }
 
-async function cancelBooking(id){
+async function cancelBooking(id,username){
     lecturesBooked=lecturesBooked.filter((booking)=>{return booking.booking_id !== id});
 }
 

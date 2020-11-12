@@ -18,7 +18,7 @@ class StudentBooking extends React.Component{
         return <BookingItem key={booking.booking_id} booking={booking} cancelBooking={this.cancelBooking} />
     }
     cancelBooking= (bookingId)=>{
-        API.cancelBooking(bookingId)
+        API.cancelBooking(bookingId,this.props.stduent)
         .then(()=> API.getStudentBookings(this.props.student)
         .then((bookings)=>this.setState({bookings:bookings}))
         .catch((error)=>this.setState({bookingsError:error})))

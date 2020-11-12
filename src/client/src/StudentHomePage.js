@@ -19,7 +19,7 @@ class StudentHomePage extends React.Component {
         .catch((err)=>{this.setState({'errorLectures':err})})
     }
     addBooking=(lectureId)=>{
-        API.addBooking(lectureId)
+        API.addBooking(lectureId, this.props.student)
         .then(()=>API.getStudentLectures(this.props.student)
         .then((lectures)=>{this.setState({lectures:lectures})})
         .catch((err)=>{this.setState({'errorLectures':err})}))
@@ -41,7 +41,7 @@ class StudentHomePage extends React.Component {
                     <Aside student={this.state.student} />
                     </div>
                     <div className="col-9" id="main">
-                    <MainPage lectures={this.state.lectures} addBooking={this.addBooking}/>
+                    <MainPage lectures={this.state.lectures} addBooking={this.addBooking} student={this.props.student}/>
                     </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ class MainPage extends React.Component{
         return <LectureItem key={lecture.lecture_id} lecture={lecture} addBooking={this.addBooking}/>
     }
     addBooking=(lectureId)=>{
-        this.props.addBooking(lectureId);
+        this.props.addBooking(lectureId,this.props.student);
     }
     render(){
         return  <ul className="list-group list-group-flush">
