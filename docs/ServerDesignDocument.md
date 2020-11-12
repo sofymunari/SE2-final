@@ -3,64 +3,100 @@
 ```plantuml
 @startuml
 package "Backend" {
-   package "com.polito.bookingsystem"{
+   package "com.polito.officequeue"{
       package "entity"{
-         class "Student"{
-            - studentId(String)//SXXXXXX
-            - name(String)
-            - surname(String)
-            - address(String)
-            - dateOfBirth(Date)
-            - email(String)
-            - password(String)
-            - courses(List<Course>)
+	 class  User{
+           - Integer userId 
+           - String name
+           - String surname 
+           - String address
+           - String email
+           - String password 
+           - login()
+           - logout()
          }
-         class "Professor"{
-            - professorId(string)//PXXXXXX
-            - name(String)
-            - surname(String)
-            - address(String)
-            - email(String)
-            - password(String)
-            - courses(List<Course)
+         class Student extends User{
+            - Date dateOfBirth
+            - List<Course> courses
+            - methods()
          }
-         class "Course"{
-            - courseId(String)//C...
-            - name(String)
-            - description(String)
-            - professors(List<Professor>)
-            - students(List<Student>)
+         class Professor extends User{
+            - List<Course> courses
+            - methods()
          }
-         class "Lecture"{
-            - lectureId(String)//L..
-            - numberOfLesson(Integer)
-            - courseId(String)
-            - professorId(String)
-            - remotly(Bool)
-            - date(Date)
-            - programDetails(String)
-            - numberOfSeat(Integer)
+         class Officer extends User{
+            - methods()...
          }
-         class "Booking"{
-            - bookingId(Integer)
-            - studentId(String)
-            - lectureId(String)
-            - informationType(Enum INFO_BOOKING)
+          class Manager extends User{
+            - methods()...
          }
-      }
+         class Course{
+            - Integer courseId
+            - String name
+            - String description
+            - List<Professor> professors
+            - List<Student> students
+         }
+         class Lecture{
+            - Integer lectureId
+            - Integer numberOfLesson
+            - Course course
+            - Professor professor
+            - Boolean remotly
+            - Date date
+            - String programDetails
+            - Room room
+         }
+         class Booking{
+            - Integer bookingId
+            - Student student
+            - Lecture lecture
+            - enum BookingInfo informationType
+         }
+         class Notification{
+	       - Integer notificationId
+	       - Date date
+           - String description
+	     }
+	     class NotificationStudent extends Notification{
+           - Student student	    
+	     }
+	     class NotificationProfessor extends Notification{
+		   - Professor professor
+	     }
+         class Room{
+          - Integer roomId
+          - String name
+          - Integer numberOfSeat
+        }
+   }
+
       package "controller"{
    
       }
       package "converter"{
-         interface StudentConverter{
+         interface UserConverter{
 
          }
-         interface LectureConverter{
+         interface StudentConverter extends UserConverter{
 
          }
-         interface ProfessorConverter{
+         interface OfficerConverter extends UserConverter{
 
          }
+         interface ManagerConverter extends UserConverter{
+
+         }
+         interface ProfessorConverter extends UserConverter{
+
+         }
+         interface LectureConverter {
+
+         }
+         interface ClassConverter {
+
+         }
+         
          interface CourseConverter{
 
          }
@@ -69,13 +105,25 @@ package "Backend" {
          }
       }
       package "dto"{
-        interface StudentDto{
+         interface UserDto{
+
+         }
+         interface StudentDto extends UserDto{
+
+         }
+	 interface OfficerDto extends UserDto{
+
+         }
+         interface ManagerDto extends UserDto{
+
+         } 
+         interface ProfessorDto extends UserDto{
+
+         }
+         interface ClassDto extends UserDto{
 
          }
          interface LectureDto{
-
-         }
-         interface ProfessorDto{
 
          }
          interface CourseDto{
@@ -85,31 +133,26 @@ package "Backend" {
 
          }
       }
-      package "entity"{
-        interface Student{
-
-         }
-         interface Lecture{
-
-         }
-         interface Professor{
-
-         }
-         interface Course{
-
-         }
-         interface Booking{
-
-         }
-      }
       package "repository"{
-         interface StudentRepository{
+         interface UserRepository{
+
+         }
+         interface StudentRepository extends UserRepository{
+
+         }
+         interface OfficerRepository extends UserRepository{
+
+         }
+         interface RoomRepository{
+
+         }
+         interface ManagerRepository extends UserRepository{
+
+         }
+         interface ProfessorRepository extends UserRepository{
 
          }
          interface LectureRepository{
-
-         }
-         interface ProfessorRepository{
 
          }
          interface CourseRepository{
@@ -121,13 +164,25 @@ package "Backend" {
 
       }
       package "service"{
-         interface StudentService{
+         interface UserService{
+
+         }
+         interface StudentService extends UserService{
+
+         }
+         interface OfficerService extends UserService{
+
+         }
+         interface ManagerService extends UserService{
+
+         }
+         interface ProfessorService extends UserService{
+
+         }
+         interface RoomService{
 
          }
          interface LectureService{
-
-         }
-         interface ProfessorService{
 
          }
          interface CourseService{
@@ -138,7 +193,30 @@ package "Backend" {
          }
       }
       package "service.impl"{
+         interface StudentServiceImp{
 
+         }
+         interface OfficerServiceImp{
+
+         }
+         interface ManagerServiceImp{
+
+         }
+         interface ProfessorServiceImp{
+
+         }
+         interface RoomServiceImp{
+
+         }
+         interface LectureServiceImp{
+ 
+         }
+         interface CourseServiceImp{
+
+         }
+         interface BookingServiceImp{
+
+         }
       }
    }
    package DataBase{
@@ -147,7 +225,7 @@ package "Backend" {
    hide methods
    hide stereotypes
    table(STUDENT) {
-      primary_key(STUDENT_ID)
+      primary_key(USER_ID)
       NAME
       SURNAME
       ADDRESS
@@ -156,52 +234,92 @@ package "Backend" {
       PASSWORD
    }
    table(PROFESSOR) {
-      primary_key(PROFESSOR_ID)
+      primary_key(USER_ID)
       NAME
       SURNAME
       ADDRESS
       EMAIL
       PASSWORD
    }
-   table(COURSE) {
-      primary_key(COURSE_ID)
+   table(OFFICER) {
+      primary_key(USER_ID)
       NAME
-      DESCRIPTION
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
+   }
+   table(MANAGER){
+      primary_key(USER_ID)
+      NAME
+      SURNAME
+      ADDRESS
+      EMAIL
+      PASSWORD
    }
    table(PROFESSOR_COURSE) {
-      PROFESSOR_ID
-      STUDENT_ID
+      USER_ID
+      COURSE_ID
    }
    table(STUDENT_COURSE) {
-      PROFESSOR_ID
-      STUDENT_ID
+      COURSE_ID
+      USER_ID
    }
    table(LECTURE) {
       primary_key(LECTURE_ID)
       NUMBER_OF_LESSON
       COURSE_ID
-      PROFESSOR_ID
+      USER_ID
       REMOTLY
       DATE
       PROGRAM_DETAILS
-      NUMBER_OF_SEAT
+      ROOM_ID
+   }
+   table(ROOM){
+     primary_key(ROOM_ID)
+     NUMBER_OF_SEAT
+     NAME
+   }
+   table(COURSE){
+       primary_key(COURSE_ID)
+       NAME
+       DESCRIPTION
    }
    table(BOOKING){
       primary_key(BOOKING_ID)
-      STUDENT_ID
+      USER_ID
       LECTURE_ID
-      INFORMATION_TYPE
+      BOOKING_TYPE
    }
+   table(HOLIDAY){
+     primary_key(HOLIDAY_ID)
+     DATE
+   }
+   table(NOTIFICATION_PROFESSOR){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     DESCRIPTION
+   }
+   table(NOTIFICATION_STUDENT){
+     primary_key(NOTIFICATION_ID)
+     USER_ID
+     DATE
+     DESCRIPTION
+   }
+
    PROFESSOR -- PROFESSOR_COURSE
    COURSE -- PROFESSOR_COURSE
-   PROFESSOR "*"--"*" COURSE
+
    STUDENT -- STUDENT_COURSE
    COURSE -- STUDENT_COURSE
-   STUDENT "*"--"*" COURSE
+   ROOM "1" --"*" LECTURE
    PROFESSOR "1"--"*" LECTURE
    COURSE "1"--"*" LECTURE
    STUDENT "1" -- "*" BOOKING
    LECTURE "1" -- "*" BOOKING
+   STUDENT "1" -- "*" NOTIFICATION_STUDENT
+   PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
 }
 }
 @enduml

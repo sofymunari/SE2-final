@@ -2,29 +2,31 @@ import React  from 'react';
 import './App.css';
 import StudentLogIn from './StudentLogIn';
 import TeacherLogIn from './TeacherLogIn';
+import StudentHomePage from './StudentHomePage';
+import AppComponents from './AppComponents';
 import { Switch,Route,Link,Redirect } from 'react-router-dom';
 import API from './API';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state={student:null, teacher:null};
+    this.state={student:null, teacher:null, loginError:null};
   }
 
   loginStudent=(username,password)=>{
-    API.loginStudent(username,password).then(()=>{
-      this.setState({"student":username})}).catch((error)=>console.log("error logging in"));
+    API.loginStudent(username,password).then((usr)=>{
+      this.setState({student:usr})}).catch((error)=>this.setState({loginError:error}));
     
   }
   loginTeacher=(username,password)=>{
     API.loginTeacher(username,password).then(()=>{
-      this.setState({"teacher":username})}).catch((error)=>console.log("error logging in"));
+      this.setState({teacher:username})}).catch((error)=>this.setState({loginError:error}));
   }
   
-  render(){
+  render(){ 
    return (
       <div className="App">
-        <AppTitle/>
+        <AppComponents.AppTitle/>
         <Switch>
         <Route exact path="/" >
           <HomePage/>
@@ -32,78 +34,35 @@ class App extends React.Component {
         <Route exact path="/studentlogin">
           {this.state.student? 
           <Redirect to="/studentportal" />:
-          <StudentLogIn loginStudent={this.loginStudent}/>
+          <StudentLogIn loginStudent={this.loginStudent} loginError={this.state.loginError}/>
           }
         </Route>
         <Route exact path="/teacherlogin">
           {this.state.teacher? 
           <Redirect to="/teacherportal" />:
-          <TeacherLogIn loginTeacher={this.loginTeacher}/>
+          <TeacherLogIn loginTeacher={this.loginTeacher} loginError={this.state.loginError}/>
           }
         </Route>
-        <Route exact path="/studentportal">
-          <h1>logged</h1>
+        <Route path="/studentportal">
+          <StudentHomePage student={this.state.student}/>
         </Route>
         <Route exact path="/teacherportal">
           <h1>logged</h1>
         </Route>
         </Switch>
-        <AppFooter/>
+        <AppComponents.AppFooter/>
       </div>  
       
   );
   }
 }
 
-function AppFooter(props){
-  return  <div className="jumbotron text-center  mt-3" >
-            <p>Contacts</p>
-          </div>
-}
 
-
-function AppTitle(props){
-  return  <div className="jumbotron text-center  mb-0 pb-3">
-              <img src="https://img.icons8.com/nolan/64/university.png"/>
-              <h1>TEACHING PORTAL</h1>
-                <Switch>
-                  <Route exact path="/studentlogin">
-                    <p>Welcome to the Student Login Page</p>
-                  </Route>
-                  <Route exact path="/teacherlogin">
-                    <p>Welcome to the Teacher Login Page</p>
-                  </Route>
-                  <Route path="/">
-                    <p>Welcome to the Home Page</p> 
-                  </Route>
-                </Switch>
-                
-          </div>
-}
 
 
 function HomePage(props){
   return<>
-        <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
-          <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
-              <ul className="navbar-nav text-right">
-                <li className="nav-item pr-1">
-                  <Link to="/studentlogin">
-                  <button className="btn btn-success text-dark font-weight-bold" >StudentLogin</button>
-                  </Link>
-                </li>
-                <li className="nav-item pr-1">
-                  <Link to="/teacherlogin">
-                  <button className="btn btn-success text-dark font-weight-bold" >TeacherLogin</button>
-                  </Link>
-                </li>
-                <li className="nav-item pr-1">
-                  <button className="btn btn-success text-dark font-weight-bold" >OfficerLogin</button>
-                </li>    
-            </ul>
-          </div>  
-        </nav>
-
+        <AppComponents.AppNavbar/>
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-6">
