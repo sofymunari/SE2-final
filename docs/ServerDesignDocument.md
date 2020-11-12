@@ -45,7 +45,7 @@ package "Backend" {
             - Boolean remotly
             - Date date
             - String programDetails
-            - Class class
+            - Room room
          }
          class Booking{
             - Integer bookingId
@@ -64,9 +64,9 @@ package "Backend" {
 	     class NotificationProfessor extends Notification{
 		   - Professor professor
 	     }
-         class Class{
-          - Integer ClassId
-          - String room
+         class Room{
+          - Integer roomId
+          - String name
           - Integer numberOfSeat
         }
    }
@@ -143,7 +143,7 @@ package "Backend" {
          interface OfficerRepository extends UserRepository{
 
          }
-         interface ClassRepository{
+         interface RoomRepository{
 
          }
          interface ManagerRepository extends UserRepository{
@@ -179,7 +179,7 @@ package "Backend" {
          interface ProfessorService extends UserService{
 
          }
-         interface ClassService{
+         interface RoomService{
 
          }
          interface LectureService{
@@ -193,22 +193,19 @@ package "Backend" {
          }
       }
       package "service.impl"{
-	interface UserServiceImp{
+         interface StudentServiceImp{
 
          }
-         interface StudentServiceImp extends UserServiceImp{
+         interface OfficerServiceImp{
 
          }
-         interface OfficerServiceImp extends UserServiceImp{
+         interface ManagerServiceImp{
 
          }
-         interface ManagerServiceImp extends UserServiceImp{
+         interface ProfessorServiceImp{
 
          }
-         interface ProfessorServiceImp extends UserServiceImp{
-
-         }
-         interface ClassServiceImp{
+         interface RoomServiceImp{
 
          }
          interface LectureServiceImp{
@@ -276,12 +273,12 @@ package "Backend" {
       REMOTLY
       DATE
       PROGRAM_DETAILS
-      CLASS_ID
+      ROOM_ID
    }
-   table(CLASS){
-     primary_key(CLASS_ID)
+   table(ROOM){
+     primary_key(ROOM_ID)
      NUMBER_OF_SEAT
-     ROOM
+     NAME
    }
    table(COURSE){
        primary_key(COURSE_ID)
@@ -316,7 +313,7 @@ package "Backend" {
 
    STUDENT -- STUDENT_COURSE
    COURSE -- STUDENT_COURSE
-   CLASS "1" --"*" LECTURE
+   ROOM "1" --"*" LECTURE
    PROFESSOR "1"--"*" LECTURE
    COURSE "1"--"*" LECTURE
    STUDENT "1" -- "*" BOOKING
