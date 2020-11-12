@@ -1,0 +1,88 @@
+Counter(counterId)                                         //data of every counter to know how counter are present in the office
+RequestType(requestId, tagName,serviceTime)                //request type and relative time of waiting estimation
+CounterRequest(counterRequestId,counterId,requestId)       //every counter can soddysfy one or more request type 
+Ticket(ticketId,ticketNumber,requestId,counterId,Date)     //copy of selected WorkerCounter Row after client is sotisfied
+
+uppercase words is primary Key.
+
+USEFULL QUERY:
+
+0) find the number of Counters in office
+SELECT COUNT(*) as num_count FROM counter
+
+1) select tagnames and EstimatedTime that a counter can soddisfy:
+SELECT r
+FROM request r, counter_request
+WHERE request.request_id = counter_request.request_id
+AND counter_id = ?1
+
+2) select the Tickets that a counter has served today
+SELECT ts
+FROM TICKET ts
+WHERE counter_id = ?1
+AND counter_id IS NOT NULL
+AND date = CURRENT_DATE();
+
+
+4) select tagname with min EstimatedTime for a counter
+SELECT rqt
+FROM request rqt, request_counter
+AND request_type.request_id = request_counter.request_id
+AND request_counter.counter_id = ?1
+WHERE service_time = ?2
+
+SELECT MIN(service_time)
+FROM request, request_counter
+AND request.request_id = request_counter.request_id
+AND request_counter.counter_id =?1
+				  
+5) select the ticket not sodisfy yet of one request queue (for today)
+SELECT ts
+FROM ticket ts, request
+WHERE ticket.request_id = request.request_id
+WHERE date = CURRENT_DATE()
+AND request.tag_name = ?1
+AND ticket.counter_id IS NULL
+ORDER BY ticket_number;
+
+//the next ticket served are the first ticket on the queue (if queue is the longest)
+
+6) move ticket served
+UPDATE Ticket
+SET counter_id = ?1
+WHERE ticket_number = ?2
+AND date = CURRENT_DATE();
+
+7) count the number of ticket not served for each tagname (today)
+SELECT request_id, tag_name, COUNT(*) as lengthQueue
+FROM ticket,request
+WHERE ticket.request_id = request.request_id
+WHERE date = CURRENT_DATE()
+AND counter_id IS NULL
+GROUP BY request_id, tag_name 
+
+8) count the number of ticket served for each tagname by day
+SELECT request_id, tag_name, COUNT(*) as lengthQueue
+FROM ticket,request
+WHERE ticket.request_id = request.request_id
+WHERE date = ?1
+AND counter_id IS NOT NULL
+GROUP BY request_id, tag_name 
+
+9) count the number of ticket served for each tagname by month
+SELECT request_id, tag_name, COUNT(*) as lengthQueue
+FROM ticket,request
+WHERE ticket.request_id = request.request_id
+WHERE MONTH(date) = ?1
+AND counter_id IS NOT NULL
+GROUP BY request_id, tag_name
+
+10) count the number of ticket served for each tagname by year
+SELECT request_id, tag_name, COUNT(*) as lengthQueue
+FROM ticket,request
+WHERE ticket.request_id = request.request_id
+WHERE YEAR(date) = ?1
+AND counter_id IS NOT NULL
+GROUP BY request_id, tag_name
+
+
