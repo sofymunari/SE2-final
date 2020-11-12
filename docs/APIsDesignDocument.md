@@ -4,14 +4,14 @@
 - method: POST
 - url: '/studentlogin'
 - params: username, password
-- returned values
+- returned value: username of student or null(if authentication fails)
 
 ## Student Lectures
 - method: GET
 - url: '/studentlectures'
 - params: username (=email of the student)
-- returned value: ** list ** of objects with following attributes: lecture_id, number_of_lessons, course_name, professor_name, remotly(yes,no), date(String with date and hour), number_of_seat
-- some info: the lectures are only the available lectures for the student (not already booked by the student). Also lectures with no seats available are ** included **. list can be eventually empty [].
+- returned value: **list** of objects with following attributes: lecture_id, number_of_lessons, course_name, professor_name, remotly(yes,no), date(String with date and hour), number_of_seat
+- some info: the lectures are only the available lectures for the student (not already booked by the student). Also lectures with no seats available are **included**. list can be eventually empty [].
 
 ## Student info
 - method: GET
@@ -28,7 +28,7 @@
 - method: GET
 - url: '/studentbookings'
 - params: username
-- returned value: ** list ** of bookings of a student. a booking is an oject with: booking_id, lecture_id, number_of_lesson, course_name, professor_name, remotly, date (String with date and hour), number_of_seat
+- returned value: **list** of bookings of a student. a booking is an oject with: booking_id, lecture_id, number_of_lesson, course_name, professor_name, remotly, date (String with date and hour), number_of_seat
 
 ## Student cancelBooking
 - method: DELETE
