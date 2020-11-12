@@ -1,6 +1,9 @@
 package com.polito.bookingsystem.service.impl;
 
+import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.service.BookingService;
 
-public class BookingServiceImpl implements BookingService {
+
+@Service
+public class BookingServiceImpl implements BookingService{
 }

@@ -1,8 +1,11 @@
 package com.polito.bookingsystem.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-/*public interface StudentRepository extends JpaRepository<Student,String>{
+import com.polito.bookingsystem.entity.Student;
+
+@Repository
+public interface StudentRepository extends UserRepository{
+   Student findByUserId(Integer id);
    
-  
-}*/
+}

@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDto {
-	private String courseId;//C..
+	private Integer courseId;
 	private String name;
 	private String descriptions;
-	private List<ProfessorDto> professors = new ArrayList<>();
-	private List<StudentDto> students = new ArrayList<>();
+	/*private List<ProfessorDto> professors = new ArrayList<>();
+	private List<StudentDto> students = new ArrayList<>();*/
 	
 	public CourseDto() {
 		
 	}
 	
-	public CourseDto(String courseId, String name, String descriptions, List<ProfessorDto> professors,
-			List<StudentDto> students) {
+	public CourseDto(Integer courseId, String name, String descriptions/*, List<ProfessorDto> professors,
+			List<StudentDto> students*/) {
 		super();
 		this.courseId = courseId;
 		this.name = name;
 		this.descriptions = descriptions;
-		this.professors = professors;
-		this.students = students;
+		/*this.professors = professors;
+		this.students = students;*/
 	}
 
-	public String getCourseId() {
+	public Integer getCourseId() {
 		return courseId;
 	}
 
-	public void setCourseId(String courseId) {
+	public void setCourseId(Integer courseId) {
 		this.courseId = courseId;
 	}
 
@@ -48,7 +48,7 @@ public class CourseDto {
 		this.descriptions = descriptions;
 	}
 
-	public List<ProfessorDto> getProfessors() {
+	/*public List<ProfessorDto> getProfessors() {
 		return professors;
 	}
 
@@ -62,12 +62,6 @@ public class CourseDto {
 
 	public void setStudents(List<StudentDto> students) {
 		this.students = students;
-	}
-
-	@Override
-	public String toString() {
-		return "CourseDto [courseId=" + courseId + ", name=" + name + ", descriptions=" + descriptions + ", professors="
-				+ professors + ", students=" + students + "]";
-	}
+	}*/
 	
 }

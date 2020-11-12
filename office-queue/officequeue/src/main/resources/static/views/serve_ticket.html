@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/app/style.css">
+
+
+</head>
+<body onload="setup()">
+
+<h1 class="title">OFFICE QUEUE MANAGEMENT</h1>
+
+
+
+<!--
+
+<div class="row">
+    <div class="column">
+        <div class="card">
+            <h2>Counter #1</h2>
+            <p>Currently serving:</p>
+            <h3>Ticket #0948<br>(Service <span id="req_id1">001</span>)</h3>
+            <br><br>
+            <p>People queued on this service: <span id="counter1"></span></p>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="card">
+            <h2>Counter #2</h2>
+            <p>Currently serving:</p>
+            <h3>Ticket #061<br>(Service  <span id="req_id2">001</span>)</h3>
+            <br><br>
+            <p>People queued on this service: <span id="counter2"></span> </p>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="card">
+            <h2>Counter #3</h2>
+            <p>Currently serving:</p>
+            <h3>Ticket #0074<br>(Service  <span id="req_id3">001</span>)</h3>
+            <br><br>
+            <p>People queued on this service: <span id="counter3"></span> </p>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="card">
+            <h2>Counter #4</h2>
+            <p>Currently serving:</p>
+            <h3>Ticket #0949<br>(Service  <span id="req_id4">001</span>)</h3>
+            <br><br>
+            <p>People queued on this service: <span id="counter4"></span> </p>
+        </div>
+    </div>
+
+</div>
+-->
+
+<div class="container">
+    <div class="block">
+        <h3> Select your need: </h3>
+    </div>
+    <div class="block">
+        <div class="select">
+            <select name="service_select" id="request_select" required>
+                <option value="Payment" selected>Payment</option>
+                <option value="Shipping">Shipping</option>
+                <option value="Withdrawal">Withdrawal</option>
+                <option value="Subscribe">Subscribe</option>
+                <option value="Packaging">Packaging</option>
+            </select>
+        </div>
+    </div>
+    <div class="block">
+        <button class="btn" onclick="document.getElementById('tickedIssued').innerHTML=getTicket();">GET TICKET</button>
+    </div>
+</div>
+
+<h4 id="tickedIssued"></h4>
+
+<script>
+    function getTicket(){
+        let tagName=document.getElementById('request_select').value;
+        let myUrl="http://localhost:8080/saveTicket/"+tagName;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', myUrl , false);
+        xhr.send(null);
+
+        //extract ticket number from response
+        let response = xhr.responseText.split(",");
+        let ticketNumber = response[2].substr(15, response[2].length);
+
+        return "Your ticket number is #" + ticketNumber;
+    }
+
+    function setup(){
+
+        /* getting the request id of currently served ticked per each counter */
+        let tag1=document.getElementById('req_id1').innerHTML;
+        let tag2=document.getElementById('req_id2').innerHTML;
+        let tag3=document.getElementById('req_id3').innerHTML;
+        let tag4=document.getElementById('req_id4').innerHTML;
+
+        /* getting the length of queue per each tag */
+        let myUrl="http://localhost:8080/queueLength/"+tag1;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', myUrl , false);
+        xhr.send(null);
+        document.getElementById('counter1').innerHTML=xhr.responseText;
+
+        myUrl="http://localhost:8080/queueLength/"+tag2;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', myUrl , false);
+        xhr.send(null);
+        document.getElementById('counter2').innerHTML=xhr.responseText;
+
+        myUrl="http://localhost:8080/queueLength/"+tag3;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', myUrl , false);
+        xhr.send(null);
+        document.getElementById('counter3').innerHTML=xhr.responseText;
+
+        myUrl="http://localhost:8080/queueLength/"+tag4;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', myUrl , false);
+        xhr.send(null);
+        document.getElementById('counter4').innerHTML=xhr.responseText;
+    }
+
+</script>
+
+
+</body>
+</html>

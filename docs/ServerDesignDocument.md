@@ -2,54 +2,74 @@
 # Low level design
 ```plantuml
 @startuml
-package "Backend" {
-   package "com.polito.bookingsystem"{
+   package "com.polito.officequeue"{
       package "entity"{
-	 class abstract "User"{
-           - userId (String)
-           - name (String)
-           - surname (String)
-           - address (String)
-           - email (String)
-           - password (String)
+	 class  User{
+           - Integer userId 
+           - String name
+           - String surname 
+           - String address
+           - String email
+           - String password 
+           - login()
+           - logout()
          }
-         class "Student" extends "User"{
-            - dateOfBirth (Date)
-            - courses (List<Course>)
+         class Student extends User{
+            - Date dateOfBirth
+            - List<Course> courses
+            - methods()
          }
-         class "Professor" extends "User"{
-            - courses (List<Course)
+         class Professor extends User{
+            - List<Course> courses
+            - methods()
          }
-         class "Officer" extends "User"{
-            
+         class Officer extends User{
+            - methods()...
          }
-          class "Manager" extends "User"{
-            
+          class Manager extends User{
+            - methods()...
          }
-         class "Course"{
-            - courseId (String)
-            - name (String)
-            - description (String)
-            - professors (List<Professor>)
-            - students (List<Student>)
+         class Course{
+            - Integer courseId
+            - String name
+            - String description
+            - List<Professor> professors
+            - List<Student> students
          }
-         class "Lecture"{
-            - lectureId (String)//L..
-            - numberOfLesson (Integer)
-            - courseId (String)
-            - userId (String)
-            - remotly (Bool)
-            - date (Date)
-            - programDetails (String)
-            - numberOfSeat (Integer)
+         class Lecture{
+            - Integer lectureId
+            - Integer numberOfLesson
+            - Course course
+            - Professor professor
+            - Boolean remotly
+            - Date date
+            - String programDetails
+            - Room room
          }
-         class "Booking"{
-            - bookingId (Integer)
-            - userId (String)
-            - lectureId (String)
-            - informationType (Enum BOOKING_INFO)
+         class Booking{
+            - Integer bookingId
+            - Student student
+            - Lecture lecture
+            - enum BookingInfo informationType
          }
-      }
+         class Notification{
+	       - Integer notificationId
+	       - Date date
+           - String description
+	     }
+	     class NotificationStudent extends Notification{
+           - Student student	    
+	     }
+	     class NotificationProfessor extends Notification{
+		   - Professor professor
+	     }
+         class Room{
+          - Integer roomId
+          - String name
+          - Integer numberOfSeat
+        }
+   }
+
       package "controller"{
    
       }
@@ -60,16 +80,19 @@ package "Backend" {
          interface StudentConverter extends UserConverter{
 
          }
-         interface OfficerConverter extends OfficerConverter{
+         interface OfficerConverter extends UserConverter{
 
          }
-         interface ManagerConverter extends ManagerConverter{
+         interface ManagerConverter extends UserConverter{
 
          }
          interface ProfessorConverter extends UserConverter{
 
          }
          interface LectureConverter {
+
+         }
+         interface ClassConverter {
 
          }
          
@@ -96,6 +119,9 @@ package "Backend" {
          interface ProfessorDto extends UserDto{
 
          }
+         interface ClassDto extends UserDto{
+
+         }
          interface LectureDto{
 
          }
@@ -103,32 +129,6 @@ package "Backend" {
 
          }
          interface BookingDto{
-
-         }
-      }
-      package "entity"{
-         interface User{
-
-         }
-         interface Student extends User{
-
-         }
-         interface Officer extends User{
-
-         }
-         interface Manager extends User{
-
-         }
-         interface Professor extends User{
-
-         }
-         interface Lecture{
-
-         }
-         interface Course{
-
-         }
-         interface Booking{
 
          }
       }
@@ -140,6 +140,9 @@ package "Backend" {
 
          }
          interface OfficerRepository extends UserRepository{
+
+         }
+         interface RoomRepository{
 
          }
          interface ManagerRepository extends UserRepository{
@@ -175,6 +178,9 @@ package "Backend" {
          interface ProfessorService extends UserService{
 
          }
+         interface RoomService{
+
+         }
          interface LectureService{
 
          }
@@ -186,19 +192,19 @@ package "Backend" {
          }
       }
       package "service.impl"{
-	interface UserServiceImp{
+         interface StudentServiceImp{
 
          }
-         interface StudentServiceImp extends UserServiceImp{
+         interface OfficerServiceImp{
 
          }
-         interface OfficerServiceImp extends UserServiceImp{
+         interface ManagerServiceImp{
 
          }
-         interface ManagerServiceImp extends UserServiceImp{
+         interface ProfessorServiceImp{
 
          }
-         interface ProfessorServiceImp extends UserServiceImp{
+         interface RoomServiceImp{
 
          }
          interface LectureServiceImp{
@@ -212,6 +218,13 @@ package "Backend" {
          }
       }
    }
+
+@enduml
+```
+
+
+```plantuml
+@startuml
    package DataBase{
    !define table(x) class x << (T,#FFAAAA) >>
    !define primary_key(x) <u>x</u>
@@ -254,7 +267,7 @@ package "Backend" {
       USER_ID
       COURSE_ID
    }
-   table(CLASS) {
+   table(STUDENT_COURSE) {
       COURSE_ID
       USER_ID
    }
@@ -266,13 +279,23 @@ package "Backend" {
       REMOTLY
       DATE
       PROGRAM_DETAILS
-      NUMBER_OF_SEAT
+      ROOM_ID
+   }
+   table(ROOM){
+     primary_key(ROOM_ID)
+     NUMBER_OF_SEAT
+     NAME
+   }
+   table(COURSE){
+       primary_key(COURSE_ID)
+       NAME
+       DESCRIPTION
    }
    table(BOOKING){
       primary_key(BOOKING_ID)
       USER_ID
       LECTURE_ID
-      INFORMATION_TYPE
+      BOOKING_TYPE
    }
    table(HOLIDAY){
      primary_key(HOLIDAY_ID)
@@ -282,25 +305,21 @@ package "Backend" {
      primary_key(NOTIFICATION_ID)
      USER_ID
      DATE
-     NOTIFICATION_TYPE
      DESCRIPTION
    }
    table(NOTIFICATION_STUDENT){
      primary_key(NOTIFICATION_ID)
      USER_ID
      DATE
-     NOTIFICATION_TYPE
      DESCRIPTION
    }
 
    PROFESSOR -- PROFESSOR_COURSE
    COURSE -- PROFESSOR_COURSE
-   USER "*"--"*" COURSE
 
-   STUDENT -- CLASS
-   COURSE -- CLASS
-   STUDENT "*"--"*" COURSE
-
+   STUDENT -- STUDENT_COURSE
+   COURSE -- STUDENT_COURSE
+   ROOM "1" --"*" LECTURE
    PROFESSOR "1"--"*" LECTURE
    COURSE "1"--"*" LECTURE
    STUDENT "1" -- "*" BOOKING
@@ -308,94 +327,5 @@ package "Backend" {
    STUDENT "1" -- "*" NOTIFICATION_STUDENT
    PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
 }
-}
 @enduml
 ```
-
-
-
-
-# tony saliba
-```plantuml
-@startuml
-package "Backend" {
-   
-   package DataBase{
-   !define table(x) class x << (T,#FFAAAA) >>
-   !define primary_key(x) <u><b>x</b></u>
-   !define foreign_key(x) <u>**x</u>
-   hide methods
-   hide stereotypes
-
-   table(USER) {
-      primary_key(ID)
-      foreign_key(USER_TYPE)
-      FIRST_NAME
-      LAST_NAME
-      ADDRESS
-      DATE_OF_BIRTH
-      EMAIL
-      PASSWORD
-   }
-   table(USER_TYPE){
-      primary_key(ID)
-      NAME
-   }
-   table(COURSE){
-      primary_key(ID)
-      NAME
-      CREDITS
-   }
-   table(CLASS) {
-      primary_key(ID)
-      NAME
-      NUMBER_OF_SEATS
-   }
-   table(LECTURE) {
-      primary_key(ID)
-      foreign_key(COURSE_ID)
-      foreign_key(PROFESSOR_ID)
-      REMOTE
-      DATE
-      DURATION
-      LECTURE_NOTES
-   }
-   table(BOOKING){
-      primary_key(ID)
-      foreign_key(STUDENT_ID)
-      foreign_key(LECTURE_ID)
-   }
-   table(PROFESSOR_COURSE) {
-      primary_key(ID)
-      foreign_key(PROFESSOR_ID)
-      foreign_key(COURSE_ID)
-   }
-   table(STUDENT_COURSE) {
-      primary_key(ID)
-      foreign_key(STUDENT_ID)
-      foreign_key(COURSE_ID)
-   }
-   
-   table(HOLIDAY){
-     primary_key(ID)
-     DATE
-   }
-
-   table(NOTIFICATION){
-      primary_key(ID)
-      foreign_key(TO_ID)
-      TYPE
-      CONTENT
-      DATE
-   }
-
-   
-}
-}
-@enduml
-```
-
-
-
-
-

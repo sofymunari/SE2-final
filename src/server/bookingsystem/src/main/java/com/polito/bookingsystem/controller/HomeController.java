@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String test() {
 		return "test";
 	}
-
 }

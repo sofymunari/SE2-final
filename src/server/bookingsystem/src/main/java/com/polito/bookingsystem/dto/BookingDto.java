@@ -1,22 +1,22 @@
 package com.polito.bookingsystem.dto;
 
-import com.polito.bookingsystem.utils.BookingInfo;
 
+import com.polito.bookingsystem.utils.BookingInfo;
 
 public class BookingDto {
 	private Integer bookingId;
-	private String studentId;
-	private String lectureId;
+	private StudentDto studentDto;
+	private LectureDto lectureDto;
 	private BookingInfo bookingInfo;
 	
 	public BookingDto() {
 	}
 	
-	public BookingDto(Integer bookingId, String studentId, String lectureId, BookingInfo bookingInfo) {
+	public BookingDto(Integer bookingId, StudentDto studentDto, LectureDto lectureDto, BookingInfo bookingInfo) {
 		super();
 		this.bookingId = bookingId;
-		this.studentId = studentId;
-		this.lectureId = lectureId;
+		this.studentDto = studentDto;
+		this.lectureDto = lectureDto;
 		this.bookingInfo = bookingInfo;
 	}
 
@@ -28,20 +28,20 @@ public class BookingDto {
 		this.bookingId = bookingId;
 	}
 
-	public String getStudentId() {
-		return studentId;
+	public StudentDto getStudentDto() {
+		return studentDto;
 	}
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
+	public void setStudentDto(StudentDto studentDto) {
+		this.studentDto = studentDto;
 	}
 
-	public String getLectureId() {
-		return lectureId;
+	public LectureDto getLectureDto() {
+		return lectureDto;
 	}
 
-	public void setLectureId(String lectureId) {
-		this.lectureId = lectureId;
+	public void setLectureDto(LectureDto lectureDto) {
+		this.lectureDto = lectureDto;
 	}
 
 	public BookingInfo getBookingInfo() {
@@ -52,9 +52,4 @@ public class BookingDto {
 		this.bookingInfo = bookingInfo;
 	}
 
-	@Override
-	public String toString() {
-		return "BookingDto [bookingId=" + bookingId + ", studentId=" + studentId + ", lectureId=" + lectureId
-				+ ", bookingInfo=" + bookingInfo + "]";
-	}
 }

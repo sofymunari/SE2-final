@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-light bg-dark " >
+  		<span class="navbar-brand mb-2 h1 text-success mx-auto strong " >COUNTER PAGE</span>
+	</nav>
+	
+	
+		<div class="container-fluid bg-success p-3 ">
+		
+		 <div class="form-group">
+	    	<label for="exampleInputPassword1" class="h3">Insert your Counter Desk number</label>
+	    	<input type="number" class="form-control col-2" id="counterNumber" >
+	    	
+	    	<button type="submit" class="btn btn-dark m-3" onclick="document.getElementById('nextCustomer').innerHTML=getNextCustomer();">NEXT CUSTOMER</button>
+	    	
+  		</div>
+  	
+		  	<H1>your next customer is: </H1>
+		  	<h2 id = "nextCustomer"></h2>
+		  	
+	  	</div>	
+  	<script>
+	function getNextCustomer(){
+		let dId=document.getElementById('counterNumber');
+		if(dId && dId.value){
+			let myUrl="http://localhost:8080/nextTicket/"+dId.value;
+			
+			var xhr = new XMLHttpRequest();
+			xhr.open('PUT', myUrl , false);
+			xhr.send(null);
+			if(xhr.responseText == -1)
+				return "no one.Wait...";
+			return xhr.responseText;
+		}else{
+			return "you must insert a valid counter number";
+		}
+	}
+	
+	</script>
+
+</body>
+
+</html>
