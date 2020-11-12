@@ -2,7 +2,6 @@
 # Low level design
 ```plantuml
 @startuml
-package "Backend" {
    package "com.polito.officequeue"{
       package "entity"{
 	 class  User{
@@ -219,6 +218,13 @@ package "Backend" {
          }
       }
    }
+
+@enduml
+```
+
+
+```plantuml
+@startuml
    package DataBase{
    !define table(x) class x << (T,#FFAAAA) >>
    !define primary_key(x) <u>x</u>
@@ -321,8 +327,5 @@ package "Backend" {
    STUDENT "1" -- "*" NOTIFICATION_STUDENT
    PROFESSOR "1" -- "*" NOTIFICATION_PROFESSOR
 }
-}
 @enduml
 ```
-
-
