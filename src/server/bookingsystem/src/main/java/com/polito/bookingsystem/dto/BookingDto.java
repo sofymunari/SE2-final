@@ -1,7 +1,7 @@
 package com.polito.bookingsystem.dto;
 
-import com.polito.bookingsystem.utils.BookingInfo;
 
+import com.polito.bookingsystem.utils.BookingInfo;
 
 public class BookingDto {
 	private Integer bookingId;
