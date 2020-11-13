@@ -43,6 +43,7 @@
             - Professor professor
             - Boolean remotly
             - Date date
+			- Integer duration
             - String programDetails
             - Room room
          }
@@ -218,7 +219,6 @@
          }
       }
    }
-
 @enduml
 ```
 
@@ -278,6 +278,7 @@
       USER_ID
       REMOTLY
       DATE
+	  DURATION
       PROGRAM_DETAILS
       ROOM_ID
    }
