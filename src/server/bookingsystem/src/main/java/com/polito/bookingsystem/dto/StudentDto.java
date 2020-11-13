@@ -7,15 +7,15 @@ import java.util.List;
 
 public class StudentDto extends UserDto{
 	private Date dateOfBirth;
-	private List<CourseDto> courses = new ArrayList<>();
+	private List<CourseDto> coursesDto = new ArrayList<>();
 	
 	public StudentDto() {
 		super();
 	}
 	
-	public StudentDto(Integer userId, String name, String surname, String address, String email, String password, Date dateOfBirth, List<CourseDto> courses) {
+	public StudentDto(Integer userId, String name, String surname, String address, String email, String password, Date dateOfBirth, List<CourseDto> coursesDto) {
 		super(userId, name, surname, address, email, password);
-		this.courses = courses;
+		this.coursesDto = coursesDto;
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -27,12 +27,12 @@ public class StudentDto extends UserDto{
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public List<CourseDto> getCourses() {
-		return courses;
+	public List<CourseDto> getCoursesDto() {
+		return coursesDto;
 	}
 
-	public void setCourses(List<CourseDto> courses) {
-		this.courses = courses;
+	public void setCoursesDto(List<CourseDto> coursesDto) {
+		this.coursesDto = coursesDto;
 	}
 
 	

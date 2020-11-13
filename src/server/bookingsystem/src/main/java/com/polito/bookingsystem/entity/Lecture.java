@@ -43,6 +43,9 @@ public class Lecture {
 	@Column
 	private String programDetails;
 	
+	@Column
+	private Integer duration;
+	
 	@ManyToOne
     @JoinColumn(name ="roomId")
 	private Room room;
@@ -52,7 +55,7 @@ public class Lecture {
 	}
 	
 	public Lecture(Integer lectureId, Integer numberOfLesson, Course course, Professor professor, Boolean remotly,
-			Date date, String programDetails, Room room) {
+			Date date, Integer duration, String programDetails, Room room) {
 		super();
 		this.lectureId = lectureId;
 		this.numberOfLesson = numberOfLesson;
@@ -61,9 +64,19 @@ public class Lecture {
 		this.remotly = remotly;
 		this.date = date;
 		this.programDetails = programDetails;
+		this.duration = duration;
 		this.room = room;
 ;
 	}
+	
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
 	public Integer getLectureId() {
 		return this.lectureId;
 	}

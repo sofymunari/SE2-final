@@ -2,7 +2,7 @@ package com.polito.bookingsystem.dto;
 
 import java.util.Date;
 
-public abstract class NotificationDto {
+public class NotificationDto {
 	private Integer notificationId;
 	private String description;
 	private Date date;

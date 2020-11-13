@@ -5,23 +5,23 @@ import java.util.List;
 
 
 public class ProfessorDto extends UserDto{
-	private List<CourseDto> courses = new ArrayList<>();
+	private List<CourseDto> coursesDto = new ArrayList<>();
 
 	public ProfessorDto() {
 		super();
 	}
 
-	public ProfessorDto(Integer userId, String name, String surname, String address, String email, String password,  List<CourseDto> courses) {
+	public ProfessorDto(Integer userId, String name, String surname, String address, String email, String password,  List<CourseDto> coursesDto) {
 		super(userId, name, surname, address, email, password);
-		this.courses = courses;
+		this.coursesDto = coursesDto;
 	}
 	
-	public List<CourseDto> getCourses() {
-		return courses;
+	public List<CourseDto> getCoursesDto() {
+		return coursesDto;
 	}
 
-	public void setCourses(List<CourseDto> courses) {
-		this.courses = courses;
+	public void setCoursesDto(List<CourseDto> coursesDto) {
+		this.coursesDto = coursesDto;
 	}
 
 	

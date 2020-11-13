@@ -10,13 +10,14 @@ public class LectureDto {
     private Boolean remotly;
     private Date date;
     private String programDetails;
+    private Integer duration;
     private RoomDto roomDto;
 
     public LectureDto() {
     }
 
     public LectureDto(Integer lectureId, Integer numberOfLesson, CourseDto courseDto, ProfessorDto professorDto, Boolean remotly,
-                      Date date, String programDetails, RoomDto roomDto) {
+                      Date date, Integer duration, String programDetails, RoomDto roomDto) {
         super();
         this.lectureId = lectureId;
         this.numberOfLesson = numberOfLesson;
@@ -25,6 +26,7 @@ public class LectureDto {
         this.remotly = remotly;
         this.date = date;
         this.programDetails = programDetails;
+        this.duration = duration;
         this.roomDto = roomDto;
     }
     public Integer getLectureId() {
@@ -78,6 +80,14 @@ public class LectureDto {
     public void setRoomDto(RoomDto roomDto) {
         this.roomDto = roomDto;
     }
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
 
 
 

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Notification {
+public class Notification {
 	@Column
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id

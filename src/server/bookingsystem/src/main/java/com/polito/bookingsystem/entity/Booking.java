@@ -2,6 +2,8 @@ package com.polito.bookingsystem.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +32,7 @@ public class Booking {
 	private Lecture lecture;
 	
 	@Column
+	@Enumerated(EnumType.STRING)
 	private BookingInfo bookingInfo;
 	
 	public Booking() {

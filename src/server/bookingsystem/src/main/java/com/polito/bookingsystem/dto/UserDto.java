@@ -1,7 +1,7 @@
 package com.polito.bookingsystem.dto;
 
 
-public abstract class UserDto {
+public class UserDto {
 	private Integer userId;
 	private String name;
 	private String surname;
