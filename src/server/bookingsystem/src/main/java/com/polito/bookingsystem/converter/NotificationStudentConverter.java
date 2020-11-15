@@ -1,5 +1,8 @@
 package com.polito.bookingsystem.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.polito.bookingsystem.dto.NotificationStudentDto;
 import com.polito.bookingsystem.entity.NotificationStudent;
 
@@ -11,6 +14,10 @@ public class NotificationStudentConverter extends NotificationConverter{
 		notificationStudent.setDate(notificationStudentDto.getDate());
 		notificationStudent.setDescription(notificationStudentDto.getDescription());
 		notificationStudent.setStudent(StudentConverter.toEntity(notificationStudentDto.getStudentDto()));
+		notificationStudent.setStatus(notificationStudentDto.getStatus());
+		notificationStudent.setLink(notificationStudentDto.getLink());
+
+
 		return notificationStudent;
 	}
 	
@@ -20,9 +27,20 @@ public class NotificationStudentConverter extends NotificationConverter{
 		notificationStudentDto.setDate(notificationStudent.getDate());
 		notificationStudentDto.setDescription(notificationStudent.getDescription());
 		notificationStudentDto.setStudentDto(StudentConverter.toDto(notificationStudent.getStudent()));
+		notificationStudentDto.setStatus(notificationStudent.getStatus());
+		notificationStudentDto.setLink(notificationStudent.getLink());
+
+
 		return notificationStudentDto;
 	}
     
+	public static List<NotificationStudentDto> toDto(List<NotificationStudent> notificationStudentList) {
+		List<NotificationStudentDto> notificationStudentDtoList = new ArrayList<NotificationStudentDto>(); 
+		for (NotificationStudent notificationStudent: notificationStudentList) {
+			notificationStudentDtoList.add(toDto(notificationStudent));
+		}
+		return notificationStudentDtoList;
+	}
 	
 	
 }

@@ -9,8 +9,8 @@ public class NotificationProfessorDto extends NotificationDto{
 		super();
 	}
 	
-	public NotificationProfessorDto(Integer notificationId, String description, Date date, ProfessorDto professorDto) {
-		super(notificationId, description, date);
+	public NotificationProfessorDto(Integer notificationId, String description, Date date, ProfessorDto professorDto, boolean status, String link) {
+		super(notificationId, description, date, status, link);
 		this.professorDto = professorDto;
 	}
 

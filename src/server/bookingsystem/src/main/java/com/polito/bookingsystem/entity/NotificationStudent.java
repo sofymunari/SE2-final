@@ -19,8 +19,8 @@ public class NotificationStudent extends Notification{
 		super();
 	}
 	
-	public NotificationStudent(Integer notificationId, String description, Date date, Student student) {
-		super(notificationId, description, date);
+	public NotificationStudent(Integer notificationId, String description, Date date, Student student, boolean status, String link) {
+		super(notificationId, description, date, status, link);
 		this.student = student;
 	}
 

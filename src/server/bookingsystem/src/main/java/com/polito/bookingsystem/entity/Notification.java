@@ -21,13 +21,29 @@ public class Notification {
 	@Column
 	private Date date;
 	
+	@Column
+	private boolean status;
+	
+	@Column
+	private String link;
+	
 	public Notification() {}
 	
-	public Notification(Integer notificationId,  String description, Date date) {
+	public Notification(Integer notificationId,  String description, Date date, boolean status, String link) {
 		super();
 		this.notificationId = notificationId;
 		this.description = description;
 		this.date = date;
+		this.status = status;
+		this.link = link;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public Integer getNotificationId() {
@@ -55,5 +71,12 @@ public class Notification {
 		this.date = date;
 	}
 
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 	
 }
