@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.polito.bookingsystem.entity.*;
+import com.polito.bookingsystem.utils.BookingInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,26 @@ class BookingsystemEntityTests {
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Student student = createStudentTestSuite();
 		return new NotificationStudent(11, "this is a test description", d, student);
+	}
+	
+	public Lecture createLectureTestSuite() throws ParseException {
+		Professor professor = createProfessorTestSuite();
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		Course course = createCourseTestSuite();
+		Room room = createRoomTestSuite();
+		return new Lecture(11, 11, course, professor, true, date, 90, "this is a test detail", room);
+	}
+	
+	public Holiday createHolidayTestSuite() throws ParseException {
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		return new Holiday(11, date);
+	}
+	
+	public Booking createBookingTestSuite() throws ParseException {
+		Student student = createStudentTestSuite();
+		Lecture lecture = createLectureTestSuite();
+		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		return new Booking(11, student, lecture, bookingInfo);
 	}
 	
 	
@@ -470,5 +491,303 @@ class BookingsystemEntityTests {
 		notification = createNotificationStudentTestSuite();
 		notification.setStudent(student);
 		assertEquals("Professor is not the one expected", notification.getStudent(), student);
+	}
+	
+	
+	/*
+	 * 
+   		TEST FOR LECTURE ENTITY.	
+	 *
+	 */
+	
+	@Test
+	void testGetLectureId() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		assertTrue("user id is wrong",lecture.getLectureId() == 11);
+	}
+	
+	@Test
+	void testSetLectureId() throws ParseException {
+		Integer id = 0;
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		lecture.setLectureId(id);
+		assertNotNull("lecture id is null",lecture.getLectureId());
+		assertEquals("lecture id is wrong",lecture.getLectureId(), id);
+	}
+	
+	@Test
+	void testGetLectureNumberOfLesson() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		assertTrue("lecture number of lesson is wrong", lecture.getNumberOfLesson() == 11);
+	}
+	
+	@Test
+	void testSetLectureNumberOfLesson() throws ParseException {
+		Integer n = 12;
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		lecture.setNumberOfLesson(n);
+		assertNotNull("lecture number of lesson is wrong", lecture.getNumberOfLesson());
+		assertEquals("lecture number of lesson is wrong",lecture.getNumberOfLesson(), n);
+	}
+	
+	@Test
+	void testGetLectureCourse() throws ParseException {
+		Lecture lecture = null;
+		Course course = createCourseTestSuite();
+		lecture = createLectureTestSuite();
+		assertEquals("lecture course is wrong", lecture.getCourse().getCourseId(), course.getCourseId());
+	}
+	
+	@Test
+	void testSetLectureCourse() throws ParseException {
+		Lecture lecture = null;
+		Course course = new Course(0, "testNamenew", "this is a new test description");
+		lecture = createLectureTestSuite();
+		lecture.setCourse(course);
+		assertNotNull("lecture course is wrong", lecture.getCourse());
+		assertEquals("lecture course is wrong", lecture.getCourse(), course);
+	}
+	
+	@Test
+	void testGetLectureProfessor() throws ParseException {
+		Lecture lecture = null;
+		Professor professor = createProfessorTestSuite();
+		lecture = createLectureTestSuite();
+		assertEquals("lecture professor is wrong",lecture.getProfessor().getUserId(), professor.getUserId());
+	}
+	
+	@Test
+	void testSetLectureProfessor() throws ParseException {
+		Course course = new Course(12, "testNamenew", "this is a new test description");
+		List<Course> courses = new ArrayList<>();
+		courses.add(course);
+		Professor professor =  new Professor(12, "testNamenew","testSurnamenew", "testAddressnew", "testEmailnew","testPasswordnew", courses);
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		lecture.setProfessor(professor);
+		assertNotNull("lecture professor is wrong", lecture.getProfessor());
+		assertEquals("user address is wrong", lecture.getProfessor(), professor);
+	}
+	
+	@Test
+	void testGetLectureRemotly() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		assertEquals("lecture remotly is wrong", lecture.getRemotly(), true);
+	}
+	
+	@Test
+	void testSetLectureRemotly() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		lecture.setRemotly(false);
+		assertEquals("lecture remotly is wrong", lecture.getRemotly(), false);
+	}
+	
+	@Test
+	void testGetLectureDate() throws ParseException {
+		Lecture lecture = null;
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		lecture = createLectureTestSuite();
+		assertEquals("lecture date is wrong", lecture.getDate(), date);
+	}
+	
+	@Test
+	void testSetLectureDate() throws ParseException {
+		Lecture lecture = null;
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
+		lecture = createLectureTestSuite();
+		lecture.setDate(date);
+		assertNotNull("lecture date is wrong", lecture.getDate());
+		assertEquals("lecture date is wrong", lecture.getDate(), date);
+	}
+	
+	
+	@Test
+	void testGetLectureDuration() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		Integer duration = 90;
+		assertEquals("lecture duration is wrong", lecture.getDuration(), duration);
+	}
+	
+	@Test
+	void testSetLectureDuration() throws ParseException {
+		Lecture lecture = null;
+		Integer duration = 120;
+		lecture = createLectureTestSuite();
+		lecture.setDuration(duration);
+		assertNotNull("lecture duration is wrong", lecture.getDuration());
+		assertEquals("lecture duration is wrong", lecture.getDuration(), duration);
+	}
+	
+	
+	@Test
+	void testGetLectureProgramDetails() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		assertEquals("lecture program details are wrong", lecture.getProgramDetails(), "this is a test detail");
+	}
+	
+	@Test
+	void testSetLectureProgramDetails() throws ParseException {
+		Lecture lecture = null;
+		String detail =  "this is a new test detail";
+		lecture = createLectureTestSuite();
+		lecture.setProgramDetails(detail);
+		assertNotNull("lecture program details are wrong", lecture.getProgramDetails());
+		assertEquals("lecture program details are wrong", lecture.getProgramDetails(), detail);
+	}
+	
+	
+	@Test
+	void testGetLectureRoom() throws ParseException {
+		Lecture lecture = null;
+		lecture = createLectureTestSuite();
+		Room room = createRoomTestSuite();
+		assertEquals("lecture room is wrong", lecture.getRoom().getRoomId(), room.getRoomId());
+	}
+	
+	@Test
+	void testSetLectureRoom() throws ParseException {
+		Lecture lecture = null;
+		Room room = new Room();
+		lecture = createLectureTestSuite();
+		lecture.setRoom(room);
+		assertNotNull("lecture room is wrong", lecture.getRoom());
+		assertEquals("lecture room is wrong", lecture.getRoom(), room);
+	}
+	
+	
+	/*
+	 * 
+   		TEST FOR HOLIDAY ENTITY.	
+	 *
+	 */
+	
+	@Test
+	void testGetHolidayId() throws ParseException {
+		Holiday holiday = null;
+		holiday = createHolidayTestSuite();
+		assertTrue("holiday id is wrong",holiday.getHolidayId() == 11);
+	}
+	
+	@Test
+	void testSetHolidayId() throws ParseException {
+		Integer id = 0;
+		Holiday holiday = null;
+		holiday = createHolidayTestSuite();
+		holiday.setHolidayId(id);
+		assertNotNull("holiday id is null",holiday.getHolidayId());
+		assertEquals("holiday id is wrong",holiday.getHolidayId(), id);
+	}
+	
+	
+	@Test
+	void testGetHolidayDate() throws ParseException {
+		Holiday holiday = null;
+		holiday = createHolidayTestSuite();
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		assertEquals("holiday date is wrong", holiday.getDate(), date);
+	}
+	
+	@Test
+	void testSetHolidayDate() throws ParseException {
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
+		Holiday holiday = null;
+		holiday = createHolidayTestSuite();
+		holiday.setDate(date);
+		assertNotNull("holiday date is wrong", holiday.getDate());
+		assertEquals("holiday date is wrong", holiday.getDate(), date);
+	}
+	
+	/*
+	 * 
+   		TEST FOR BOOKING ENTITY.	
+	 *
+	 */
+	
+	@Test
+	void testGetBookingId() throws ParseException {
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		assertTrue("booking id is wrong",booking.getBookingId() == 11);
+	}
+	
+	@Test
+	void testSetBookingtId() throws ParseException {
+		Integer id = 0;
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		booking.setBookingId(id);
+		assertNotNull("booking id is wrong",booking.getBookingId());
+		assertEquals("booking id is wrong",booking.getBookingId(), id);
+	}
+	
+	@Test
+	void testGetBookingStudent() throws ParseException {
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		Student student = createStudentTestSuite();
+		assertTrue("booking student is wrong",booking.getStudent().getUserId() == student.getUserId());
+	}
+	
+	@Test
+	void testSetBookingtStudent() throws ParseException {
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
+		Course c = new Course(0, "courseNew", "This is a new course");
+		List<Course> courses = new ArrayList<>();
+		courses.add(c);
+		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", date, courses);
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		booking.setStudent(student);
+		assertNotNull("booking student is wrong",booking.getStudent());
+		assertEquals("booking student is wrong",booking.getStudent().getUserId(), student.getUserId());
+	}
+	
+	@Test
+	void testGetBookingLecture() throws ParseException {
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		Lecture lecture = createLectureTestSuite();
+		assertTrue("booking id is wrong",booking.getLecture().getLectureId() == lecture.getLectureId());
+	}
+	
+	@Test
+	void testSetBookingtLecture() throws ParseException {
+		Professor professor = createProfessorTestSuite();
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
+		Course course = createCourseTestSuite();
+		Room room = createRoomTestSuite();
+		Lecture lecture = new Lecture(12, 12, course, professor, true, date, 120, "this is a new test detail", room);
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		booking.setLecture(lecture);
+		assertNotNull("booking lecture is wrong", booking.getLecture());
+		assertEquals("booking lecture is wrong", booking.getLecture().getLectureId(), lecture.getLectureId());
+	}
+	
+	
+	@Test
+	void testGetBookingInfo() throws ParseException {
+		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		assertTrue("booking info is wrong",booking.getBookingInfo() == bookingInfo);
+	}
+	
+	@Test
+	void testSetBookingInfo() throws ParseException {
+		BookingInfo bookingInfo = BookingInfo.CANCELED_BY_PROF;
+		Booking booking = null;
+		booking = createBookingTestSuite();
+		booking.setBookingInfo(bookingInfo);
+		assertNotNull("booking info is wrong",booking.getBookingInfo());
+		assertEquals("booking info is wrong",booking.getBookingInfo(), bookingInfo);
 	}
 }
