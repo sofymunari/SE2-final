@@ -1,0 +1,49 @@
+package com.polito.bookingsystem.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.polito.bookingsystem.dto.NotificationStudentDto;
+import com.polito.bookingsystem.dto.StudentDto;
+import com.polito.bookingsystem.entity.NotificationStudent;
+import com.polito.bookingsystem.service.NotificationStudentService;
+import com.polito.bookingsystem.service.StudentService;
+
+
+@RestController
+public class NotificationController {
+	
+	@Autowired
+	NotificationStudentService notificationStudentService;
+	
+	@Autowired
+	StudentService studentService;
+	
+	 @GetMapping("/student/notification/list/{studentId}")
+	 public List<NotificationStudentDto> getStudentNotifications(@PathVariable String email) {
+	
+		 StudentDto studentDto = studentService.getStudentByEmail(email);
+		 return (List<NotificationStudentDto>) notificationStudentService.getStudentNotifications(studentDto);
+	 }
+	 
+	 @GetMapping("/student/notification/{notificationId}")
+	 public NotificationStudentDto getStudentNotification(@PathVariable Integer notificationId) {
+			
+		 return (NotificationStudentDto) notificationStudentService.getStudentNotificationByNotificationId(notificationId);
+	 }
+	 
+
+	 
+
+
+
+}

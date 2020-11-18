@@ -63,4 +63,10 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 		}
 		return false;
 	}
+
+	@Override
+	public NotificationStudentDto getStudentNotificationByNotificationId(Integer notificationId) {
+		NotificationStudent notificationStudent = notificationStudentRepository.findByNotificationStudentId(notificationId);
+		return NotificationStudentConverter.toDto(notificationStudent);
+	}
 }
