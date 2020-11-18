@@ -50,6 +50,12 @@ class App extends React.Component {
         <Route exact path="/teacherportal">
         <TeacherHomePage teacher={this.state.teacher}/>
         </Route>
+        <Route exact path="/teacherportal/registerdetails">
+        <TeacherHomePage teacher={this.state.student}/>
+        </Route>
+        <Route exact path="/teacherportal/notification">
+        <TeacherHomePage teacher={this.state.lecture}/>
+        </Route>
         </Switch>
         <AppComponents.AppFooter/>
       </div>  
