@@ -16,6 +16,8 @@ public interface NotificationProfessorService {
 	public boolean sendProfessorNotification(ProfessorDto professorDto, String description, String link);
 	public List<NotificationProfessorDto> getProfessorNotifications(ProfessorDto professorDto);
 	public boolean setNotificationAsRead(NotificationProfessorDto notificationProfessorDto);
+	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer Id);
+
 	
 	
 

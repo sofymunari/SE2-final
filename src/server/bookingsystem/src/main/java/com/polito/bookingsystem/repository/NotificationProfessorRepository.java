@@ -14,5 +14,6 @@ public interface NotificationProfessorRepository extends NotificationRepository{
 	List<NotificationProfessor> findByProfessor(Professor professor);
 	List<NotificationProfessor> findByProfessorAndStatus(Professor professor, boolean status);
 	NotificationProfessor findByNotificationId(Integer id);
+	NotificationProfessor findByNotificationStudentId(Integer id);
 
 }

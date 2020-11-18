@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.NotificationStudentDto;
+import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.NotificationStudent;
+import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.NotificationStudentService;
+import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 
 
@@ -27,7 +31,15 @@ public class NotificationController {
 	
 	@Autowired
 	StudentService studentService;
+
+	@Autowired
+	NotificationProfessorService notificationProfessorService;
 	
+	@Autowired
+	ProfessorService professorService;
+	
+
+
 	 @GetMapping("/student/notification/list/{studentId}")
 	 public List<NotificationStudentDto> getStudentNotifications(@PathVariable String email) {
 	
@@ -39,6 +51,21 @@ public class NotificationController {
 	 public NotificationStudentDto getStudentNotification(@PathVariable Integer notificationId) {
 			
 		 return (NotificationStudentDto) notificationStudentService.getStudentNotificationByNotificationId(notificationId);
+	 }
+
+
+
+	 @GetMapping("/professor/notification/list/{professorId}")
+	 public List<NotificationProfessorDto> getProfessorNotifications(@PathVariable String email) {
+	
+		ProfessorDto professorDto = professorService.getProfessorByEmail(email);
+		return (List<NotificationProfessorDto>) notificationProfessorService.getProfessorNotifications(professorDto);
+	 }
+	 
+	 @GetMapping("/professor/notification/{notificationId}")
+	 public NotificationProfessorDto getProfessortNotification(@PathVariable Integer notificationId) {
+			
+		 return (NotificationProfessorDto) notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
 	 }
 	 
 
