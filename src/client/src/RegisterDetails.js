@@ -8,7 +8,6 @@ class RegisterDetails extends React.Component {
         super(props);
         this.state={'student':null,'errorStudent':null,'errorLectures':null,'lectures':null}
     }
-
     render(){
         return <Switch >
                 <Route exact path="/teacherportal/registerdetails">
@@ -19,13 +18,13 @@ class RegisterDetails extends React.Component {
                     <Aside course={this.state.course} />
                     </div>
                     <div className="col-9" id="main">
-                    <MainPage lectures={this.state.lectures} />
+                    <MainPage students={this.state.students} />
                     </div>
                     </div>
                 </div>
                 </Route>
               </Switch>
-        
+       
     }
 }
 
@@ -40,7 +39,6 @@ class MainPage extends React.Component{
     render(){
         return  <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light">
-
                     <div className="d-flex w-100 justify-content-between">
                     <div className="col-2">
                     <h3>ID</h3>                  
