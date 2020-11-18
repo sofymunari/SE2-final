@@ -13,6 +13,6 @@ import com.polito.bookingsystem.entity.Student;
 public interface NotificationStudentRepository extends NotificationRepository{
 	List<NotificationStudent> findByStudent(Student student);
 	List<NotificationStudent> findByStudentAndStatus(Student student, boolean status);
-	NotificationStudent findByNotificationStudentId(Integer notificationId);
+	NotificationStudent findByNotificationId(Integer id);
   
 }

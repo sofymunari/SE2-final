@@ -10,6 +10,7 @@ import com.polito.bookingsystem.repository.NotificationStudentRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.NotificationStudentService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,10 +26,21 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 	@Autowired
 	StudentRepository studentRepository;
 
+	@Autowired
+	public NotificationStudentServiceImpl(NotificationStudentRepository notificationStudentRepository, StudentRepository studentRepository) {
+		this.notificationStudentRepository = notificationStudentRepository;
+		this.studentRepository = studentRepository;
+	}
+	
+	
 	@Override
 	public boolean sendStudentNotification(StudentDto studentDto, String description, String link) {
+		
+		if (studentDto == null) 
+			return false;
+		
 		Student Student = StudentConverter.toEntity(studentDto);
-		if(studentRepository.findById(studentDto.getUserId()) != null) {
+		if(studentRepository.findByUserId(studentDto.getUserId()) != null) {
 			NotificationStudent notificationStudent= new NotificationStudent();
 			notificationStudent.setDate(new Date());
 			notificationStudent.setDescription(description);
@@ -45,7 +57,10 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 
 	@Override
 	public List<NotificationStudentDto> getStudentNotifications(StudentDto studentDto) {
-		if(studentRepository.findById(studentDto.getUserId()) != null) {
+		if (studentDto == null) 
+			return new ArrayList<>();
+		
+		if(studentRepository.findByUserId(studentDto.getUserId()) != null) {
 			List<NotificationStudent> notificationStudentList= notificationStudentRepository.findByStudent(StudentConverter.toEntity(studentDto));
 			
 			return NotificationStudentConverter.toDto(notificationStudentList);
@@ -55,7 +70,11 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 
 	@Override
 	public boolean setNotificationAsRead(NotificationStudentDto notificationStudentDto) {
-		if(notificationStudentRepository.findById(notificationStudentDto.getNotificationId()) != null) {
+		
+		if (notificationStudentDto == null) 
+			return false;
+		
+		if(notificationStudentRepository.findByNotificationId(notificationStudentDto.getNotificationId()) != null) {
 			notificationStudentDto.setStatus(true);
 			NotificationStudent notificationStudent= NotificationStudentConverter.toEntity(notificationStudentDto);
 			notificationStudentRepository.save(notificationStudent);
