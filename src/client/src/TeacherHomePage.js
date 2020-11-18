@@ -1,53 +1,72 @@
-
 import React from 'react';
-import RegisterDetails from './RegisterDetails';
-import Notification from './Notification';
+import TeacherNotification from './TeacherNotification';
 import API from './API.js';
 import {Route,Switch,Link} from 'react-router-dom';
 import AppComponents from './AppComponents';
-let a=1;
+
 class TeacherHomePage extends React.Component {
     constructor(props){
         super(props);
-        this.state={'teacher':null,'errorTeacher':null,'errorLectures':null,'lectures':null}
+        this.state={'teacher':null,'errorTeacher':null,'students':null,'errorLectures':null,'bookings':null,'lectures':null}
         //teacher prop is the teacher username
         //teacher state is the teacher info
 
     }
 
     componentDidMount(){
-        API.getTeacherLectures(this.props.teacher).then((lectures)=>{
-        API.getTeacherInfo(this.props.teacher)
-        .then((teacher)=>{this.setState({teacher:teacher,lectures:lectures})})
-        .catch((err)=>{this.setState({'errorTeacher':err})})})
-        .catch((err)=>{this.setState({'errorLectures':err})})
+       this.init();
+
     }
-    handleClick(){
-        this.props.history.push("./RegisterDetails");
-  }
+    async init(){
+        const bookings= await API.getTeacherLectures(this.props.teacher);
+        const teacher= await API.getTeacherInfo(this.props.teacher);
+        
+        const lectures=bookings.map(b=>{return {lectureId:b.lectureId,lectureNumber:b.lectureNumber,lectureDate:b.lectureDate,course:b.course.name}});
+        
+        let ids = [... new Set(bookings.map(b=>b.lectureId))]
+        const lect_unique=lectures.filter(b=>{
+            for (let i of ids){
+                if(b.lectureId===i){
+                    ids=ids.filter(el=>el!==i);
+                    return true;
+                }
+            }
+            return false;
+        })
+        this.setState({teacher:teacher,bookings:bookings,lectures:lect_unique})
+    }
+    showBookings=(lectureId)=>{
+        const students=this.state.bookings.filter(b=>b.lectureId===lectureId);
+        this.setState({students:students})
+    }
+    back=()=>{
+        this.setState({students:null})
+    }
     render(){
         if(this.state.errorTeacher||this.state.errorLectures){
             return <h2>we are sorry but an error just occurred</h2>
         }
-        if(!this.state.teacher || !this.state.lectures){
-        return <h1>page is loading</h1>
+        if(!this.state.teacher){
+            return <h1>page is loading</h1>
         }
         return <Switch >
                 <Route exact path="/teacherportal">
-                <AppComponents.AppNavbar/>
+                <AppComponents.AppNavbar logOut={this.props.logOut}/>
                 <div className="container-fluid">
                     <div className="row">
                     <div className="col-3 bg-success" id="sticky-sidebar">
                     <Aside teacher={this.state.teacher} />
                     </div>
                     <div className="col-9" id="main">
-                    <MainPage lectures={this.state.lectures} />
+                    {!this.state.students?    
+                    <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} />:
+                    <StudentBookingList students={this.state.students} back={this.back}/>}
                     </div>
                     </div>
                 </div>
                 </Route>
-                <Route exact path="/teacherportal/registerdetails">
-                <RegisterDetails student={this.props.student}/>
+                <Route exact path ="/teacherportal/notifications">
+                    <TeacherNotification teacher={this.state.teacher}/>
                 </Route>               
               </Switch>
         
@@ -74,27 +93,28 @@ class MainPage extends React.Component{
 
     }
     showItem= (lecture)=>{
-        return <LectureItem key={lecture.lecture_id} lecture={lecture} />
+        const num= this.props.bookings.filter(b=>b.lectureId===lecture.lectureId).length;
+        return <LectureItem key={lecture.lectureId} lecture={lecture} num={num} showBookings={this.props.showBookings} />
     }
 
     render(){
         return  <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light">
                     <div className="d-flex w-100 justify-content-between">
-                    <div className="col-1">
-                    <h3>ID</h3>
+                    <div className="col-3">
+                    <h3>COURSE NAME</h3>
+                    </div>
+                    <div className="col-2">
+                    <h3>LECTURE NUMBER</h3>
                     </div>
                     <div className="col-3">
-                    <h3>COURSE_NAME</h3>
-                    </div>
-                    <div className="col-2">
                     <h3>DATE</h3>
                     </div>
-                    <div className="col-2">
-                    <h3>REMOTLY</h3>
+                    <div className="col-3">
+                    <h3># BOOKINGS</h3>
                     </div>
-                    <div className="col-2">
-                    <h3>#REGISTER</h3>
+                    <div className="col-1">
+                    <h3>SEE LIST</h3>
                     </div>
                     </div>
                     </li>
@@ -102,34 +122,92 @@ class MainPage extends React.Component{
                 </ul>
     }
 }
-function handleClick(){
-    this.props.history.push("./RegisterDetails");
-}
+
 
 function LectureItem (props){
     
     return (
-        <li className="list-group-item" id = {props.lecture.lecture_id}>
+        <li className="list-group-item" id = {props.lecture.lectureId}>
         <div className="d-flex w-100 justify-content-between">
-        <div className="col-1">          
-            <h4>{(a++)}</h4>
+            <div className="col-3">          
+            <h4>{props.lecture.course}</h4>
             </div>
             <div className="col-2">
-            <h4>{props.lecture.course_name}</h4>
+            <h4>{props.lecture.lectureNumber}</h4>
             </div>
 
+            <div className="col-3">
+            <h4>{props.lecture.lectureDate}</h4>
+            </div>
+            <div className="col-3">
+            <h4>{props.num }</h4>
+            </div>
             <div className="col-1">
-            <h4>{props.lecture.date}</h4>
-            </div>
-            <div className="col-2">
-            <h4>{props.lecture.remotly }</h4>
-            </div>
-            <div className="col-2">
             <h4>
-            <button className="btn btn-success text-dark font-weight-bold" onClick={handleClick}>
-            {props.lecture.number_of_lesson }
-            </button>           
+            <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-list-check" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.showBookings(props.lecture.lectureId)}>
+                <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+            </svg>          
             </h4>
+            </div>
+        </div>
+        </li>       
+        )
+}
+
+class StudentBookingList extends React.Component{
+    constructor(props){
+        super(props);
+    }
+
+    showStudent= (student)=>{
+        return <StudentItem key={student.bookingId} student={student}/>
+    }
+
+    render(){
+        console.log(this.props.students)
+        return  <>
+                <h1>STUDENT LIST FOR COURSE {this.props.students[0].course.name} LESSON NUMBER {this.props.students[0].lectureNumber}</h1>
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item bg-light">
+                    <div className="d-flex w-100 justify-content-between">
+                    <div className="col-3">
+                    <h3>STUDENT NAME</h3>
+                    </div>
+                    <div className="col-3">
+                    <h3>STUDENT SURNAME</h3>
+                    </div>
+                    <div className="col-3">
+                    <h3>STUDENT EMAIL</h3>
+                    </div>
+                    <div className="col-3">
+                    <h3>BOOKING STATUS</h3>
+                    </div>
+                    </div>
+                    </li>
+                    {this.props.students.map(this.showStudent)}
+                </ul>
+                <button type="button" class="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
+                </>
+    }
+}
+
+function StudentItem (props){
+    
+    return (
+        <li className="list-group-item" id = {props.student.lectureId}>
+        <div className="d-flex w-100 justify-content-between">
+            <div className="col-3">          
+            <h4>{props.student.studentName}</h4>
+            </div>
+            <div className="col-3">
+            <h4>{props.student.studentSurname}</h4>
+            </div>
+
+            <div className="col-3">
+            <h4>{props.student.studentEmail}</h4>
+            </div>
+            <div className="col-3">
+            <h4>{props.student.bookingInfo }</h4>
             </div>
         </div>
         </li>       

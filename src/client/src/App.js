@@ -7,6 +7,7 @@ import TeacherHomePage from './TeacherHomePage';
 import AppComponents from './AppComponents';
 import { Switch,Route,Link,Redirect } from 'react-router-dom';
 import API from './API';
+ 
 
 class App extends React.Component {
   constructor(props) {
@@ -20,8 +21,14 @@ class App extends React.Component {
     
   }
   loginTeacher=(username,password)=>{
-    API.loginTeacher(username,password).then(()=>{
-      this.setState({teacher:username})}).catch((error)=>this.setState({loginError:error}));
+    API.loginTeacher(username,password).then((usr)=>{
+      this.setState({teacher:usr})}).catch((error)=>this.setState({loginError:error}));
+  }
+  logOutStudent=()=>{
+    this.setState({student:null});
+  }
+  logOutTeacher=()=>{
+    this.setState({teacher:null});
   }
   
   render(){ 
@@ -45,16 +52,16 @@ class App extends React.Component {
           }
         </Route>
         <Route path="/studentportal">
-          <StudentHomePage student={this.state.student}/>
+          {this.state.student?
+          <StudentHomePage student={this.state.student}  logOut={this.logOutStudent}/>:
+          <Redirect to="/"/>
+          }
         </Route>
-        <Route exact path="/teacherportal">
-        <TeacherHomePage teacher={this.state.teacher}/>
-        </Route>
-        <Route exact path="/teacherportal/registerdetails">
-        <TeacherHomePage teacher={this.state.student}/>
-        </Route>
-        <Route exact path="/teacherportal/notification">
-        <TeacherHomePage teacher={this.state.lecture}/>
+        <Route path="/teacherportal">
+        {this.state.teacher?
+          <TeacherHomePage teacher={this.state.teacher}  logOut={this.logOutTeacher}/>:
+          <Redirect to="/"/>
+        }
         </Route>
         </Switch>
         <AppComponents.AppFooter/>

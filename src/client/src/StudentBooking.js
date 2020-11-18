@@ -15,22 +15,27 @@ class StudentBooking extends React.Component{
         .catch((error)=>this.setState({bookingsError:error}))
     }
     showItem= (booking)=>{
-        return <BookingItem key={booking.booking_id} booking={booking} cancelBooking={this.cancelBooking} />
+        return <BookingItem key={booking.bookingId} booking={booking} cancelBooking={this.cancelBooking} />
     }
     cancelBooking= (bookingId)=>{
-        API.cancelBooking(bookingId,this.props.stduent)
+        API.cancelBooking(bookingId)
         .then(()=> API.getStudentBookings(this.props.student)
-        .then((bookings)=>this.setState({bookings:bookings}))
+        .then((bookings)=>{this.props.updateLectures(); this.setState({bookings:bookings})})
         .catch((error)=>this.setState({bookingsError:error})))
-        .catch((error)=>this.setState({bookingsError:error}))
+        .catch((error)=>this.setState({bookingsError:error}));
     }
+    /*cancelBooking= (bookingId)=>{
+        API.cancelBooking(bookingId)
+        .then(()=>this.props.updateLectures() )
+        
+    }*/
     render(){
         if(!this.state.bookings){
             return <h1>the page is loading</h1>
         }
         return  <Switch>
                     <Route exact path="/studentportal/bookings">
-                        <AppComponents.AppNavbar/>
+                        <AppComponents.AppNavbar logOut={this.props.logOut}/>
                         <div className="row">
                         <ul className="list-group list-group-flush col-12">
                             <li className="list-group-item bg-light">
@@ -67,25 +72,25 @@ class StudentBooking extends React.Component{
 }
 
 function BookingItem(props){
-    return  <li className="list-group-item" id = {props.booking.booking_id}>
+    return  <li className="list-group-item" id = {props.booking.bookingId}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">
-                <h4>{props.booking.course_name}</h4>
+                <h4>{props.booking.courseDto.name}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.number_of_lesson}</h4>
+                <h4>{props.booking.lectureDto.numberOfLesson}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.date}</h4>
+                <h4>{props.booking.lectureDto.date}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.remotly}</h4>
+                <h4>{props.booking.lectureDto.remotly?'yes':'no'}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.number_of_seat}</h4>
+                <h4>{props.booking.roomDto.numberOfSeat}</h4>
                 </div>
                 <div className="col-1">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-trash-fill" fill="red" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.cancelBooking(props.booking.booking_id)}>
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-trash-fill" fill="red" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.cancelBooking(props.booking.bookingId)}>
                                 <path fillRule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
                             </svg>
                 </div>

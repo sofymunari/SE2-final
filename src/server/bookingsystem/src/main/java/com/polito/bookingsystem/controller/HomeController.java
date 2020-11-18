@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.service.BookingService;
@@ -53,19 +54,17 @@ public class HomeController {
 	
 	@RequestMapping(value="studentinfo/{email}", method = RequestMethod.GET)
 	public StudentDto getStudentInfo(@PathVariable String email) {
-		System.out.println("infoCotroller");
+		
         return studentService.getStudent(email);
 	}
 	
 	@RequestMapping(value="studentbookings/{email}", method = RequestMethod.GET)
 	public List<BookingDto> getStudentBookings(@PathVariable String email) {
-		System.out.println("bookingsCotroller");
         return bookingService.getListBooking(email);
 	}
 	
 	@RequestMapping(value="studentlectures/{email}", method = RequestMethod.GET)
 	public List<LectureDto> getStudentLectures(@PathVariable String email) {
-		System.out.println("lecturesCotroller");
 		List<BookingDto> bookingList=bookingService.getListBooking(email);
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
 		List<LectureDto> availableLectures=lectureService.getListLectures(email).stream().filter(l->{
@@ -97,19 +96,23 @@ public class HomeController {
 	
 	@RequestMapping(value= "studentlogin", method= RequestMethod.POST)
 	public String login(@RequestBody Map<String, String> userPass) {
-			System.out.println("loginControler");
 			return studentService.login(userPass.get("username"), userPass.get("password"));
 	}
 	
-	@RequestMapping(value= "/professorlogin", method= RequestMethod.POST)
+	@RequestMapping(value= "professorlogin", method= RequestMethod.POST)
 	public String loginProf(@RequestBody Map<String, String> userPass) {
 			return professorService.login(userPass.get("username"), userPass.get("password"));
 	}
 
 	
-	@RequestMapping(value= "/bookings/{email}", method= RequestMethod.GET)
+	@RequestMapping(value= "bookings/{email}", method= RequestMethod.GET)
 	public List<BookingEntry> getBooking(@PathVariable String email) {
 			return bookingService.getBooking(email);
-	}	
+	}
+	
+	@RequestMapping(value="professorinfo/{email}", method = RequestMethod.GET)
+	public ProfessorDto getProfessorInfo(@PathVariable String email) {
+        return professorService.getProfessor(email);
+	}
     
 }

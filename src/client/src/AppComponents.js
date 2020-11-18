@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Route,Switch,Link} from 'react-router-dom';
+import {Route,Switch,Link, Redirect} from 'react-router-dom';
 
 function AppFooter(props){
     return  <div className="jumbotron text-center  mt-3" >
@@ -8,6 +8,7 @@ function AppFooter(props){
 }
   
   
+
 function AppTitle(props){
     return  <div className="jumbotron text-center  mb-0 pb-3">
                 <img src="https://img.icons8.com/nolan/64/university.png" alt=""/>
@@ -70,11 +71,9 @@ function AppNavbar(props){
                         <button className="btn btn-success text-dark font-weight-bold" >Bookings</button>
                         </Link>
                     </li>
+                    
                     <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >Something</button>
-                    </li>
-                    <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >Something</button>
+                        <button className="btn btn-success text-dark font-weight-bold" onClick={ev=>props.logOut()} >LOG OUT</button>
                     </li>    
                     </ul>
                 </div>  
@@ -90,25 +89,31 @@ function AppNavbar(props){
                             <path fillRule="evenodd" d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM9.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
                         </svg>
                         </Link>
-                    </li>    
+                    </li>
+                    
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
+                    </li>     
                     </ul>
                 </div>  
                 </nav>
             </Route>
-
             <Route exact path="/teacherportal">
                 <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
                 <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">
                     <li className="nav-item pr-1">       
-                    <Link to="/teacherlogin">             
+                    <Link to="/teacherportal/notifications">             
                         <button className="btn btn-success text-dark font-weight-bold" >Notification</button>
                         </Link >
                     </li>
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
+                    </li>     
                     </ul>
                 </div>  
                 </nav>
-            </Route>          
+            </Route>     
             </Switch>
 }
 const AppComponents={AppFooter,AppTitle,AppNavbar}
