@@ -1,6 +1,7 @@
 package com.polito.bookingsystem.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.entity.NotificationProfessor;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.repository.NotificationProfessorRepository;
+import com.polito.bookingsystem.repository.NotificationStudentRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 
 @Service
@@ -25,10 +28,20 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 	@Autowired
 	ProfessorRepository professorRepository;
 
+
+	@Autowired
+	public NotificationProfessorServiceImpl(NotificationProfessorRepository notificationProfessorRepository, ProfessorRepository professorRepository) {
+		this.notificationProfessorRepository = notificationProfessorRepository;
+		this.professorRepository = professorRepository;
+	}
+	
+	
 	@Override
 	public boolean sendProfessorNotification(ProfessorDto professorDto, String description, String link) {
+		if (professorDto == null) 
+			return false;
 		Professor professor = ProfessorConverter.toEntity(professorDto);
-		if(professorRepository.findById(professorDto.getUserId()) != null) {
+		if(professorRepository.findByUserId(professorDto.getUserId()) != null) {
 			NotificationProfessor notificationProfessor= new NotificationProfessor();
 			notificationProfessor.setDate(new Date());
 			notificationProfessor.setDescription(description);
@@ -45,7 +58,9 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 
 	@Override
 	public List<NotificationProfessorDto> getProfessorNotifications(ProfessorDto professorDto) {
-		if(professorRepository.findById(professorDto.getUserId()) != null) {
+		if (professorDto == null) 
+			return new ArrayList<>();
+		if(professorRepository.findByUserId(professorDto.getUserId()) != null) {
 			List<NotificationProfessor> notificationProfessorList= notificationProfessorRepository.findByProfessor(ProfessorConverter.toEntity(professorDto));
 			
 			return NotificationProfessorConverter.toDto(notificationProfessorList);
@@ -55,7 +70,11 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 
 	@Override
 	public boolean setNotificationAsRead(NotificationProfessorDto notificationProfessorDto) {
-		if(notificationProfessorRepository.findById(notificationProfessorDto.getNotificationId()) != null) {
+		
+		if (notificationProfessorDto == null) 
+			return false;
+		
+		if(notificationProfessorRepository.findByNotificationId(notificationProfessorDto.getNotificationId()) != null) {
 			notificationProfessorDto.setStatus(true);
 			NotificationProfessor notificationProfessor = NotificationProfessorConverter.toEntity(notificationProfessorDto);
 			notificationProfessorRepository.save(notificationProfessor);
