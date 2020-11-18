@@ -20,8 +20,9 @@ async function loginStudent(username,password){
     });
     //return 's0000@studenti.polito.it';
 }
+
 async function loginTeacher(username,password){
-    let url=BASE_URL+"teacherlogin"
+    let url=BASE_URL+"professorlogin"
     return new Promise((resolve,reject)=>{
         fetch(url,{
             method: 'POST',
@@ -40,6 +41,7 @@ async function loginTeacher(username,password){
 
 }
 
+
 async function getStudentLectures(username){
     const url= BASE_URL+"studentlectures/"+username;
     const response= await fetch(url);
@@ -55,6 +57,7 @@ async function getStudentLectures(username){
         throw lects_json;
     }
 }
+
 
 async function getStudentInfo(username){
     let url=BASE_URL+"studentinfo/"+username;
@@ -91,6 +94,7 @@ async function addBooking(id,username){
     })
 }
 
+
 async function getStudentBookings(username){
     let url=BASE_URL+"studentbookings/"+username;
     const response=await fetch(url);
@@ -124,6 +128,7 @@ async function cancelBooking(id){
     })
 }
 
+
 async function getTeacherInfo(username){
         let url=BASE_URL+"teacherinfo/"+username;
         const response= await fetch(url);
@@ -133,11 +138,11 @@ async function getTeacherInfo(username){
         address:teacInfo.address,username:teacInfo.email, dateOfBirth:teacInfo.dateOfBirth}
         }else{
         throw teacInfo;
-}
+		}
 }
 
 async function getTeacherLectures(username){
-    const url= BASE_URL+"teacherlectures/"+username;
+    const url= BASE_URL+"bookings/"+username;
     const response= await fetch(url);
     const lects_json= await response.json();
     if(response.ok){

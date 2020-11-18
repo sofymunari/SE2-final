@@ -8,5 +8,6 @@ import com.polito.bookingsystem.entity.Lecture;
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture,Integer>{
    
+  Lecture findByLectureId(Integer lectureId);
   
 }
