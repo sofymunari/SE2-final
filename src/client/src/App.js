@@ -3,6 +3,7 @@ import './App.css';
 import StudentLogIn from './StudentLogIn';
 import TeacherLogIn from './TeacherLogIn';
 import StudentHomePage from './StudentHomePage';
+import TeacherHomePage from './TeacherHomePage';
 import AppComponents from './AppComponents';
 import { Switch,Route,Link,Redirect } from 'react-router-dom';
 import API from './API';
@@ -47,7 +48,7 @@ class App extends React.Component {
           <StudentHomePage student={this.state.student}/>
         </Route>
         <Route exact path="/teacherportal">
-          <h1>logged</h1>
+        <TeacherHomePage teacher={this.state.teacher}/>
         </Route>
         </Switch>
         <AppComponents.AppFooter/>

@@ -28,7 +28,11 @@ function AppTitle(props){
                       <h1>WESTERN UNIVERSITY</h1>  
                       <p>Welcome to the Home Page</p> 
                     </Route>
-                    
+                    <Route path="/teacherportal">
+                        <h1>TEACHER PORTAL</h1>
+                        <p>Welcome to the Teacher Portal Page</p>
+                    </Route>
+                 
                   </Switch>
                   
             </div>
@@ -91,6 +95,20 @@ function AppNavbar(props){
                 </div>  
                 </nav>
             </Route>
+
+            <Route exact path="/teacherportal">
+                <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
+                <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
+                    <ul className="navbar-nav text-right">
+                    <li className="nav-item pr-1">       
+                    <Link to="/teacherlogin">             
+                        <button className="btn btn-success text-dark font-weight-bold" >Notification</button>
+                        </Link >
+                    </li>
+                    </ul>
+                </div>  
+                </nav>
+            </Route>          
             </Switch>
 }
 const AppComponents={AppFooter,AppTitle,AppNavbar}

@@ -5,6 +5,10 @@ const students=[{"name":'Pippo',"surname":'Baudo','address':'via monte napoleone
 let lectures=[{"lecture_id":1,"number_of_lesson":1,"course_name": "APA","professor_name":"Luca Bartolini","remotly":'no',"date":'08/11/2020',"number_of_seat":10},
 {"lecture_id":2,"number_of_lesson":1,"course_name": "APA","professor_name":"Luca Bartolini","remotly":'no',"date":'11/23/2020',"number_of_seat":10},{"lecture_id":3,"number_of_lesson":2,"course_name": "Webb App","professor_name":"Fulvio Bisanzio","remotly":'no',"date":'08/11/2020',"number_of_seat":10}]
 let lecturesBooked=[{"booking_id":0,"lecture_id":3,"number_of_lesson":4,"course_name": "APA1","professor_name":"Luca Bartolini","remotly":'no',"date":'11/23/2020 9:00',"number_of_seat":9}]
+
+const teachers=[{"name":'Luca',"surname":'Bartolini','address':'via monte napoleone 13','date_of_birth':'27/10/1996','email':'luca@gmail.com'},{"name":'Gianni',"surname":'Ciano','address':'via monte napoleone 13','date_of_birth':'27/10/1996','email':'steven@gmail.com'}]
+
+
 async function loginStudent(username,password){
     return new Promise((resolve,reject)=>{
         if(true){
@@ -14,7 +18,11 @@ async function loginStudent(username,password){
     
 }
 async function loginTeacher(username,password){
-    return "ok";
+       return new Promise((resolve,reject)=>{
+        if(true){
+            resolve(username);
+        }
+        reject ("error")});
 }
 
 async function getStudentLectures(username){
@@ -51,5 +59,19 @@ async function cancelBooking(id,username){
     lecturesBooked=lecturesBooked.filter((booking)=>{return booking.booking_id !== id});
 }
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking}
+async function getTeacherInfo(username){
+    const teacher=teachers.filter((teac)=>{return teac.email===username})
+    return teacher.pop();
+}
+async function getTeacherLectures(username){
+    return new Promise((resolve,reject)=>{
+        const lectTrial=[];
+        if(true){
+            resolve(lectures);
+        }
+        reject ("error")});
+}
+
+
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherLectures}
 export default API;
