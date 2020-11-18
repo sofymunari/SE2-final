@@ -1,9 +1,9 @@
-
 import React from 'react';
 import RegisterDetails from './RegisterDetails';
 import API from './API.js';
 import {Route,Switch,Link} from 'react-router-dom';
 import AppComponents from './AppComponents';
+import TeacherHomePage from './TeacherHomePage'
 
 class Notification extends React.Component {
     constructor(props){
@@ -72,13 +72,13 @@ class MainPage extends React.Component{
                     <h3>COURSE_NAME</h3>
                     </div>
                     <div className="col-2">
-                    <h3>#REGISTER</h3>
-                    </div>
-                    <div className="col-2">
                     <h3>DATE</h3>
                     </div>
                     <div className="col-2">
                     <h3>REMOTLY</h3>
+                    </div>
+                    <div className="col-2">
+                    <h3>#REGISTER</h3>
                     </div>
                     </div>
                     </li>
@@ -94,20 +94,19 @@ function LectureItem (props){
             <div className="col-2">
             <h4>{props.lecture.course_name}</h4>
             </div>
-            <div className="col-2">
-            <h4>     
-            {props.lecture.number_of_lesson}</h4>
-            </div>
+
             <div className="col-2">
             <h4>{props.lecture.date}</h4>
             </div>
             <div className="col-2">
             <h4>{props.lecture.remotly }</h4>
             </div>
+            <div className="col-2">
+            <h4>     
+            {props.lecture.number_of_lesson}</h4>
+            </div>
         </div>
         </li>       
         )
 }
-
-
 export default Notification;
