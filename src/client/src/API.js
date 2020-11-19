@@ -142,7 +142,7 @@ async function getTeacherInfo(username){
 }
 
 async function getTeacherLectures(username){
-    const url= BASE_URL+"bookings/"+username;
+    const url= BASE_URL+"professorbookings/"+username;
     const response= await fetch(url);
     const lects_json= await response.json();
     if(response.ok){

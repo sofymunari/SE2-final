@@ -40,8 +40,8 @@ class StudentLogin extends React.Component {
                     </div>
                     <div className="col">
                         <label htmlFor="form_project">Password</label>
-                        <input type="text" className="form-control input-lg" name="password" 
-                            placeholder="Type your password for the task..." id="form_project"
+                        <input type="password" className="form-control input-lg" name="password" 
+                            placeholder="Type your password..." id="form_project"
                             value = {this.state.password}
                             onChange={(ev) => this.updateField(ev.target.name, ev.target.value)}/>
                     </div>

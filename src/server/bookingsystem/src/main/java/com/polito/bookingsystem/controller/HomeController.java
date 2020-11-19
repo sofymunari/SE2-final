@@ -115,7 +115,7 @@ public class HomeController {
 	}
 
 	
-	@RequestMapping(value= "bookings/{email}", method= RequestMethod.GET)
+	@RequestMapping(value= "professorbookings/{email}", method= RequestMethod.GET)
 	public List<BookingEntry> getBooking(@PathVariable String email) {
 			return bookingService.getBooking(email);
 	}
