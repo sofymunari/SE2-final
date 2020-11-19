@@ -47,6 +47,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public void sendEmail(StudentDto studentDto, String subject, String text) {
+		try {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(studentDto.getEmail());
 
@@ -54,6 +55,9 @@ public class StudentServiceImpl implements StudentService {
         msg.setText(text);
 
         javaMailSender.send(msg);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
     
