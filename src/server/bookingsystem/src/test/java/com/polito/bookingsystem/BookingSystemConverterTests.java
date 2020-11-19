@@ -349,7 +349,7 @@ class BookingSystemConverterTests {
 	@Test
 	void testToNotificationDto2() throws ParseException {
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		Notification notification = new Notification(1, "testDescription", date);
+		Notification notification = new Notification(1, "testDescription", date,false,"link");
 		NotificationDto notificationDto = null;
 		
 		notificationDto = NotificationConverter.toDto(notification);
@@ -357,6 +357,7 @@ class BookingSystemConverterTests {
 		assertEquals(notification.getNotificationId(), notificationDto.getNotificationId());
 		assertEquals(notification.getDescription(), notificationDto.getDescription());
 		assertEquals(notification.getDate(), notificationDto.getDate());
+		//add assert equals for status and link
 	
 
 	}
@@ -376,14 +377,14 @@ class BookingSystemConverterTests {
 	void testToNotification2() throws ParseException {
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Notification notification = null;
-		NotificationDto notificationDto = new NotificationDto(1, "testDescription", date);
+		NotificationDto notificationDto = new NotificationDto(1, "testDescription", date,false,"link");
 		
 		notification = NotificationConverter.toEntity(notificationDto);
 		
 		assertEquals(notification.getNotificationId(), notificationDto.getNotificationId());
 		assertEquals(notification.getDescription(), notificationDto.getDescription());
 		assertEquals(notification.getDate(), notificationDto.getDate());
-	
+		//add assert equals for status and link
 	
 	}
 	

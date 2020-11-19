@@ -50,19 +50,19 @@ class BookingsystemEntityTests {
 	
 	public Notification createNotificationTestSuite() throws ParseException {
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		return new Notification(11, "this is a test description", d);
+		return new Notification(11, "this is a test description", d,false,"link");
 	}
 
 	public NotificationProfessor createNotificationProfessorTestSuite() throws ParseException {
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Professor professor = createProfessorTestSuite();
-		return new NotificationProfessor(11, "this is a test description", d, professor);
+		return new NotificationProfessor(11, "this is a test description", d, professor,false,"link");
 	}
 	
 	public NotificationStudent createNotificationStudentTestSuite() throws ParseException {
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Student student = createStudentTestSuite();
-		return new NotificationStudent(11, "this is a test description", d, student);
+		return new NotificationStudent(11, "this is a test description", d, student,false,"link");
 	}
 	
 	public Lecture createLectureTestSuite() throws ParseException {

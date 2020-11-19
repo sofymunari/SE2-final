@@ -157,7 +157,7 @@ async function getTeacherLectures(username){
 }
 
 async function getTeacherNotifications(username){
-    const url= BASE_URL+"teacher/notification/list/"+username;
+    const url= BASE_URL+"professor/notification/list/"+username;
     const response= await fetch(url);
     const notifications_json= await response.json();
     if(response.ok){

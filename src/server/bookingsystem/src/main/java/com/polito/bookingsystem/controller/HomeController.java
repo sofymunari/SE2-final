@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,15 +17,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.LectureService;
+import com.polito.bookingsystem.service.NotificationProfessorService;
+import com.polito.bookingsystem.service.NotificationStudentService;
 import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 
@@ -44,6 +48,12 @@ public class HomeController {
 	@Autowired
 	ProfessorService professorService;
 	
+	@Autowired
+	NotificationStudentService notificationStudentService;
+	
+	
+	@Autowired
+	NotificationProfessorService notificationProfessorService;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String test() {
@@ -114,5 +124,6 @@ public class HomeController {
 	public ProfessorDto getProfessorInfo(@PathVariable String email) {
         return professorService.getProfessor(email);
 	}
-    
+	
+	
 }
