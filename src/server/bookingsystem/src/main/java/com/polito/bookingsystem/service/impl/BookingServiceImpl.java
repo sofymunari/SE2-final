@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.BookingConverter;
+import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
@@ -16,6 +17,7 @@ import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.BookingService;
+import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 
@@ -30,6 +32,10 @@ public class BookingServiceImpl implements BookingService{
 	
 	@Autowired
 	private LectureRepository lectureRepository;
+	
+	@Autowired
+	private StudentService studentService;
+	
 	
 	@Autowired
 	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository)
@@ -90,6 +96,9 @@ public class BookingServiceImpl implements BookingService{
 			booking.setBookingInfo(BookingInfo.WAITING);
 		}
 		bookingRepository.save(booking);
+		String text = "Dear "+student.getName()+" your booking for lecture "+lecture.getCourse().getName()+" has been confirmed";
+		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
+		
 		return BookingConverter.toDto(booking);		             
 	}
 
