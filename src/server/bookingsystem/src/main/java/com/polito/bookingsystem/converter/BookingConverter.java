@@ -8,6 +8,8 @@ import com.polito.bookingsystem.utils.BookingInfo;
 public class BookingConverter {
 	
 	public static Booking toEntity(BookingDto bookingDto) {
+		if( bookingDto == null)
+			return null;
 		Booking booking = new Booking();
 		booking.setBookingId(bookingDto.getBookingId());
 		booking.setBookingInfo(bookingDto.getBookingInfo());
@@ -18,6 +20,8 @@ public class BookingConverter {
 	}
 	
     public static BookingDto toDto(Booking booking) {
+		if( booking == null)
+			return null;
 		BookingDto bookingDto = new BookingDto();
 		bookingDto.setBookingId(booking.getBookingId());
 		bookingDto.setBookingInfo(booking.getBookingInfo());

@@ -343,7 +343,7 @@ class BookingServiceTest {
 		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking1);
 		when(bookingRepository.save(anyObject())).thenReturn(null);
 
-		assertTrue(bookingServiceImpl.deleteBooking(null), "Expected true");
+		assertTrue( "Expected true", bookingServiceImpl.deleteBooking(null));
 	}
 	
 	
@@ -380,7 +380,7 @@ class BookingServiceTest {
 		
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 
-		assertNull(bookingServiceImpl.addBooking(1, "test@email.com"), "Expected a null value to be returned");
+		assertNull( "Expected a null value to be returned", bookingServiceImpl.addBooking(1, "test@email.com"));
 	}
 	
 	@Test
@@ -400,7 +400,7 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(null);
 		
-		assertNull(bookingServiceImpl.addBooking(1, "wrong@email.com"), "Expected a null value returned as booking");
+		assertNull("Expected a null value returned as booking", bookingServiceImpl.addBooking(1, "wrong@email.com"));
 	}
 	
 	@Test
@@ -420,7 +420,7 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(null);
 		
-		assertNull(bookingServiceImpl.addBooking(1, null), "Expected a null value to be returned as booking");
+		assertNull( "Expected a null value to be returned as booking", bookingServiceImpl.addBooking(1, null));
 	}
 
 	
@@ -456,7 +456,7 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
 
-		assertTrue(bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.WAITING, "Expected a booking with booking info equal to Waiting");
+		assertTrue( "Expected a booking with booking info equal to Waiting", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.WAITING);
 	}
 	
 	@Test
@@ -495,7 +495,7 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
 
-		assertTrue(bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.ATTENDED, "Expected a booking with booking info equal to Attended");
+		assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.ATTENDED);
 	}
 	
 	
@@ -504,7 +504,7 @@ class BookingServiceTest {
 		//passing an invalid id	
 		//when(bookingRepository.findByProfessor(anyInt())).thenReturn(new ArrayList<BookingEntry>());
 
-		assertTrue(bookingServiceImpl.getBooking("").size() == 0, "Expected an empty list to be returned");
+		assertTrue("Expected an empty list to be returned", bookingServiceImpl.getBooking("").size() == 0);
 	}
 	
 

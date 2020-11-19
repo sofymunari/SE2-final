@@ -357,7 +357,8 @@ class BookingSystemConverterTests {
 		assertEquals(notification.getNotificationId(), notificationDto.getNotificationId());
 		assertEquals(notification.getDescription(), notificationDto.getDescription());
 		assertEquals(notification.getDate(), notificationDto.getDate());
-		//add assert equals for status and link
+		assertEquals(notification.getLink(), notificationDto.getLink());
+		assertEquals(notification.getStatus(), notificationDto.getStatus());
 	
 
 	}
@@ -384,10 +385,149 @@ class BookingSystemConverterTests {
 		assertEquals(notification.getNotificationId(), notificationDto.getNotificationId());
 		assertEquals(notification.getDescription(), notificationDto.getDescription());
 		assertEquals(notification.getDate(), notificationDto.getDate());
-		//add assert equals for status and link
+		assertEquals(notification.getLink(), notificationDto.getLink());
+		assertEquals(notification.getStatus(), notificationDto.getStatus());	
+	}
+	
+	/*
+	 * 
+	 NOTIFICATIONPROFESSOR_CONVERTER
+	 * 
+	 */
+	
+	
+	@Test
+	void testToNotificatioProfessorDto1() {
+		NotificationProfessor notificationProfessor = null;
+		NotificationProfessorDto notificationProfessorDto = null;
+		
+		notificationProfessorDto = NotificationProfessorConverter.toDto(notificationProfessor);
+		
+		assertNull(notificationProfessorDto);
+	}
+	
+	@Test
+	void testToNotificationProfessorDto2() throws ParseException {
+		Course c = new Course(11, "testCourse", "This is a test course");
+		List<Course> courses = new ArrayList<>();
+		courses.add(c);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		NotificationProfessor notificationProfessor = new NotificationProfessor(1, "testDescription", date, professor, false, "link");
+		NotificationProfessorDto notificationProfessorDto = null;
+		
+		notificationProfessorDto = NotificationProfessorConverter.toDto(notificationProfessor);
+		
+		assertEquals(notificationProfessor.getNotificationId(), notificationProfessorDto.getNotificationId());
+		assertEquals(notificationProfessor.getDescription(), notificationProfessorDto.getDescription());
+		assertEquals(notificationProfessor.getDate(), notificationProfessorDto.getDate());
+		assertEquals(notificationProfessor.getLink(), notificationProfessorDto.getLink());
+		assertEquals(notificationProfessor.getStatus(), notificationProfessorDto.getStatus());
+	
+
+	}
+	
+	@Test
+	void testToNotificationProfessor1()  {
+		NotificationProfessor notificationProfessor = null;
+		NotificationProfessorDto notificationProfessorDto = null;
+
+		notificationProfessor = NotificationProfessorConverter.toEntity(notificationProfessorDto);
+		
+		assertNull(notificationProfessor);
+	}
+	
+	@Test
+	void testToNotificationProfessor2() throws ParseException {
+		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		List<CourseDto> courses = new ArrayList<>();
+		courses.add(c);
+
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		NotificationProfessor notificationProfessor = null;
+		NotificationProfessorDto notificationProfessorDto = new NotificationProfessorDto(1, "testDescription", date, professorDto, false,"link");
+		
+		notificationProfessor = NotificationProfessorConverter.toEntity(notificationProfessorDto);
+		
+		assertEquals(notificationProfessor.getNotificationId(), notificationProfessorDto.getNotificationId());
+		assertEquals(notificationProfessor.getDescription(), notificationProfessorDto.getDescription());
+		assertEquals(notificationProfessor.getDate(), notificationProfessorDto.getDate());
+		assertEquals(notificationProfessor.getLink(), notificationProfessorDto.getLink());
+		assertEquals(notificationProfessor.getStatus(), notificationProfessorDto.getStatus());
 	
 	}
 	
+	/*
+	 * 
+	 NOTIFICATION_CONVERTER
+	 * 
+	 */
+	
+	
+	@Test
+	void testToNotificatioStudentDto1() {
+		NotificationStudent notificationStudent = null;
+		NotificationStudentDto notificationStudentDto = null;
+		
+		notificationStudentDto = NotificationStudentConverter.toDto(notificationStudent);
+		
+		assertNull(notificationStudentDto);
+	}
+	
+	@Test
+	void testToNotificationStudentDto2() throws ParseException {
+		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		Course c = new Course(11, "testCourse", "This is a test course");
+		List<Course> courses = new ArrayList<>();
+		courses.add(c);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		
+		NotificationStudent notificationStudent = new NotificationStudent(1, "testDescription", date, student, false,"link");
+		NotificationStudentDto notificationStudentDto = null;
+		
+		notificationStudentDto = NotificationStudentConverter.toDto(notificationStudent);
+		
+		assertEquals(notificationStudent.getNotificationId(), notificationStudentDto.getNotificationId());
+		assertEquals(notificationStudent.getDescription(), notificationStudentDto.getDescription());
+		assertEquals(notificationStudent.getDate(), notificationStudentDto.getDate());
+		assertEquals(notificationStudent.getLink(), notificationStudentDto.getLink());
+		assertEquals(notificationStudent.getStatus(), notificationStudentDto.getStatus());
+	
+
+	}
+	
+	@Test
+	void testToNotificationStudent1()  {
+		NotificationStudent notificationStudent = null;
+		NotificationStudentDto notificationStudentDto = null;
+	
+		
+		notificationStudent = NotificationStudentConverter.toEntity(notificationStudentDto);
+		
+		assertNull(notificationStudent);
+	}
+	
+	@Test
+	void testToNotificationStudent2() throws ParseException {
+		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		List<CourseDto> courses = new ArrayList<>();
+		courses.add(c);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		
+		NotificationStudent notificationStudent = null;
+		NotificationStudentDto notificationStudentDto = new NotificationStudentDto(1, "testDescription", date, studentDto, false,"link");
+		
+		notificationStudent = NotificationStudentConverter.toEntity(notificationStudentDto);
+		
+		assertEquals(notificationStudent.getNotificationId(), notificationStudentDto.getNotificationId());
+		assertEquals(notificationStudent.getDescription(), notificationStudentDto.getDescription());
+		assertEquals(notificationStudent.getDate(), notificationStudentDto.getDate());
+		assertEquals(notificationStudent.getLink(), notificationStudentDto.getLink());
+		assertEquals(notificationStudent.getStatus(), notificationStudentDto.getStatus());	
+	}
+
 	
 	/*
 	 * 

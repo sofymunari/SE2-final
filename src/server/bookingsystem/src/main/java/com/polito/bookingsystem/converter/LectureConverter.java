@@ -6,6 +6,8 @@ import com.polito.bookingsystem.entity.Lecture;
 public class LectureConverter {
 
     public static Lecture toEntity(LectureDto lectureDto) {
+		if( lectureDto == null)
+			return null;
     	Lecture lecture = new Lecture();
 		lecture.setCourse(CourseConverter.toEntity(lectureDto.getCourseDto()));
 		lecture.setDate(lectureDto.getDate());
@@ -20,6 +22,8 @@ public class LectureConverter {
 	}
 	
 	public static LectureDto toDto(Lecture lecture) {
+		if( lecture == null)
+			return null;
 		LectureDto lectureDto = new LectureDto();
 		lectureDto.setCourseDto(CourseConverter.toDto(lecture.getCourse()));
 		lectureDto.setDate(lecture.getDate());
