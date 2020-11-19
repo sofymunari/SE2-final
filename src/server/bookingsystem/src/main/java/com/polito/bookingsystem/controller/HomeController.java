@@ -57,6 +57,10 @@ public class HomeController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String test() {
+		
+		//StudentDto studentDto = studentService.getStudent("tony.y.saliba00@gmail.com");
+		bookingService.addBooking(0, "tony.y.saliba00@gmail.com");
+		
 		return "test";
 	}
 	

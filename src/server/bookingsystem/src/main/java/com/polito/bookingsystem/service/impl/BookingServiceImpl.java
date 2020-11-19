@@ -106,7 +106,7 @@ public class BookingServiceImpl implements BookingService{
 		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
 		
 		Professor professor = lecture.getProfessor();
-		String description = "You now have "+ (bookingRepository.findByLecture(lecture)).size() + "for lecture "+lecture.getCourse().getName();
+		String description = "You now have "+ (bookingRepository.findByLecture(lecture)).size() + " student(s) for lecture "+lecture.getCourse().getName();
 		notificationProfessorService.sendProfessorNotification(ProfessorConverter.toDto(professor), description, "");
 		
 		return BookingConverter.toDto(booking);		             
