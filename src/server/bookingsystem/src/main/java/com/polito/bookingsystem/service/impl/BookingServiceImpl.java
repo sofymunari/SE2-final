@@ -7,16 +7,19 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.BookingConverter;
+import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
+import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.BookingService;
+import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
 
@@ -35,6 +38,9 @@ public class BookingServiceImpl implements BookingService{
 	
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private NotificationProfessorService notificationProfessorService;
 	
 	
 	@Autowired
@@ -98,6 +104,10 @@ public class BookingServiceImpl implements BookingService{
 		bookingRepository.save(booking);
 		String text = "Dear "+student.getName()+" your booking for lecture "+lecture.getCourse().getName()+" has been confirmed";
 		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
+		
+		Professor professor = lecture.getProfessor();
+		String description = "You now have "+ (bookingRepository.findByLecture(lecture)).size() + "for lecture "+lecture.getCourse().getName();
+		notificationProfessorService.sendProfessorNotification(ProfessorConverter.toDto(professor), description, "");
 		
 		return BookingConverter.toDto(booking);		             
 	}
