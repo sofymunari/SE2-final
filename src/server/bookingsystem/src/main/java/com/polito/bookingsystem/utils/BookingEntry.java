@@ -1,4 +1,4 @@
-package com.polito.bookingsystem.repository;
+package com.polito.bookingsystem.utils;
 
 import java.util.Date;
 

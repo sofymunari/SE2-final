@@ -81,7 +81,7 @@ class BookingsystemEntityTests {
 	public Booking createBookingTestSuite() throws ParseException {
 		Student student = createStudentTestSuite();
 		Lecture lecture = createLectureTestSuite();
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		return new Booking(11, student, lecture, bookingInfo);
 	}
 	
@@ -775,7 +775,7 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testGetBookingInfo() throws ParseException {
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		Booking booking = null;
 		booking = createBookingTestSuite();
 		assertTrue("booking info is wrong",booking.getBookingInfo() == bookingInfo);

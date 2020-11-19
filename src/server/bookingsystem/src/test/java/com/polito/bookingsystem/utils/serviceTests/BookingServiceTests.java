@@ -26,13 +26,13 @@ import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
-import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
+import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 @RunWith(SpringRunner.class)
@@ -441,7 +441,7 @@ class BookingServiceTest {
 		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1);
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails", room1);
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
 		Booking booking2 = new Booking(2, student2, lecture1, bookingInfo);
 		Booking booking3 = new Booking(3, student3, lecture1, bookingInfo);
@@ -477,7 +477,7 @@ class BookingServiceTest {
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
 		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		BookingInfo bookingDeleted = BookingInfo.CANCELED_BY_STUD;
 		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
 		Booking booking2 = new Booking(2, student2, lecture1, bookingInfo);
@@ -495,7 +495,7 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
 
-		assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.ATTENDED);
+		assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.BOOKED);
 	}
 	
 	

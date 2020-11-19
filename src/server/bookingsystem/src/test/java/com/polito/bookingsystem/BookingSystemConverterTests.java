@@ -799,7 +799,7 @@ class BookingSystemConverterTests {
 		courses.add(course);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
 		Room room = new Room(1, "testName", 100); 
 		Lecture lecture = new Lecture(1, 10, course, professor, true, date, 90, "testDetails", room);
@@ -834,7 +834,7 @@ class BookingSystemConverterTests {
 		courses.add(courseDto);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
-		BookingInfo bookingInfo = BookingInfo.ATTENDED;
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
 		RoomDto roomDto = new RoomDto(1, "testName", 100); 
 		LectureDto lectureDto = new LectureDto(1, 10, courseDto, professorDto, true, date, 90, "testDetails", roomDto);

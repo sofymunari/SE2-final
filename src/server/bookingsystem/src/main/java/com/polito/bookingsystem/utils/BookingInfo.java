@@ -1,7 +1,7 @@
 package com.polito.bookingsystem.utils;
 
 public enum BookingInfo{
-    ATTENDED,
+    BOOKED,
     CANCELED_BY_PROF,
     CANCELED_BY_STUD,
     WAITING

@@ -24,13 +24,13 @@ import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
-import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.LectureService;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.NotificationStudentService;
 import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.utils.BookingEntry;
 
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController

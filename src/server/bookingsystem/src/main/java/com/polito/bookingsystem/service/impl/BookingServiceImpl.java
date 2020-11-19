@@ -14,13 +14,13 @@ import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
-import com.polito.bookingsystem.repository.BookingEntry;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 
@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService{
 		
 		Integer numSeatAvaiable = lecture.getRoom().getNumberOfSeat();
 		List<Booking> listBookingLectureAttended = bookingRepository.findAll().stream()
-				.filter(b->b.getLecture().getLectureId()== lectureId && b.getBookingInfo() == BookingInfo.ATTENDED)
+				.filter(b->b.getLecture().getLectureId()== lectureId && b.getBookingInfo() == BookingInfo.BOOKED)
 				.collect(Collectors.toList());
 		
 		Integer numBookingLecture = listBookingLectureAttended.size();
@@ -96,7 +96,7 @@ public class BookingServiceImpl implements BookingService{
 		booking.setLecture(lecture);
 		booking.setStudent(student);
 		if(numBookingLecture < numSeatAvaiable) {
-			booking.setBookingInfo(BookingInfo.ATTENDED);
+			booking.setBookingInfo(BookingInfo.BOOKED);
 		}
 		else {
 			booking.setBookingInfo(BookingInfo.WAITING);

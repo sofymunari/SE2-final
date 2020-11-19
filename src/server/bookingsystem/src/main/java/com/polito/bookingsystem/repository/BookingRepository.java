@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
+import com.polito.bookingsystem.utils.BookingEntry;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Integer>{
