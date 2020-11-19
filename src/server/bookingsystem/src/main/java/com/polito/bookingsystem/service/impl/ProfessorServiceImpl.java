@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
+import com.polito.bookingsystem.converter.ProfessorConverter;
+import com.polito.bookingsystem.converter.StudentConverter;
+import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
 
@@ -61,4 +64,5 @@ public class ProfessorServiceImpl implements ProfessorService {
 		   return ProfessorConverter.toDto(professor);
 		return null;
 	}
+
 }

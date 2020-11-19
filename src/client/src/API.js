@@ -58,7 +58,6 @@ async function getStudentLectures(username){
     }
 }
 
-
 async function getStudentInfo(username){
     let url=BASE_URL+"studentinfo/"+username;
     const response= await fetch(url);
@@ -130,12 +129,13 @@ async function cancelBooking(id){
 
 
 async function getTeacherInfo(username){
-        let url=BASE_URL+"teacherinfo/"+username;
+        
+        let url=BASE_URL+"professorinfo/"+username;
         const response= await fetch(url);
         const teacInfo=await response.json();
         if(response.ok){
-        return {userId:teacInfo.userId,name:teacInfo.name, surname:teacInfo.surname,
-        address:teacInfo.address,username:teacInfo.email, dateOfBirth:teacInfo.dateOfBirth}
+            return {userId:teacInfo.userId,name:teacInfo.name, surname:teacInfo.surname,
+            address:teacInfo.address,username:teacInfo.email}
         }else{
         throw teacInfo;
 		}
@@ -147,16 +147,28 @@ async function getTeacherLectures(username){
     const lects_json= await response.json();
     if(response.ok){
         return lects_json.map((l)=>{
-            return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
-            professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
-            email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}}
+            return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
+            course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
+            lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
         })
     }else{
         throw lects_json;
     }
 }
 
+async function getTeacherNotifications(username){
+    const url= BASE_URL+"teacher/notification/list/"+username;
+    const response= await fetch(url);
+    const notifications_json= await response.json();
+    if(response.ok){
+        return notifications_json.map((n)=>{
+            return {notificationId:n.notificationId,description:n.description,date:n.date,status:n.status,link:n.link}
+        })
+    }else{
+        throw notifications_json;
+    }
+}
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherLectures}
+
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherLectures,getTeacherNotifications}
 export default API;
