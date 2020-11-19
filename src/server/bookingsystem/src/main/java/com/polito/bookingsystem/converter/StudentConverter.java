@@ -12,6 +12,8 @@ import com.polito.bookingsystem.entity.Student;
 public class StudentConverter extends UserConverter{
 	
 	public static Student toEntity(StudentDto studentDto) {
+		if( studentDto == null)
+			return null;
 		Student student = new Student();
 		student.setAddress(studentDto.getAddress());
 		student.setDateOfBirth(studentDto.getDateOfBirth());
@@ -29,6 +31,8 @@ public class StudentConverter extends UserConverter{
 	}
 	
 	public static StudentDto toDto(Student student) {
+		if( student == null)
+			return null;
 		StudentDto studentDto = new StudentDto();
 		studentDto.setAddress(student.getAddress());
 		studentDto.setDateOfBirth(student.getDateOfBirth());

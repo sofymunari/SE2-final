@@ -6,6 +6,8 @@ import com.polito.bookingsystem.entity.Manager;
 public class ManagerConverter extends UserConverter {
 
 	public static Manager toEntity(ManagerDto managerDto) {
+		if( managerDto == null)
+			return null;
 		Manager manager = new Manager();
 		manager.setAddress(managerDto.getAddress());
 		manager.setEmail(managerDto.getEmail());
@@ -17,6 +19,8 @@ public class ManagerConverter extends UserConverter {
 	}
 	
 	public static ManagerDto toDto(Manager manager) {
+		if( manager == null)
+			return null;
 		ManagerDto managerDto = new ManagerDto();
 		managerDto.setAddress(manager.getAddress());
 		managerDto.setEmail(manager.getEmail());

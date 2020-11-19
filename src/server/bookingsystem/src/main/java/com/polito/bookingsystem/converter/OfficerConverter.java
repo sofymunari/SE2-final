@@ -7,6 +7,8 @@ import com.polito.bookingsystem.entity.Officer;
 public class OfficerConverter extends UserConverter{
 
 	public static Officer toEntity(OfficerDto officerDto) {
+		if( officerDto == null)
+			return null;
 		Officer officer = new Officer();
 		officer.setAddress(officerDto.getAddress());
 		officer.setEmail(officerDto.getEmail());
@@ -18,6 +20,8 @@ public class OfficerConverter extends UserConverter{
 	}
 	
 	public static OfficerDto toDto(Officer officer) {
+		if( officer == null)
+			return null;
 		OfficerDto officerDto = new OfficerDto();
 		officerDto.setAddress(officer.getAddress());
 		officerDto.setEmail(officer.getEmail());

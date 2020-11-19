@@ -1,7 +1,6 @@
 package com.polito.bookingsystem.utils.serviceTests;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -70,7 +69,7 @@ class NotificationProfessorServiceTest {
 		
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		
-		assertFalse(notificationProfessorServiceImpl.sendProfessorNotification(null,  "testDescription", "testLink"), "Expected false, null professor");
+		assertFalse( "Expected false, null professor", notificationProfessorServiceImpl.sendProfessorNotification(null,  "testDescription", "testLink"));
 
 	}
 
@@ -99,7 +98,7 @@ class NotificationProfessorServiceTest {
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		when(notificationProfessorRepository.save(anyObject())).thenReturn(notificationProfessor);
 		
-		assertTrue(notificationProfessorServiceImpl.sendProfessorNotification(professorDto1,  "testDescription", "testLink"), "Expected true, valid professor");
+		assertTrue("Expected true, valid professor", notificationProfessorServiceImpl.sendProfessorNotification(professorDto1,  "testDescription", "testLink"));
 
 	}
 	
@@ -107,7 +106,7 @@ class NotificationProfessorServiceTest {
 	void testGetProfessorNotifications1() throws ParseException {
 		//passing null professorDto
 				
-		assertTrue(notificationProfessorServiceImpl.getProfessorNotifications(null).isEmpty(), "Expected an empty list");
+		assertTrue("Expected an empty list", notificationProfessorServiceImpl.getProfessorNotifications(null).isEmpty());
 
 	}
 	
@@ -143,7 +142,7 @@ class NotificationProfessorServiceTest {
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		when(notificationProfessorRepository.findByProfessor(anyObject())).thenReturn(list);
 				
-		assertTrue(notificationProfessorServiceImpl.getProfessorNotifications(professorDto1).size() == 2, "Expected a list with 2 elements");
+		assertTrue("Expected a list with 2 elements", notificationProfessorServiceImpl.getProfessorNotifications(professorDto1).size() == 2);
 
 	}
 	
@@ -151,7 +150,7 @@ class NotificationProfessorServiceTest {
 	void testSetNotificationAsRead1() {
 		//passing null NotificationProfessortDto
 		
-		assertFalse(notificationProfessorServiceImpl.setNotificationAsRead(null), "Expected false, null parameter");
+		assertFalse("Expected false, null parameter", notificationProfessorServiceImpl.setNotificationAsRead(null));
 	}
 	
 	@Test
@@ -184,7 +183,7 @@ class NotificationProfessorServiceTest {
 		when(notificationProfessorRepository.findByNotificationId(anyInt())).thenReturn(notificationProfessor);
 		when(notificationProfessorRepository.save(anyObject())).thenReturn(null);
 		
-		assertTrue(notificationProfessorServiceImpl.setNotificationAsRead(notificationProfessorDto), "Expected true");
+		assertTrue("Expected true", notificationProfessorServiceImpl.setNotificationAsRead(notificationProfessorDto));
 	}
 	
 }

@@ -6,6 +6,8 @@ import com.polito.bookingsystem.entity.User;
 public class UserConverter {
 	
 	public static User toEntity(UserDto userDto) {
+		if( userDto == null)
+			return null;
 		User user = new User();
 		user.setUserId(userDto.getUserId());
 		user.setAddress(userDto.getAddress());
@@ -17,6 +19,8 @@ public class UserConverter {
 	}
 	
     public static UserDto toDto(User user) {
+		if( user == null)
+			return null;
     	UserDto userDto = new UserDto();
     	userDto.setUserId(user.getUserId());
     	userDto.setAddress(user.getAddress());

@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.utils.serviceTests;
 
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -65,7 +66,7 @@ class NotificationStudentServiceTest {
 		
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		
-		assertFalse(notificationStudentServiceImpl.sendStudentNotification(null,  "testDescription", "testLink"), "Expected false, null student");
+		assertFalse("Expected false, null student", notificationStudentServiceImpl.sendStudentNotification(null,  "testDescription", "testLink"));
 
 	}
 
@@ -96,7 +97,7 @@ class NotificationStudentServiceTest {
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		when(notificationStudentRepository.save(anyObject())).thenReturn(notificationStudent);
 		
-		assertTrue(notificationStudentServiceImpl.sendStudentNotification(studentDto1,  "testDescription", "testLink"), "Expected true, valid student");
+		assertTrue( "Expected true, valid student", notificationStudentServiceImpl.sendStudentNotification(studentDto1,  "testDescription", "testLink"));
 
 	}
 	
@@ -141,7 +142,7 @@ class NotificationStudentServiceTest {
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		when(notificationStudentRepository.findByStudent(anyObject())).thenReturn(list);
 				
-		assertTrue(notificationStudentServiceImpl.getStudentNotifications(studentDto1).size() == 2, "Expected a list with 2 elements");
+		assertTrue("Expected a list with 2 elements", notificationStudentServiceImpl.getStudentNotifications(studentDto1).size() == 2);
 
 	}
 	
@@ -150,7 +151,7 @@ class NotificationStudentServiceTest {
 		//passing null NotificationStudentDto
 		
 		
-		assertFalse(notificationStudentServiceImpl.setNotificationAsRead(null), "Expected false, null parameter");
+		assertFalse( "Expected false, null parameter", notificationStudentServiceImpl.setNotificationAsRead(null));
 	}
 	
 	@Test
@@ -183,7 +184,7 @@ class NotificationStudentServiceTest {
 		when(notificationStudentRepository.findByNotificationId(anyInt())).thenReturn(notificationStudent);
 		when(notificationStudentRepository.save(anyObject())).thenReturn(null);
 		
-		assertTrue(notificationStudentServiceImpl.setNotificationAsRead(notificationStudentDto), "Expected true");
+		assertTrue("Expected true", notificationStudentServiceImpl.setNotificationAsRead(notificationStudentDto));
 	}
 	
 		

@@ -12,6 +12,10 @@ import com.polito.bookingsystem.entity.Professor;
 public class ProfessorConverter extends UserConverter{
 	
 	public static Professor toEntity(ProfessorDto professorDto) {
+	
+		if (professorDto == null)
+			return null;
+		
 		Professor professor = new Professor();
 		professor.setAddress(professorDto.getAddress());
 		professor.setEmail(professorDto.getEmail());
@@ -28,6 +32,9 @@ public class ProfessorConverter extends UserConverter{
 	}
 	
 	public static ProfessorDto toDto(Professor professor) {
+		if (professor == null)
+			return null;
+		
 		ProfessorDto professorDto = new ProfessorDto();
 		professorDto.setAddress(professor.getAddress());
 		professorDto.setEmail(professor.getEmail());
