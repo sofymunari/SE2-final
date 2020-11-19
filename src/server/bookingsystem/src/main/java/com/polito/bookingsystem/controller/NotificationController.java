@@ -55,7 +55,7 @@ public class NotificationController {
 
 
 
-	 @GetMapping("/professor/notification/list/{professorId}")
+	 @GetMapping("/professor/notification/list/{email}")
 	 public List<NotificationProfessorDto> getProfessorNotifications(@PathVariable String email) {
 	
 		ProfessorDto professorDto = professorService.getProfessor(email);

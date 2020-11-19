@@ -3,7 +3,7 @@ INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) V
 INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (2,'Fiorentino', 'Cairone', 'Corso Re Umberto 39', '1994-08-27', 's0002@studenti.polito.it', 'password');
 INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (3,'Peng', 'Cao', 'Corso Stati Uniti 1', '1995-01-08', 's0003@studenti.polito.it', 'password');
 INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (4,'Silvio', 'Girolami', 'Via Roma 38', '1997-10-30', 's0004@studenti.polito.it', 'password');
-INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (5,'Tony', 'Saliba', 'Corso Galileo Ferraris 19', '1995-04-01', 's0005@studenti.polito.it', 'password');
+INSERT INTO STUDENT(USER_ID,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (5,'Tony', 'Saliba', 'Corso Galileo Ferraris 19', '1995-04-01', 'tony.y.saliba00@gmail.com', 'password');
 
 
 INSERT INTO PROFESSOR(USER_ID,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'Marco', 'Torchiano', 'Corso Duca degli Abruzzi 8', 'p0000@polito.it', 'password');
