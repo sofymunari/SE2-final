@@ -1,6 +1,8 @@
 package com.polito.bookingsystem.service.impl;
 
 
+import com.polito.bookingsystem.converter.ProfessorConverter;
+import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.service.ProfessorService;
 
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.entity.Professor;
+import com.polito.bookingsystem.entity.Student;
 
 @Service
 public class ProfessorServiceImpl implements ProfessorService {
@@ -49,4 +52,13 @@ public class ProfessorServiceImpl implements ProfessorService {
 
         javaMailSender.send(msg);
     }
+
+
+	@Override
+	public ProfessorDto getProfessor(String email) {
+		Professor professor= professorRepository.findByEmail(email);
+		if(professor != null)
+		   return ProfessorConverter.toDto(professor);
+		return null;
+	}
 }

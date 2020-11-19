@@ -43,7 +43,7 @@ public class NotificationController {
 	 @GetMapping("/student/notification/list/{studentId}")
 	 public List<NotificationStudentDto> getStudentNotifications(@PathVariable String email) {
 	
-		 StudentDto studentDto = studentService.getStudentByEmail(email);
+		 StudentDto studentDto = studentService.getStudent(email);
 		 return (List<NotificationStudentDto>) notificationStudentService.getStudentNotifications(studentDto);
 	 }
 	 
@@ -58,7 +58,7 @@ public class NotificationController {
 	 @GetMapping("/professor/notification/list/{professorId}")
 	 public List<NotificationProfessorDto> getProfessorNotifications(@PathVariable String email) {
 	
-		ProfessorDto professorDto = professorService.getProfessorByEmail(email);
+		ProfessorDto professorDto = professorService.getProfessor(email);
 		return (List<NotificationProfessorDto>) notificationProfessorService.getProfessorNotifications(professorDto);
 	 }
 	 

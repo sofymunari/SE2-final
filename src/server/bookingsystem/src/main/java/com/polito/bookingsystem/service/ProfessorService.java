@@ -9,4 +9,5 @@ public interface ProfessorService {
 	
 	String login(String email, String password);
 	public void sendEmail(ProfessorDto professorDto, String subject, String text);
+	public ProfessorDto getProfessor(String email);
 }
