@@ -51,7 +51,7 @@ async function getStudentLectures(username){
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
             courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
             professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
-            email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}}
+            email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
         })
     }else{
         throw lects_json;
@@ -64,7 +64,7 @@ async function getStudentInfo(username){
     const studInfo=await response.json();
     if(response.ok){
     return {userId:studInfo.userId,name:studInfo.name, surname:studInfo.surname,
-        address:studInfo.address,username:studInfo.email, dateOfBirth:studInfo.dateOfBirth}
+        address:studInfo.address,username:studInfo.email, dateOfBirth:studInfo.dateOfBirth, matricola: studInfo.matricola}
     }else{
         throw studInfo;
     }

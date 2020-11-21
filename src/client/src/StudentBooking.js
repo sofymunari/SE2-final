@@ -24,11 +24,7 @@ class StudentBooking extends React.Component{
         .catch((error)=>this.setState({bookingsError:error})))
         .catch((error)=>this.setState({bookingsError:error}));
     }
-    /*cancelBooking= (bookingId)=>{
-        API.cancelBooking(bookingId)
-        .then(()=>this.props.updateLectures() )
-        
-    }*/
+    
     render(){
         if(!this.state.bookings){
             return <h1>the page is loading</h1>
