@@ -3,7 +3,6 @@ package com.polito.bookingsystem.utils;
 import java.util.Date;
 
 import com.polito.bookingsystem.entity.Course;
-import com.polito.bookingsystem.entity.Student;
 
 public interface BookingEntry {
 	int getBookingId();

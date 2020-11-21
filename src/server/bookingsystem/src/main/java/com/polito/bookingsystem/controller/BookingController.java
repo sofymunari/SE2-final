@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.polito.bookingsystem.dto.BookingDto;
-import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
-import com.polito.bookingsystem.service.StudentService;
 
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
@@ -31,6 +29,7 @@ public abstract class BookingController {
     @ResponseBody
 	public BookingDto addBooking(@RequestBody Integer lectureId, String email) {
          return bookingService.addBooking(lectureId, email);
+         
 	}
 	
 	@RequestMapping(value="deletebooking/{bookingId}", method = RequestMethod.DELETE)

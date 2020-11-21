@@ -3,7 +3,6 @@ package com.polito.bookingsystem.converter;
 
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
-import com.polito.bookingsystem.utils.BookingInfo;
 
 public class BookingConverter {
 	

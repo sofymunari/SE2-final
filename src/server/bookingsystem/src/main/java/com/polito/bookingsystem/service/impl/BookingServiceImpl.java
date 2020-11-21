@@ -81,11 +81,13 @@ public class BookingServiceImpl implements BookingService{
 			return null;
 		
 		Integer numSeatAvaiable = lecture.getRoom().getNumberOfSeat();
+		
 		List<Booking> listBookingLectureAttended = bookingRepository.findAll().stream()
-				.filter(b->b.getLecture().getLectureId()== lectureId && b.getBookingInfo() == BookingInfo.BOOKED)
+				.filter(b->b.getLecture().getLectureId().equals(lectureId) && b.getBookingInfo() == BookingInfo.BOOKED)
 				.collect(Collectors.toList());
 		
 		Integer numBookingLecture = listBookingLectureAttended.size();
+		
 		Integer id = bookingRepository.findAll().stream()
 				.mapToInt(b->b.getBookingId())
 				.max()
@@ -93,15 +95,20 @@ public class BookingServiceImpl implements BookingService{
 		
 		Booking booking = new Booking();
 		booking.setBookingId((id+1));
-		booking.setLecture(lecture);
 		booking.setStudent(student);
 		if(numBookingLecture < numSeatAvaiable) {
+			lecture.setBookedSeats(numBookingLecture + 1);
 			booking.setBookingInfo(BookingInfo.BOOKED);
 		}
 		else {
+			lecture.setBookedSeats(numSeatAvaiable);
 			booking.setBookingInfo(BookingInfo.WAITING);
 		}
+		booking.setLecture(lecture);
+		lectureRepository.save(lecture);
 		bookingRepository.save(booking);
+		
+		
 		String text = "Dear "+student.getName()+" your booking for lecture "+lecture.getCourse().getName()+" has been confirmed";
 		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
 		
@@ -119,6 +126,10 @@ public class BookingServiceImpl implements BookingService{
 			return false;
 		}
 		booking.setBookingInfo(BookingInfo.CANCELED_BY_STUD);
+		Lecture lecture = booking.getLecture();
+		lecture.setBookedSeats(lecture.getBookedSeats() -1);
+		booking.setLecture(lecture);
+		lectureRepository.save(lecture);
 		bookingRepository.save(booking);
 		return true;
 	}

@@ -86,7 +86,7 @@ class LectureServiceTests {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -111,7 +111,7 @@ class LectureServiceTests {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		List<Course> courses = new ArrayList<>();
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
 
 		when(studentRepository.findByEmail(anyString())).thenReturn(student1);
 		

@@ -7,8 +7,6 @@ import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.polito.bookingsystem.repository.StudentRepository;
-import com.polito.bookingsystem.entity.Student;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 

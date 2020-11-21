@@ -5,23 +5,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
-import com.polito.bookingsystem.dto.NotificationProfessorDto;
+
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
@@ -80,7 +74,7 @@ public class HomeController {
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
 		List<LectureDto> availableLectures=lectureService.getListLectures(email).stream().filter(l->{
 			for(Integer id: ids) {
-				if(l.getLectureId()==id) {
+				if(l.getLectureId().equals(id)) {
 					return false;
 				}
 			}

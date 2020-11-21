@@ -22,6 +22,7 @@ public class StudentConverter extends UserConverter{
 		student.setPassword(studentDto.getPassword());
 		student.setSurname(studentDto.getSurname());
 		student.setUserId(studentDto.getUserId());
+		student.setMatricola(studentDto.getMatricola());
 		List<Course> courses = new ArrayList<Course>();
 		for(CourseDto course : studentDto.getCoursesDto()) {
 			  courses.add(CourseConverter.toEntity(course));
@@ -41,6 +42,7 @@ public class StudentConverter extends UserConverter{
 		studentDto.setPassword(student.getPassword());
 		studentDto.setSurname(student.getSurname());
 		studentDto.setUserId(student.getUserId());
+		studentDto.setMatricola(student.getMatricola());
 		List<CourseDto> coursesDto = new ArrayList<CourseDto>();
 		for(Course courseDto : student.getCourses()) {
 			  coursesDto.add(CourseConverter.toDto(courseDto));

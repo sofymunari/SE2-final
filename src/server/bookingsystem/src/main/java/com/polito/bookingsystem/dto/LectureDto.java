@@ -12,7 +12,8 @@ public class LectureDto {
     private String programDetails;
     private Integer duration;
     private RoomDto roomDto;
-
+    private Integer bookedSeats;
+    
     public LectureDto() {
     }
 
@@ -28,8 +29,18 @@ public class LectureDto {
         this.programDetails = programDetails;
         this.duration = duration;
         this.roomDto = roomDto;
+        this.bookedSeats = 0;
     }
-    public Integer getLectureId() {
+    
+    public Integer getBookedSeats() {
+		return bookedSeats;
+	}
+
+	public void setBookedSeats(Integer bookedSeats) {
+		this.bookedSeats = bookedSeats;
+	}
+
+	public Integer getLectureId() {
         return lectureId;
     }
     public void setLectureId(Integer lectureId) {
@@ -88,8 +99,5 @@ public class LectureDto {
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-
-
-
 
 }

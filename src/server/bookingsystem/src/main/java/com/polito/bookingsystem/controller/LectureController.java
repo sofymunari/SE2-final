@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.polito.bookingsystem.dto.BookingDto;
+
 import com.polito.bookingsystem.dto.LectureDto;
-import com.polito.bookingsystem.dto.StudentDto;
-import com.polito.bookingsystem.service.BookingService;
+
+
 import com.polito.bookingsystem.service.LectureService;
-import com.polito.bookingsystem.service.StudentService;
+
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
 public abstract class LectureController {

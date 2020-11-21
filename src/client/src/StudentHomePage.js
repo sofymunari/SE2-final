@@ -63,8 +63,9 @@ function Aside (props){
     return (
             <div className="container-fluid">
             <h1>Your student info:</h1>
-            <h2>{props.student.name} {props.student.surname}</h2>
-            <h3>{props.student.address}</h3>
+            <h2>{props.student.matricola}</h2>
+            <h3>{props.student.name} {props.student.surname}</h3>
+            <h4>{props.student.address}</h4>
             </div>
     )
 
@@ -88,7 +89,7 @@ class MainPage extends React.Component{
                     <div className="col-2">
                     <h3>COURSE</h3>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                     <h3>LESSON</h3>
                     </div>
                     <div className="col-3">
@@ -97,8 +98,11 @@ class MainPage extends React.Component{
                     <div className="col-2">
                     <h3>REMOTLY</h3>
                     </div>
+                    <div className="col-1">
+                    <h3>SEATS</h3>
+                    </div>
                     <div className="col-2">
-                    <h3># SEATS</h3>
+                    <h3># BOOKED </h3>
                     </div>
                     <div className="col-1">
                     <h3>BOOK</h3>
@@ -118,7 +122,7 @@ function LectureItem (props){
             <div className="col-2">
             <h4>{props.lecture.courseDto.name}</h4>
             </div>
-            <div className="col-2">
+            <div className="col-1">
             <h4>{props.lecture.numberOfLesson}</h4>
             </div>
             <div className="col-3">
@@ -127,15 +131,19 @@ function LectureItem (props){
             <div className="col-2">
             <h4>{props.lecture.remotly?'yes':'no'}</h4>
             </div>
+            <div className="col-1">
+            <h4>{props.lecture.remotly?"":props.lecture.roomDto.numberOfSeat}</h4>
+            </div>
             <div className="col-2">
-            <h4>{props.lecture.roomDto.numberOfSeat}</h4>
+            <h4>{props.lecture.remotly?"":props.lecture.bookedSeats}</h4>
             </div>
             <div className="col-1">
             {
                 props.lecture.remotly?
-                   <p></p>:<svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-cart-plus-fill" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.addBooking(props.lecture.lectureId)}>
-                   <path fillRule="evenodd" d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM4 14a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm7 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                   </svg>    
+                   <p></p>:<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.addBooking(props.lecture.lectureId)}>
+                   <path fillRule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
+                   </svg>   
             }   
             </div>
         </div>

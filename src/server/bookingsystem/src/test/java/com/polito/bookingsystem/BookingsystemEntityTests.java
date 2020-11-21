@@ -34,7 +34,7 @@ class BookingsystemEntityTests {
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		return new Student(11, "testName", "testSurname", "testAddress", "testEmail", "testPassword", d, courses);
+		return new Student(11, "testName", "testSurname", "testAddress", "testEmail", "testPassword", d, courses, "testMatricola");
 	}
 	
 	public Professor createProfessorTestSuite () {
@@ -486,7 +486,7 @@ class BookingsystemEntityTests {
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
-		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", d, courses);
+		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", d, courses, "testMatricolanew");
 		NotificationStudent notification = null;
 		notification = createNotificationStudentTestSuite();
 		notification.setStudent(student);
@@ -742,7 +742,7 @@ class BookingsystemEntityTests {
 		Course c = new Course(0, "courseNew", "This is a new course");
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", date, courses);
+		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", date, courses, "testMatricolanew");
 		Booking booking = null;
 		booking = createBookingTestSuite();
 		booking.setStudent(student);

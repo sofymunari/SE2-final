@@ -1,9 +1,7 @@
 package com.polito.bookingsystem.service.impl;
 
 import com.polito.bookingsystem.converter.LectureConverter;
-import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
-import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Student;
@@ -48,7 +46,7 @@ public class LectureServiceImpl implements LectureService {
 		
 		for(Course course : courses) {
 		   List<Lecture> courseLectures = allLectures.stream()
-				                    .filter(l -> course.getCourseId() == l.getCourse().getCourseId())
+				                    .filter(l -> course.getCourseId().equals(l.getCourse().getCourseId()))
 				                    .collect(Collectors.toList());
 	       for(Lecture lecture : courseLectures) {
 	    	   studentLectures.add(LectureConverter.toDto(lecture));

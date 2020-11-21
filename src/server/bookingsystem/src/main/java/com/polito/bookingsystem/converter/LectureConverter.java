@@ -18,6 +18,7 @@ public class LectureConverter {
 		lecture.setProgramDetails(lectureDto.getProgramDetails());
 		lecture.setRemotly(lectureDto.getRemotly());
 		lecture.setRoom(RoomConverter.toEntity(lectureDto.getRoomDto()));
+		lecture.setBookedSeats(lectureDto.getBookedSeats());
 		return lecture;
 	}
 	
@@ -34,6 +35,7 @@ public class LectureConverter {
 		lectureDto.setProgramDetails(lecture.getProgramDetails());
 		lectureDto.setRemotly(lecture.getRemotly());
 		lectureDto.setRoomDto(RoomConverter.toDto(lecture.getRoom()));
+		lectureDto.setBookedSeats(lecture.getBookedSeats());
 		return lectureDto;
 	}
 }

@@ -10,9 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.polito.bookingsystem.dto.StudentDto;
-import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 @Entity

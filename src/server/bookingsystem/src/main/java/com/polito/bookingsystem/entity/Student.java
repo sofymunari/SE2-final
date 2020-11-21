@@ -17,6 +17,9 @@ public class Student extends User{
 	@Column
 	private Date dateOfBirth;
 	
+	@Column
+	private String matricola;
+	
 	@ManyToMany
 	@JoinTable(name = "course_student",
 	    joinColumns = @JoinColumn(name = "user_id"),
@@ -28,10 +31,20 @@ public class Student extends User{
 		super();
 	}
 	
-	public Student(Integer userId, String name, String surname, String address, String email, String password, Date dateOfBirth, List<Course> courses) {
+	public Student(Integer userId, String name, String surname, String address, String email, String password, Date dateOfBirth, List<Course> courses, String matricola) {
 		super(userId, name, surname, address, email, password);
 		this.courses = courses;
 		this.dateOfBirth = dateOfBirth;
+		this.matricola = matricola;
+	}
+    
+	
+	public String getMatricola() {
+		return matricola;
+	}
+
+	public void setMatricola(String matricola) {
+		this.matricola = matricola;
 	}
 
 	public Date getDateOfBirth() {

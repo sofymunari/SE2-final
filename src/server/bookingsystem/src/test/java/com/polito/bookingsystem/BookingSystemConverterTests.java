@@ -99,7 +99,7 @@ class BookingSystemConverterTests {
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		StudentDto studentDto = null;
 		
 		studentDto = StudentConverter.toDto(student);
@@ -132,7 +132,7 @@ class BookingSystemConverterTests {
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Student student = null;
-		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		
 		student = StudentConverter.toEntity(studentDto);
 		
@@ -481,7 +481,7 @@ class BookingSystemConverterTests {
 		Course c = new Course(11, "testCourse", "This is a test course");
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		
 		NotificationStudent notificationStudent = new NotificationStudent(1, "testDescription", date, student, false,"link");
 		NotificationStudentDto notificationStudentDto = null;
@@ -514,7 +514,7 @@ class BookingSystemConverterTests {
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		
 		NotificationStudent notificationStudent = null;
 		NotificationStudentDto notificationStudentDto = new NotificationStudentDto(1, "testDescription", date, studentDto, false,"link");
@@ -798,7 +798,7 @@ class BookingSystemConverterTests {
 		List<Course> courses = new ArrayList<>();
 		courses.add(course);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
 		Room room = new Room(1, "testName", 100); 
@@ -833,7 +833,7 @@ class BookingSystemConverterTests {
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(courseDto);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses);
+		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
 		RoomDto roomDto = new RoomDto(1, "testName", 100); 

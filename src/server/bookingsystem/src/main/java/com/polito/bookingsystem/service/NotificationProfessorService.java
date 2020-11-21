@@ -6,9 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
-import com.polito.bookingsystem.entity.NotificationProfessor;
-import com.polito.bookingsystem.entity.Professor;
-import com.polito.bookingsystem.entity.Student;
 
 @Service
 public interface NotificationProfessorService {

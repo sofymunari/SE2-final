@@ -62,7 +62,7 @@ class NotificationStudentServiceTest {
 		courses1.add(course1);
 		courses1.add(course2);
 
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		
@@ -83,7 +83,7 @@ class NotificationStudentServiceTest {
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 				
 		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
 		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
@@ -93,7 +93,7 @@ class NotificationStudentServiceTest {
 
 		NotificationStudent notificationStudent = new NotificationStudent();
 	
-		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2);
+		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		when(notificationStudentRepository.save(anyObject())).thenReturn(notificationStudent);
 		
@@ -122,7 +122,7 @@ class NotificationStudentServiceTest {
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		
 		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
 		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
@@ -137,7 +137,7 @@ class NotificationStudentServiceTest {
 		list.add(notificationStudent1);
 		list.add(notificationStudent2);
 
-		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2);
+		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
 
 		when(studentRepository.findByUserId(anyInt())).thenReturn(student1);
 		when(notificationStudentRepository.findByStudent(anyObject())).thenReturn(list);
@@ -166,7 +166,7 @@ class NotificationStudentServiceTest {
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		
 		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
 		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
@@ -174,7 +174,7 @@ class NotificationStudentServiceTest {
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
 		
-		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2);
+		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
 
 		
 		NotificationStudentDto notificationStudentDto = new NotificationStudentDto(1, "testDescription1", date, studentDto1, true, "testLink1");

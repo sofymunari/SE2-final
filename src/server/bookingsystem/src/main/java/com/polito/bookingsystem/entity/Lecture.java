@@ -10,9 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import com.polito.bookingsystem.dto.CourseDto;
-import com.polito.bookingsystem.dto.ProfessorDto;
 
 @Entity
 @Table
@@ -46,6 +45,9 @@ public class Lecture {
 	@Column
 	private Integer duration;
 	
+	@Column
+	private Integer bookedSeats;
+	
 	@ManyToOne
     @JoinColumn(name ="roomId")
 	private Room room;
@@ -66,9 +68,17 @@ public class Lecture {
 		this.programDetails = programDetails;
 		this.duration = duration;
 		this.room = room;
-;
+		this.bookedSeats = 0;
 	}
 	
+	public Integer getBookedSeats() {
+		return bookedSeats;
+	}
+	
+	public void setBookedSeats(Integer bookedSeats) {
+		this.bookedSeats = bookedSeats;
+	}
+
 	public Integer getDuration() {
 		return duration;
 	}
@@ -129,7 +139,5 @@ public class Lecture {
 		this.room = room;
 	}
 	
-	
-
 
 }

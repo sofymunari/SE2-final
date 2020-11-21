@@ -32,7 +32,6 @@ import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
-import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 @RunWith(SpringRunner.class)
@@ -81,7 +80,7 @@ class BookingServiceTest {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -128,7 +127,7 @@ class BookingServiceTest {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -175,7 +174,7 @@ class BookingServiceTest {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -223,7 +222,7 @@ class BookingServiceTest {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -273,7 +272,7 @@ class BookingServiceTest {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
@@ -334,7 +333,7 @@ class BookingServiceTest {
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		BookingInfo bookingInfo = BookingInfo.WAITING;
@@ -435,10 +434,10 @@ class BookingServiceTest {
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1);
-		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1);
-		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1);
-		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1);
+		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1, "testMatricola1");
+		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
+		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
+		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails", room1);
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
@@ -470,10 +469,10 @@ class BookingServiceTest {
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1);
-		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1);
-		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1);
-		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1);
+		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1, "testMatricola1");
+		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
+		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
+		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
 		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);

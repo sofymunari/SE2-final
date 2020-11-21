@@ -4,11 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.NotificationStudentDto;
-import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
-import com.polito.bookingsystem.entity.Student;
 
 @Service
 public interface NotificationStudentService {

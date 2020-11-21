@@ -58,7 +58,7 @@ class StudentServiceTests {
 		Course course1 = new Course(1, "testName", "testDescription");
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(student);
 
@@ -89,7 +89,7 @@ class StudentServiceTests {
 		Course course1 = new Course(1, "testName", "testDescription");
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(student);
 
@@ -104,7 +104,7 @@ class StudentServiceTests {
 		Course course1 = new Course(1, "testName", "testDescription");
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses);
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(student);
 

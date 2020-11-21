@@ -9,17 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polito.bookingsystem.converter.NotificationProfessorConverter;
-import com.polito.bookingsystem.converter.NotificationStudentConverter;
 import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.entity.NotificationProfessor;
-import com.polito.bookingsystem.entity.NotificationStudent;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.repository.NotificationProfessorRepository;
-import com.polito.bookingsystem.repository.NotificationStudentRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
-import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 
 @Service
