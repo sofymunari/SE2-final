@@ -125,6 +125,8 @@ class MainPage extends React.Component{
 
 
 function LectureItem (props){
+    /*extracting date (format dd/mm/yyyy) and time of lecture from props*/
+    var date = new Date(props.lecture.lectureDate).toLocaleString().slice(0,-3);        
     
     return (
         <li className="list-group-item" id = {props.lecture.lectureId}>
@@ -137,7 +139,7 @@ function LectureItem (props){
             </div>
 
             <div className="col-3">
-            <h4>{props.lecture.lectureDate}</h4>
+            <h4>{date}</h4>
             </div>
             <div className="col-3">
             <h4>{props.num }</h4>
