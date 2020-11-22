@@ -68,12 +68,12 @@ function AppNavbar(props){
                     <ul className="navbar-nav text-right">
                     <li className="nav-item pr-1">
                         <Link to="/studentportal/bookings">
-                        <button className="btn btn-success text-dark font-weight-bold" >Bookings</button>
+                        <button className="btn btn-lg btn-success text-dark font-weight-bold" >Bookings</button>
                         </Link>
                     </li>
                     
                     <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" onClick={ev=>props.logOut()} >LOG OUT</button>
+                        <button className="btn btn-lg btn-success text-dark font-weight-bold" onClick={ev=>props.logOut()} >LOG OUT</button>
                     </li>    
                     </ul>
                 </div>  
@@ -81,7 +81,7 @@ function AppNavbar(props){
             </Route>
             <Route exact path="/studentportal/bookings">
                 <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
-                <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
+                <div className="collapse navbar-collapse flex-grow-0 btn-lg" id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">
                     <li className="nav-item pr-1">
                         <Link to="/studentportal/bookings/calendar">
