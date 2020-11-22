@@ -130,4 +130,10 @@ public class HomeController {
 	}
 	
 	
+	@RequestMapping(value="professorlectures/{email}", method = RequestMethod.GET)
+	public List<LectureDto> getProfessorLectures(@PathVariable String email){
+		return lectureService.getProfessorLectures(email);
+	}
+	
+	
 }
