@@ -48,7 +48,7 @@ class TeacherLogin extends React.Component {
                 </div>                
                 <div className="form-group">
                     <div>
-                        <button type="submit" className="btn btn-primary border-0 bg-success text-dark" onClick = {() => this.handleSubmit()}>LOGIN</button>
+                        <button type="submit" className="btn btn-lg btn-primary border-0 bg-success text-dark" onClick = {() => this.handleSubmit()}>LOGIN</button>
                     </div>
                 </div>
                 </form>
