@@ -92,17 +92,17 @@ class MainPage extends React.Component{
                     <div className="col-1">
                     <h3>LESSON</h3>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h3>PROFESSOR</h3>
                     </div>
                     <div className="col-2">
                     <h3>REMOTLY</h3>
                     </div>
                     <div className="col-1">
-                    <h3>SEATS</h3>
+                    <h3>DATE</h3>
                     </div>
                     <div className="col-2">
-                    <h3>SEATS BOOKED </h3>
+                    <h3>AVAILABLE SEATS </h3>
                     </div>
                     <div className="col-1">
                     <h3>BOOK</h3>
@@ -115,7 +115,9 @@ class MainPage extends React.Component{
 }
 
 function LectureItem (props){
-    console.log(props.lecture.lectureId);
+    var date = new Date(props.lecture.date).toLocaleString().slice(0,-3);
+    console.log(props.lecture);
+
     return (
         <li className="list-group-item" id = {props.lecture.lectureId}>
         <div className="d-flex w-100 justify-content-between">
@@ -125,17 +127,17 @@ function LectureItem (props){
             <div className="col-1">
             <h4>{props.lecture.numberOfLesson}</h4>
             </div>
-            <div className="col-3">
+            <div className="col-2">
             <h4>{props.lecture.professorDto.name} {props.lecture.professorDto.surname}</h4>
             </div>
             <div className="col-2">
             <h4>{props.lecture.remotly?'yes':'no'}</h4>
             </div>
             <div className="col-1">
-            <h4>{props.lecture.remotly?"":props.lecture.roomDto.numberOfSeat}</h4>
+            <h4>{date}</h4>
             </div>
             <div className="col-2">
-            <h4>{props.lecture.remotly?"":props.lecture.bookedSeats}</h4>
+            <h4>{props.lecture.remotly?"-":props.lecture.roomDto.numberOfSeat-props.lecture.bookedSeats}</h4>
             </div>
             <div className="col-1">
             {

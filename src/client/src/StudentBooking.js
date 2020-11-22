@@ -15,6 +15,7 @@ class StudentBooking extends React.Component{
         .catch((error)=>this.setState({bookingsError:error}))
     }
     showItem= (booking)=>{
+        console.log(booking);
         return <BookingItem key={booking.bookingId} booking={booking} cancelBooking={this.cancelBooking} />
     }
     cancelBooking= (bookingId)=>{
@@ -46,10 +47,10 @@ class StudentBooking extends React.Component{
                             <h3>DATE</h3>
                             </div>
                             <div className="col-2">
-                            <h3>REMOTLY</h3>
+                            <h3>HOUR</h3>
                             </div>
                             <div className="col-2">
-                            <h3># SEATS</h3>
+                            <h3>ROOM</h3>
                             </div>
                             <div className="col-1">
                             <h3>CANCEL</h3>
@@ -68,6 +69,11 @@ class StudentBooking extends React.Component{
 }
 
 function BookingItem(props){
+    /*extracting date (format dd/mm/yyyy) and time of lecture from props*/
+    var date = new Date(props.booking.lectureDto.date);
+    var dateString = date.toLocaleString().slice(0,-10);
+    var time = date.toTimeString().substr(0,5);
+
     return  <li className="list-group-item" id = {props.booking.bookingId}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">
@@ -77,13 +83,13 @@ function BookingItem(props){
                 <h4>{props.booking.lectureDto.numberOfLesson}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.lectureDto.date}</h4>
+                <h4>{dateString}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.lectureDto.remotly?'yes':'no'}</h4>
+                <h4>{time}</h4>
                 </div>
                 <div className="col-2">
-                <h4>{props.booking.roomDto.numberOfSeat}</h4>
+                <h4>{props.booking.roomDto.name}</h4>
                 </div>
                 <div className="col-1">
                             <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-trash-fill" fill="red" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.cancelBooking(props.booking.bookingId)}>
