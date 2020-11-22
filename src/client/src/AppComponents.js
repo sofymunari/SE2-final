@@ -47,16 +47,16 @@ function AppNavbar(props){
                     <ul className="navbar-nav text-right">
                         <li className="nav-item pr-1">
                         <Link to="/studentlogin">
-                        <button className="btn btn-success text-dark font-weight-bold" >StudentLogin</button>
+                        <button className="btn btn-success text-dark font-weight-bold" >Student</button>
                         </Link>
                         </li>
                         <li className="nav-item pr-1">
                         <Link to="/teacherlogin">
-                        <button className="btn btn-success text-dark font-weight-bold" >TeacherLogin</button>
+                        <button className="btn btn-success text-dark font-weight-bold" >Teacher</button>
                         </Link>
                         </li>
                         <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >OfficerLogin</button>
+                        <button className="btn btn-success text-dark font-weight-bold" >Officer</button>
                         </li>    
                     </ul>
                 </div>  
