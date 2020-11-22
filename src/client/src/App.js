@@ -17,12 +17,14 @@ class App extends React.Component {
 
   loginStudent=(username,password)=>{
     API.loginStudent(username,password).then((usr)=>{
-      this.setState({student:usr})}).catch((error)=>this.setState({loginError:error}));
+      this.setState({student:usr,loginError:null})})
+      .catch((error)=>{this.setState({loginError:error})});
     
   }
   loginTeacher=(username,password)=>{
     API.loginTeacher(username,password).then((usr)=>{
-      this.setState({teacher:usr})}).catch((error)=>this.setState({loginError:error}));
+      this.setState({teacher:usr,loginError:null})})
+      .catch((error)=>{this.setState({loginError:error})});
   }
   logOutStudent=()=>{
     this.setState({student:null});

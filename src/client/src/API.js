@@ -1,7 +1,7 @@
 
 const BASE_URL = 'http://localhost:8080/'
 
-async function loginStudent(username,password){
+/*async function loginStudent(username,password){
     let url=BASE_URL+"studentlogin"
     return new Promise((resolve,reject)=>{
         fetch(url,{
@@ -11,33 +11,48 @@ async function loginStudent(username,password){
             },
             body: JSON.stringify({username:username,password:password})
         }).then((response)=>{
-            if(response.ok){
-                resolve(username);
-            }
+            response.text()
+            
         }).catch((err)=>{
             reject(err);
         })
     });
     //return 's0000@studenti.polito.it';
+}*/
+async function loginStudent(username,password){
+    let url=BASE_URL+"studentlogin"
+    const response= await fetch(url,{
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:username,password:password})
+    })
+    const restext=await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
 }
 
 async function loginTeacher(username,password){
     let url=BASE_URL+"professorlogin"
-    return new Promise((resolve,reject)=>{
-        fetch(url,{
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username:username,password:password})
-        }).then((response)=>{
-            if(response.ok){
-                resolve(username);
-            }
-        }).catch((err)=>{
-            reject(err);
-        })
-    });
+    const response= await fetch(url,{
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:username,password:password})
+    })
+    const restext=await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
 
 }
 

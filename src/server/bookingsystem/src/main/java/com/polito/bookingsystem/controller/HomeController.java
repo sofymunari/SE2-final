@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,12 +102,20 @@ public class HomeController {
 	
 	@RequestMapping(value= "studentlogin", method= RequestMethod.POST)
 	public String login(@RequestBody Map<String, String> userPass) {
-			return studentService.login(userPass.get("username"), userPass.get("password"));
+			String email= studentService.login(userPass.get("username"), userPass.get("password"));
+			if(email!=null) {
+				return email;
+			}
+			return "";
 	}
 	
 	@RequestMapping(value= "professorlogin", method= RequestMethod.POST)
 	public String loginProf(@RequestBody Map<String, String> userPass) {
-			return professorService.login(userPass.get("username"), userPass.get("password"));
+			String email= professorService.login(userPass.get("username"), userPass.get("password"));
+			if(email!=null) {
+				return email;
+			}
+			return "";
 	}
 
 	
