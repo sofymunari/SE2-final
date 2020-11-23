@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,8 +52,7 @@ public class HomeController {
 	NotificationProfessorService notificationProfessorService;
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
-	public String test() {
-		
+	public String test() throws ParseException {
 		return "test";
 	}
 	
