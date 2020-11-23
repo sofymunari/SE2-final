@@ -40,7 +40,8 @@ public class NotificationStudentConverter extends NotificationConverter{
     
 	public static List<NotificationStudentDto> toDto(List<NotificationStudent> notificationStudentList) {
 		if( notificationStudentList == null)
-			return null;
+			return new ArrayList<>();
+		
 		List<NotificationStudentDto> notificationStudentDtoList = new ArrayList<NotificationStudentDto>(); 
 		for (NotificationStudent notificationStudent: notificationStudentList) {
 			notificationStudentDtoList.add(toDto(notificationStudent));

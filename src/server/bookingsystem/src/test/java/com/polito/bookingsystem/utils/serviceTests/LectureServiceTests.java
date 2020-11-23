@@ -56,7 +56,9 @@ class LectureServiceTests {
 		//passing an invalid mail 
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(null);
-		assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures("wrong@email.com"));
+		//assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures("wrong@email.com"));
+		
+		assertEquals("Expected an empty list to be returned", lectureServiceImpl.getListLectures("wrong@email.com"), new ArrayList<>());
 	}
 	
 	@Test
@@ -64,7 +66,9 @@ class LectureServiceTests {
 		//passing a null mail 
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(null);
-		assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures(null));
+		//assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures(null));
+		
+		assertEquals("Expected an empty list to be returned", lectureServiceImpl.getListLectures(null), new ArrayList<>());
 	}
 	
 	@Test
@@ -115,7 +119,9 @@ class LectureServiceTests {
 
 		when(studentRepository.findByEmail(anyString())).thenReturn(student1);
 		
-		assertNull("The number of lecture is wrong", lectureServiceImpl.getListLectures("test@email.com"));
+		//assertNull("The number of lecture is wrong", lectureServiceImpl.getListLectures("test@email.com"));
+		
+		assertEquals("The number of lecture is wrong", lectureServiceImpl.getListLectures("test@email.com"), new ArrayList<>());
 
 	}
 	

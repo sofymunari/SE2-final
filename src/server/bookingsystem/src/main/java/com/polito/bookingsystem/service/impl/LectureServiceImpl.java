@@ -41,11 +41,14 @@ public class LectureServiceImpl implements LectureService {
 	@Override
 	public List<LectureDto> getListLectures(String email) {
 		Student student = studentRepository.findByEmail(email);
+		
 		if(student == null)
-			return null;
+			return new ArrayList<>();
+		
 		List<Course> courses = student.getCourses();
 		if(courses.size()==0)
-			return null;
+			return new ArrayList<>();
+		
 		List<Lecture> allLectures = lectureRepository.findAll();
 		List<LectureDto> studentLectures = new ArrayList<LectureDto>();
 		

@@ -6,6 +6,10 @@ import com.polito.bookingsystem.entity.Booking;
 
 public class BookingConverter {
 	
+	private BookingConverter() {
+		
+	}
+	
 	public static Booking toEntity(BookingDto bookingDto) {
 		if( bookingDto == null)
 			return null;

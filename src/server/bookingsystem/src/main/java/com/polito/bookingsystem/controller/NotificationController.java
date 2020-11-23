@@ -40,13 +40,13 @@ public class NotificationController {
 	 public List<NotificationStudentDto> getStudentNotifications(@PathVariable String email) {
 	
 		 StudentDto studentDto = studentService.getStudent(email);
-		 return (List<NotificationStudentDto>) notificationStudentService.getStudentNotifications(studentDto);
+		 return notificationStudentService.getStudentNotifications(studentDto);
 	 }
 	 
 	 @GetMapping("/student/notification/{notificationId}")
 	 public NotificationStudentDto getStudentNotification(@PathVariable Integer notificationId) {
 			
-		 return (NotificationStudentDto) notificationStudentService.getStudentNotificationByNotificationId(notificationId);
+		 return notificationStudentService.getStudentNotificationByNotificationId(notificationId);
 	 }
 
 
@@ -55,13 +55,13 @@ public class NotificationController {
 	 public List<NotificationProfessorDto> getProfessorNotifications(@PathVariable String email) {
 	
 		ProfessorDto professorDto = professorService.getProfessor(email);
-		return (List<NotificationProfessorDto>) notificationProfessorService.getProfessorNotifications(professorDto);
+		return notificationProfessorService.getProfessorNotifications(professorDto);
 	 }
 	 
 	 @GetMapping("/professor/notification/{notificationId}")
 	 public NotificationProfessorDto getProfessortNotification(@PathVariable Integer notificationId) {
 			
-		 return (NotificationProfessorDto) notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
+		 return notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
 	 }
 	 
 
