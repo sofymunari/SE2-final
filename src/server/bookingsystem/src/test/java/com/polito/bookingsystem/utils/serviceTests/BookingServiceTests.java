@@ -33,6 +33,8 @@ import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.utils.BookingEntry;
+
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
