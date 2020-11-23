@@ -156,7 +156,7 @@ async function getTeacherInfo(username){
 		}
 }
 
-async function getTeacherLectures(username){
+async function getTeacherBookings(username){
     const url= BASE_URL+"professorbookings/"+username;
     const response= await fetch(url);
     const lects_json= await response.json();
@@ -165,6 +165,21 @@ async function getTeacherLectures(username){
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
             course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
+        })
+    }else{
+        throw lects_json;
+    }
+}
+
+async function getTeacherLectures(username){
+    const url= BASE_URL+"professorlectures/"+username;
+    const response= await fetch(url);
+    const lects_json= await response.json();
+    if(response.ok){
+        return lects_json.map((l)=>{
+            return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},roomDto:{name:l.roomDto.name},
+            date:l.date,remotly:l.remotly,programDetails:l.programDetails,duration:l.duration,bookedSeats:l.bookedSeats}
         })
     }else{
         throw lects_json;
@@ -185,5 +200,5 @@ async function getTeacherNotifications(username){
 }
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherLectures,getTeacherNotifications}
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications}
 export default API;

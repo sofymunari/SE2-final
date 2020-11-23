@@ -1,5 +1,6 @@
 import React from 'react';
 import TeacherNotification from './TeacherNotification';
+import TeacherModifyLecture from './TecaherModifyLecture';
 import API from './API.js';
 import {Route,Switch,Link} from 'react-router-dom';
 import AppComponents from './AppComponents';
@@ -7,7 +8,7 @@ import AppComponents from './AppComponents';
 class TeacherHomePage extends React.Component {
     constructor(props){
         super(props);
-        this.state={'teacher':null,'errorTeacher':null,'students':null,'errorLectures':null,'bookings':null,'lectures':null}
+        this.state={'teacher':null,'errorTeacher':null,'students':null,'errorLectures':null,'bookings':null,'lectures':null, 'modifylect':null}
         //teacher prop is the teacher username
         //teacher state is the teacher info
 
@@ -18,12 +19,12 @@ class TeacherHomePage extends React.Component {
 
     }
     async init(){
-        const bookings= await API.getTeacherLectures(this.props.teacher);
+        const bookings= await API.getTeacherBookings(this.props.teacher);
         const teacher= await API.getTeacherInfo(this.props.teacher);
+        const lectures= await API.getTeacherLectures(this.props.teacher);
+        //const lectures=bookings.map(b=>{return {lectureId:b.lectureId,lectureNumber:b.lectureNumber,lectureDate:b.lectureDate,course:b.course.name}});
         
-        const lectures=bookings.map(b=>{return {lectureId:b.lectureId,lectureNumber:b.lectureNumber,lectureDate:b.lectureDate,course:b.course.name}});
-        
-        let ids = [... new Set(bookings.map(b=>b.lectureId))]
+        /*let ids = [... new Set(bookings.map(b=>b.lectureId))]
         const lect_unique=lectures.filter(b=>{
             for (let i of ids){
                 if(b.lectureId===i){
@@ -32,15 +33,20 @@ class TeacherHomePage extends React.Component {
                 }
             }
             return false;
-        })
-        this.setState({teacher:teacher,bookings:bookings,lectures:lect_unique})
+        })*/
+        this.setState({teacher:teacher,bookings:bookings,lectures:lectures})
+    }
+    modifyLecture=(lectureId)=>{
+        const lecture=this.state.lectures.filter((l)=>l.lectureId===lectureId).pop();
+        this.setState({modifylect:lecture});
     }
     showBookings=(lectureId)=>{
         const students=this.state.bookings.filter(b=>b.lectureId===lectureId);
-        this.setState({students:students})
+        console.log(students)
+        this.setState({students:students});
     }
     back=()=>{
-        this.setState({students:null})
+        this.setState({students:null,modifylect:null})
     }
     render(){
         if(this.state.errorTeacher||this.state.errorLectures){
@@ -54,20 +60,22 @@ class TeacherHomePage extends React.Component {
                 <AppComponents.AppNavbar logOut={this.props.logOut}/>
                 <div className="container-fluid">
                     <div className="row">
-                    <div className="col-3 bg-success" id="sticky-sidebar">
+                    <div className="col-2 bg-success" id="sticky-sidebar">
                     <Aside teacher={this.state.teacher} />
                     </div>
-                    <div className="col-9" id="main">
-                    {!this.state.students?    
-                    <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} />:
-                    <StudentBookingList students={this.state.students} back={this.back}/>}
+                    <div className="col-10" id="main">
+                    {this.state.modifylect?
+                    <TeacherModifyLecture back={this.back} lecture={this.state.modifylect}/>:
+                    this.state.students?
+                    <StudentBookingList students={this.state.students} back={this.back}/>:
+                    <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                     </div>
                     </div>
                 </div>
                 </Route>
                 <Route exact path ="/teacherportal/notifications">
                     <TeacherNotification teacher={this.state.teacher}/>
-                </Route>               
+                </Route>           
               </Switch>
         
     }
@@ -94,27 +102,33 @@ class MainPage extends React.Component{
     }
     showItem= (lecture)=>{
         const num= this.props.bookings.filter(b=>b.lectureId===lecture.lectureId).length;
-        return <LectureItem key={lecture.lectureId} lecture={lecture} num={num} showBookings={this.props.showBookings} />
+        return <LectureItem key={lecture.lectureId} lecture={lecture} num={num} showBookings={this.props.showBookings} modifyLecture={this.props.modifyLecture} />
     }
 
     render(){
         return  <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light">
                     <div className="d-flex w-100 justify-content-between">
-                    <div className="col-3">
+                    <div className="col-2">
                     <h3>COURSE NAME</h3>
                     </div>
                     <div className="col-2">
-                    <h3>LECTURE NUMBER</h3>
+                    <h3>LECTURE</h3>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h3>DATE</h3>
                     </div>
-                    <div className="col-3">
-                    <h3># BOOKINGS</h3>
+                    <div className="col-2">
+                    <h3>ROOM</h3>
+                    </div>
+                    <div className="col-2">
+                    <h3>BOOKED SEATS</h3>
                     </div>
                     <div className="col-1">
                     <h3>SEE LIST</h3>
+                    </div>
+                    <div className="col-1">
+                    <h3></h3>
                     </div>
                     </div>
                     </li>
@@ -126,31 +140,41 @@ class MainPage extends React.Component{
 
 function LectureItem (props){
     /*extracting date (format dd/mm/yyyy) and time of lecture from props*/
-    var date = new Date(props.lecture.lectureDate).toLocaleString().slice(0,-3);        
+    let date = new Date(props.lecture.date).toLocaleString().slice(0,-3);        
     
     return (
         <li className="list-group-item" id = {props.lecture.lectureId}>
         <div className="d-flex w-100 justify-content-between">
-            <div className="col-3">          
-            <h4>{props.lecture.course}</h4>
+            <div className="col-2">          
+            <h4>{props.lecture.courseDto.name}</h4>
             </div>
             <div className="col-2">
-            <h4>{props.lecture.lectureNumber}</h4>
+            <h4>{props.lecture.numberOfLesson}</h4>
             </div>
-
-            <div className="col-3">
+            <div className="col-2">
             <h4>{date}</h4>
             </div>
-            <div className="col-3">
-            <h4>{props.num }</h4>
-            </div>
-            <div className="col-1">
+            <div className="col-2">
             <h4>
-            <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-list-check" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.showBookings(props.lecture.lectureId)}>
-                <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
-            </svg>          
+            {props.lecture.roomDto.name}
             </h4>
             </div>
+            <div className="col-2">
+            <h4>{props.num}</h4>
+            </div>
+            <div className="col-1">
+            {props.num>0?<svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-list-check" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.showBookings(props.lecture.lectureId)}>
+                <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+            </svg>:<p></p>}          
+            
+            </div>
+            <div className="col-1">
+            <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-pencil-square" fill="green" xmlns="http://www.w3.org/2000/svg"  onClick={(ev) => props.modifyLecture(props.lecture.lectureId)}>
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+            </div>
+
         </div>
         </li>       
         )
