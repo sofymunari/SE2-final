@@ -109,8 +109,8 @@ public class BookingServiceImpl implements BookingService{
 		bookingRepository.save(booking);
 		
 		
-		String text = "Dear "+student.getName()+" your booking for lecture "+lecture.getCourse().getName()+" has been confirmed";
-		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
+		String text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
+		studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
 		
 		return BookingConverter.toDto(booking);		             
 	}
