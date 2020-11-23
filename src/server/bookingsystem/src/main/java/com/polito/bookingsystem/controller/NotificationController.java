@@ -44,9 +44,10 @@ public class NotificationController {
 	 }
 	 
 	 @GetMapping("/student/notification/{notificationId}")
-	 public NotificationStudentDto getStudentNotification(@PathVariable Integer notificationId) {
-			
-		 return (NotificationStudentDto) notificationStudentService.getStudentNotificationByNotificationId(notificationId);
+	 public boolean setNotificationAsRead(@PathVariable Integer notificationId) {
+		
+		 NotificationStudentDto notificationStudentDto = notificationStudentService.getStudentNotificationByNotificationId(notificationId);
+		return notificationStudentService.setNotificationAsRead(notificationStudentDto );
 	 }
 
 
@@ -59,9 +60,10 @@ public class NotificationController {
 	 }
 	 
 	 @GetMapping("/professor/notification/{notificationId}")
-	 public NotificationProfessorDto getProfessortNotification(@PathVariable Integer notificationId) {
+	 public boolean getProfessortNotification(@PathVariable Integer notificationId) {
 			
-		 return (NotificationProfessorDto) notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
+		 NotificationProfessorDto notificationProfessorDto = notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
+		 return notificationProfessorService.setNotificationAsRead(notificationProfessorDto);
 	 }
 	 
 
