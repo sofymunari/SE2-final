@@ -38,16 +38,169 @@ function Main(props){
                 {props.choosenTab==='All Lectures'?
                 <AllLecturesStats lectures={props.passedLectures} bookings={props.bookings}/>:
                 props.choosenTab==='Per Week'?
-                <PerWeekStats/>:
-                <PerMonthStats/>}
+                <PerWeekStats lectures={props.passedLectures} bookings={props.bookings}/>:
+                <PerMonthStats lectures={props.passedLectures}/>}
             </div>
 }
-function PerWeekStats(props){
-    return <h1>Hello</h1>
+
+function getWeek(date){
+    //gets the number of the week
+    let now = new Date(date)	
+    let onejan = new Date(now.getFullYear(),0,1);
+    let today = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    let dayOfYear = ((today - onejan + 86400000)/86400000);
+    return Math.ceil(dayOfYear/7);
 }
+
+function getMonth(date){
+    let now= new Date(date);
+    return now.getMonth();
+}
+
 function PerMonthStats(props){
-    return <h1>Hello</h1>
+    const lectsStats=props.lectures.map((p)=>{
+        return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+    })
+    const months=lectsStats.map((ls)=>ls.month);
+    const monthsUnique= [... new Set(months)];
+    const stats=monthsUnique.map((m)=>{
+        let intLects=lectsStats.filter((l)=>l.month===m);
+        let avgBookings=0;
+        let nDeleted=0;
+        let nRemote=0;
+        for (let le of intLects){
+            avgBookings=avgBookings+le.bookedSeats;
+            le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
+            le.remotly?nRemote=nRemote+1:nRemote=nRemote;
+        }
+        avgBookings=Math.ceil(avgBookings/intLects.length);
+        return {'month':m,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+    })
+    return <ul className="list-group list-group-flush">
+                    <li className="list-group-item bg-light">
+                        <div className="d-flex w-100 justify-content-between">
+                        <div className="col-2">
+                        <h4>MONTH</h4>
+                        </div>
+                        <div className="col-2">
+                        <h4>AVG BOOKINGS</h4>
+                        </div>
+                        <div className="col-2">
+                        <h4>TOTAL LESSONS</h4>
+                        </div>
+                        <div className="col-3">
+                        <h4>TOTAL REMOTE LESSONS</h4>
+                        </div>
+                        <div className="col-3">
+                        <h4>TOTAL DELETED LESSONS</h4>
+                        </div>
+                        </div>
+                        </li>
+                    {stats.map((l)=>
+                    <MonthStats key={l.month} monthStats={l} />)}
+                </ul>
 }
+
+
+function MonthStats(props){
+    let months = [ "January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December" ];
+return  <li className="list-group-item" id = {props.monthStats.month}>
+            <div className="d-flex w-100 justify-content-between">
+                <div className="col-2">          
+                <h5>{months[props.monthStats.month]}</h5>
+                </div>
+                <div className="col-2">
+                <h5>{props.monthStats.avgBookings}</h5>
+                </div>
+                <div className="col-2">
+                <h5>{props.monthStats.totalLessons}</h5>
+                </div>
+                <div className="col-3">
+                <h5>
+                {props.monthStats.nRemote}
+                </h5>
+                </div>
+                <div className="col-3">
+                <h5> {props.monthStats.nDeleted}</h5>
+                </div>
+            </div>
+        </li>       
+}
+
+
+
+function PerWeekStats(props){
+    
+    const lectsStats=props.lectures.map((p)=>{
+        return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+    })
+    const weeks=lectsStats.map((ls)=>ls.week);
+    const weeksUnique= [... new Set(weeks)];
+    const stats=weeksUnique.map((w)=>{
+        let intLects=lectsStats.filter((l)=>l.week===w);
+        let avgBookings=0;
+        let nDeleted=0;
+        let nRemote=0;
+        for (let le of intLects){
+            avgBookings=avgBookings+le.bookedSeats;
+            le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
+            le.remotly?nRemote=nRemote+1:nRemote=nRemote;
+        }
+        avgBookings=Math.ceil(avgBookings/intLects.length);
+        return {'week':w,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+    })
+    return <ul className="list-group list-group-flush">
+                <li className="list-group-item bg-light">
+                    <div className="d-flex w-100 justify-content-between">
+                    <div className="col-2">
+                    <h4>WEEK NUMBER</h4>
+                    </div>
+                    <div className="col-2">
+                    <h4>AVG BOOKINGS</h4>
+                    </div>
+                    <div className="col-2">
+                    <h4>TOTAL LESSONS</h4>
+                    </div>
+                    <div className="col-3">
+                    <h4>TOTAL REMOTE LESSONS</h4>
+                    </div>
+                    <div className="col-3">
+                    <h4>TOTAL DELETED LESSONS</h4>
+                    </div>
+                    </div>
+                    </li>
+                {stats.map((l)=>
+                <WeekStats key={l.week} weekStats={l} />)}
+            </ul>
+}
+
+
+function WeekStats(props){
+    return  <li className="list-group-item" id = {props.weekStats.week}>
+                <div className="d-flex w-100 justify-content-between">
+                    <div className="col-2">          
+                    <h5>{props.weekStats.week}</h5>
+                    </div>
+                    <div className="col-2">
+                    <h5>{props.weekStats.avgBookings}</h5>
+                    </div>
+                    <div className="col-2">
+                    <h5>{props.weekStats.totalLessons}</h5>
+                    </div>
+                    <div className="col-3">
+                    <h5>
+                    {props.weekStats.nRemote}
+                    </h5>
+                    </div>
+                    <div className="col-3">
+                    <h5> {props.weekStats.nDeleted}</h5>
+                    </div>
+                </div>
+            </li>       
+}
+
+
 
 function AllLecturesStats (props){
     let cancellations = props.bookings.filter((b)=>b.bookingInfo==='CANCELLED_BY_STUD');
