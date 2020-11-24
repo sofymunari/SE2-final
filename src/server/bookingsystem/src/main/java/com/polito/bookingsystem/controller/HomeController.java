@@ -122,8 +122,13 @@ public class HomeController {
 		return lectureService.getProfessorLectures(email);
 	}
 	
-	@GetMapping(value="professor/deletelecture/{lectureId}")
-	public Boolean getStudentLectures(@PathVariable Integer lectureId) {
-        return lectureService.deleteLecture(lectureId);
+	@DeleteMapping(value="professor/deletebooking/{bookingId}")
+	public Boolean deleteLecture(@PathVariable Integer bookingId) {
+        return bookingService.deleteBooking(bookingId);
+	}
+	
+	@DeleteMapping(value="listbooking/")
+	public List<BookingDto> getAllBookings() {
+        return bookingService.getListAllBookings();
 	}
 }

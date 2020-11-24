@@ -136,4 +136,13 @@ public class BookingServiceImpl implements BookingService{
 		return bookingRepository.findByProfessor(email);
 	}
 
+	@Override
+	public List<BookingDto> getListAllBookings() {
+        List<Booking> allBookings = bookingRepository.findAll();
+        List<BookingDto> allBookingsDto = new ArrayList<>();
+        for(Booking booking:allBookings) {
+        	allBookingsDto.add(BookingConverter.toDto(booking));
+        }
+		return allBookingsDto;
+	}
 }

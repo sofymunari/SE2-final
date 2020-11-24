@@ -30,7 +30,12 @@ public abstract class BookingController {
 	}
 	
 	@DeleteMapping(value="deletebooking/{bookingId}")
-	public Boolean getStudentBookings(@PathVariable Integer bookingId) {
+	public Boolean deleteStudentBookings(@PathVariable Integer bookingId) {
         return bookingService.deleteBooking(bookingId);
+	}
+	
+	@DeleteMapping(value="listbooking/")
+	public List<BookingDto> getAllBookings() {
+        return bookingService.getListAllBookings();
 	}
 }

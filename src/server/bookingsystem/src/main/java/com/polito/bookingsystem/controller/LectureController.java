@@ -20,7 +20,7 @@ public abstract class LectureController {
 	}
 	
 	@GetMapping(value="professor/deletelecture/{lectureId}")
-	public Boolean getStudentLectures(@PathVariable Integer lectureId) {
+	public Boolean deleteLecture(@PathVariable Integer lectureId) {
         return lectureService.deleteLecture(lectureId);
 	}
 }
