@@ -98,9 +98,11 @@ public class LectureServiceImpl implements LectureService {
 		if(lecture == null) {
 			return result;
 		}
-		Long timeNowMilli = System.currentTimeMillis();
 		
-		if((timeNowMilli - lecture.getDate().getTime()) < MILLIHOUR) {
+		Long timeNowMilli = System.currentTimeMillis();
+		Long diff = (lecture.getDate().getTime() - timeNowMilli);
+		
+		if(diff < MILLIHOUR) {
 			return result;
 		}
 		
