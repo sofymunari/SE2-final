@@ -207,7 +207,10 @@ async function teacherDeleteLecture(lectureId){
     const restext=await response.text();
     if(response.ok){
         if(restext){
-            return restext;
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
         }
         throw "error";
     }

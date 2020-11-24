@@ -129,8 +129,6 @@ public class HomeController {
 	
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")
 	public Boolean deleteLecture(@PathVariable Integer lectureId) {
-		Boolean res=lectureService.deleteLecture(lectureId);
-		System.out.println(res);
-        return res ;
+        return lectureService.deleteLecture(lectureId);
 	}
 }
