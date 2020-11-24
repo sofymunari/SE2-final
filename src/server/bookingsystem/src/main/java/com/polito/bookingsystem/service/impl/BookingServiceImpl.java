@@ -1,6 +1,4 @@
 package com.polito.bookingsystem.service.impl;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +20,6 @@ import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
-
 
 @Service
 public class BookingServiceImpl implements BookingService{
@@ -54,13 +51,13 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public List<BookingDto> getListBooking(String email){
 		if(email == null) {
-			List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
+			List<BookingDto> bookingsDto = new ArrayList<>();
 			return bookingsDto;
-			}
+		}
 		List<Booking> bookings = bookingRepository.findAll().stream()
 				                                 .filter(b -> b.getStudent().getEmail().compareTo(email) == 0 && b.getBookingInfo()!= BookingInfo.CANCELED_BY_STUD && b.getBookingInfo()!= BookingInfo.CANCELED_BY_PROF)
 				                                 .collect(Collectors.toList());
-		List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
+		List<BookingDto> bookingsDto = new ArrayList<>();
 		for(Booking booking : bookings ) {
 			bookingsDto.add(BookingConverter.toDto(booking));
 		}
@@ -73,7 +70,7 @@ public class BookingServiceImpl implements BookingService{
 		if(lecture == null)
 			return null;
 		
-		if(lecture.getRemotly())
+		if(Boolean.TRUE.equals(lecture.getRemotly()))
 			return null;
 		
 		Student student = studentRepository.findByEmail(email);
@@ -89,7 +86,7 @@ public class BookingServiceImpl implements BookingService{
 		Integer numBookingLecture = listBookingLectureAttended.size();
 		
 		Integer id = bookingRepository.findAll().stream()
-				.mapToInt(b->b.getBookingId())
+				.mapToInt(b->{return b.getBookingId();})
 				.max()
 				.orElse(0);
 		

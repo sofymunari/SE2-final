@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.dto;
-
 import java.util.Date;
 
 public class LectureDto {
@@ -13,8 +12,10 @@ public class LectureDto {
     private Integer duration;
     private RoomDto roomDto;
     private Integer bookedSeats;
+    private Boolean deleted;
     
-    public LectureDto() {
+    
+	public LectureDto() {
     }
 
     public LectureDto(Integer lectureId, Integer numberOfLesson, CourseDto courseDto, ProfessorDto professorDto, Boolean remotly,
@@ -30,8 +31,17 @@ public class LectureDto {
         this.duration = duration;
         this.roomDto = roomDto;
         this.bookedSeats = 0;
+        this.deleted = false;
     }
     
+    public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
     public Integer getBookedSeats() {
 		return bookedSeats;
 	}

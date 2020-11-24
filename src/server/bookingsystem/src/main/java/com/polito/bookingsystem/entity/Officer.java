@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.entity;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 

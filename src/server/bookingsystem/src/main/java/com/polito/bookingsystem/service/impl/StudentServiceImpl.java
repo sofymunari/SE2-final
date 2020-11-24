@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.service.impl;
-
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Student;
@@ -54,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
 
         javaMailSender.send(msg);
 		}catch (Exception e) {
-			// TODO: handle exception
+			return;
 		}
 	}
 	

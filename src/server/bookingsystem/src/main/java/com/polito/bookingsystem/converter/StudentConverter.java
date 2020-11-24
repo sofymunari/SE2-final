@@ -1,16 +1,15 @@
 package com.polito.bookingsystem.converter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Student;
 
-
 public class StudentConverter extends UserConverter{
-	
+	private StudentConverter() {
+		
+	}
 	public static Student toEntity(StudentDto studentDto) {
 		if( studentDto == null)
 			return null;
@@ -23,7 +22,7 @@ public class StudentConverter extends UserConverter{
 		student.setSurname(studentDto.getSurname());
 		student.setUserId(studentDto.getUserId());
 		student.setMatricola(studentDto.getMatricola());
-		List<Course> courses = new ArrayList<Course>();
+		List<Course> courses = new ArrayList<>();
 		for(CourseDto course : studentDto.getCoursesDto()) {
 			  courses.add(CourseConverter.toEntity(course));
 		}
@@ -43,7 +42,7 @@ public class StudentConverter extends UserConverter{
 		studentDto.setSurname(student.getSurname());
 		studentDto.setUserId(student.getUserId());
 		studentDto.setMatricola(student.getMatricola());
-		List<CourseDto> coursesDto = new ArrayList<CourseDto>();
+		List<CourseDto> coursesDto = new ArrayList<>();
 		for(Course courseDto : student.getCourses()) {
 			  coursesDto.add(CourseConverter.toDto(courseDto));
 		}

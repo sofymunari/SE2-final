@@ -1,10 +1,11 @@
 package com.polito.bookingsystem.converter;
-
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Lecture;
 
 public class LectureConverter {
-
+	private LectureConverter() {
+		
+	}
     public static Lecture toEntity(LectureDto lectureDto) {
 		if( lectureDto == null)
 			return null;
@@ -19,6 +20,7 @@ public class LectureConverter {
 		lecture.setRemotly(lectureDto.getRemotly());
 		lecture.setRoom(RoomConverter.toEntity(lectureDto.getRoomDto()));
 		lecture.setBookedSeats(lectureDto.getBookedSeats());
+		lecture.setDeleted(lectureDto.getDeleted());
 		return lecture;
 	}
 	
@@ -36,6 +38,7 @@ public class LectureConverter {
 		lectureDto.setRemotly(lecture.getRemotly());
 		lectureDto.setRoomDto(RoomConverter.toDto(lecture.getRoom()));
 		lectureDto.setBookedSeats(lecture.getBookedSeats());
+		lectureDto.setDeleted(lecture.getDeleted());
 		return lectureDto;
 	}
 }

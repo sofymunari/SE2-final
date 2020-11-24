@@ -1,25 +1,21 @@
 package com.polito.bookingsystem.utils.serviceTests;
-
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
@@ -33,8 +29,6 @@ import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
-import com.polito.bookingsystem.utils.BookingEntry;
-
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

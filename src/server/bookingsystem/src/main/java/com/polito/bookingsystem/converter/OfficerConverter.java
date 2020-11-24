@@ -1,11 +1,11 @@
 package com.polito.bookingsystem.converter;
-
-
 import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.entity.Officer;
 
 public class OfficerConverter extends UserConverter{
-
+    private OfficerConverter() {
+    	
+    }
 	public static Officer toEntity(OfficerDto officerDto) {
 		if( officerDto == null)
 			return null;

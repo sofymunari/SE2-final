@@ -1,10 +1,11 @@
 package com.polito.bookingsystem.converter;
-
 import com.polito.bookingsystem.dto.ManagerDto;
 import com.polito.bookingsystem.entity.Manager;
 
 public class ManagerConverter extends UserConverter {
-
+	private ManagerConverter() {
+		
+	}
 	public static Manager toEntity(ManagerDto managerDto) {
 		if( managerDto == null)
 			return null;

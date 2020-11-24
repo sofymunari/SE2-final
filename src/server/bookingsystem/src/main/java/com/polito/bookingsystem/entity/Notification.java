@@ -1,7 +1,5 @@
 package com.polito.bookingsystem.entity;
-
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

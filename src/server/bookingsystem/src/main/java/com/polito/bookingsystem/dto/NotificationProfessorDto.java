@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.dto;
-
 import java.util.Date;
 
 public class NotificationProfessorDto extends NotificationDto{

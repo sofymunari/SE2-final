@@ -1,14 +1,10 @@
 package com.polito.bookingsystem.controller;
-
 import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
 import com.polito.bookingsystem.dto.NotificationStudentDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
@@ -21,7 +17,6 @@ import com.polito.bookingsystem.service.StudentService;
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
 public class NotificationController {
-	
 	@Autowired
 	NotificationStudentService notificationStudentService;
 	
@@ -33,8 +28,6 @@ public class NotificationController {
 	
 	@Autowired
 	ProfessorService professorService;
-	
-
 
 	 @GetMapping("/student/notification/list/{studentId}")
 	 public List<NotificationStudentDto> getStudentNotifications(@PathVariable String email) {
@@ -49,8 +42,6 @@ public class NotificationController {
 		 return notificationStudentService.getStudentNotificationByNotificationId(notificationId);
 	 }
 
-
-
 	 @GetMapping("/professor/notification/list/{email}")
 	 public List<NotificationProfessorDto> getProfessorNotifications(@PathVariable String email) {
 	
@@ -63,10 +54,4 @@ public class NotificationController {
 			
 		 return notificationProfessorService.getProfessorNotificationByNotificationId(notificationId);
 	 }
-	 
-
-	 
-
-
-
 }

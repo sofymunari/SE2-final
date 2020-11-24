@@ -1,7 +1,5 @@
 package com.polito.bookingsystem.entity;
-
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 
 @Entity
 @Table
@@ -48,6 +44,9 @@ public class Lecture {
 	@Column
 	private Integer bookedSeats;
 	
+	@Column 
+	private Boolean deleted;
+	
 	@ManyToOne
     @JoinColumn(name ="roomId")
 	private Room room;
@@ -69,8 +68,17 @@ public class Lecture {
 		this.duration = duration;
 		this.room = room;
 		this.bookedSeats = 0;
+		this.deleted = false;
 	}
 	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Integer getBookedSeats() {
 		return bookedSeats;
 	}

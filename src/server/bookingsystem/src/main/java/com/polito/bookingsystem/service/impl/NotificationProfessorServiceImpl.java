@@ -1,13 +1,9 @@
 package com.polito.bookingsystem.service.impl;
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.polito.bookingsystem.converter.NotificationProfessorConverter;
 import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
@@ -32,7 +28,6 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 		this.notificationProfessorRepository = notificationProfessorRepository;
 		this.professorRepository = professorRepository;
 	}
-	
 	
 	@Override
 	public boolean sendProfessorNotification(ProfessorDto professorDto, String description, String link) {
@@ -85,8 +80,8 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 
 
 	@Override
-	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer Id) {
-		NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(Id);
+	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer notificationId) {
+		NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(notificationId);
 		return NotificationProfessorConverter.toDto(notificationProfessor);
 	}
 

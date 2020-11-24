@@ -1,27 +1,19 @@
 package com.polito.bookingsystem.utils.serviceTests;
-
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
@@ -30,7 +22,6 @@ import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
-import com.polito.bookingsystem.service.impl.StudentServiceImpl;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -56,8 +47,6 @@ class LectureServiceTests {
 		//passing an invalid mail 
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(null);
-		//assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures("wrong@email.com"));
-		
 		assertEquals("Expected an empty list to be returned", lectureServiceImpl.getListLectures("wrong@email.com"), new ArrayList<>());
 	}
 	
@@ -65,9 +54,7 @@ class LectureServiceTests {
 	void testGetListLectures2() {
 		//passing a null mail 
 		
-		when(studentRepository.findByEmail(anyString())).thenReturn(null);
-		//assertNull("Expected a null value to be returned", lectureServiceImpl.getListLectures(null));
-		
+		when(studentRepository.findByEmail(anyString())).thenReturn(null);		
 		assertEquals("Expected an empty list to be returned", lectureServiceImpl.getListLectures(null), new ArrayList<>());
 	}
 	

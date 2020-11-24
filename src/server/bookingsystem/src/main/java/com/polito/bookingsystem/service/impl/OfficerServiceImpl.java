@@ -1,6 +1,4 @@
 package com.polito.bookingsystem.service.impl;
-
-
 import com.polito.bookingsystem.service.OfficerService;
 import org.springframework.stereotype.Service;
 

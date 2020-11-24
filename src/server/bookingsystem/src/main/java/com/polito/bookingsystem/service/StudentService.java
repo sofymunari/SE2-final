@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.service;
-
 import com.polito.bookingsystem.dto.StudentDto;
 
 public interface StudentService {

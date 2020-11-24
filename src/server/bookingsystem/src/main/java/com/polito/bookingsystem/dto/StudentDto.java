@@ -1,9 +1,7 @@
 package com.polito.bookingsystem.dto;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 public class StudentDto extends UserDto{
 	private Date dateOfBirth;

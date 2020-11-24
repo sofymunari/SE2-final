@@ -1,10 +1,7 @@
 package com.polito.bookingsystem.controller;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +26,6 @@ import com.polito.bookingsystem.utils.BookingEntry;
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
 public class HomeController {
-	
 	@Autowired
 	StudentService studentService;
 	
@@ -66,16 +62,17 @@ public class HomeController {
 		List<BookingDto> bookingList=bookingService.getListBooking(email);
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
 		List<LectureDto> availableLectures=lectureService.getListLectures(email).stream().filter(l->{
+			Boolean result = false;
 			for(Integer id: ids) {
 				if(l.getLectureId().equals(id)) {
-					return false;
+					return result;
 				}
 			}
-			return true;
+			result = true;
+			return result;
 		}).collect(Collectors.toList());
         return availableLectures;
 	}
-	
 	
 	@PostMapping(value = "addbooking", headers="Content-Type=application/json")
     @ResponseBody
@@ -109,7 +106,6 @@ public class HomeController {
 			}
 			return "";
 	}
-
 	
 	@GetMapping(value= "professorbookings/{email}")
 	public List<BookingEntry> getBooking(@PathVariable String email) {
@@ -121,11 +117,13 @@ public class HomeController {
         return professorService.getProfessor(email);
 	}
 	
-	
 	@GetMapping(value="professorlectures/{email}")
 	public List<LectureDto> getProfessorLectures(@PathVariable String email){
 		return lectureService.getProfessorLectures(email);
 	}
 	
-	
+	@GetMapping(value="professor/deletelecture/{lectureId}")
+	public Boolean getStudentLectures(@PathVariable Integer lectureId) {
+        return lectureService.deleteLecture(lectureId);
+	}
 }

@@ -1,10 +1,7 @@
 package com.polito.bookingsystem.service.impl;
-
-
 import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.service.ProfessorService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

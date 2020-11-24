@@ -1,9 +1,6 @@
 package com.polito.bookingsystem.repository;
-
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import com.polito.bookingsystem.entity.NotificationStudent;
 import com.polito.bookingsystem.entity.Student;
 

@@ -1,7 +1,5 @@
 package com.polito.bookingsystem.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +27,6 @@ public abstract class BookingController {
     @ResponseBody
 	public BookingDto addBooking(@RequestBody Integer lectureId, String email) {
          return bookingService.addBooking(lectureId, email);
-         
 	}
 	
 	@DeleteMapping(value="deletebooking/{bookingId}")

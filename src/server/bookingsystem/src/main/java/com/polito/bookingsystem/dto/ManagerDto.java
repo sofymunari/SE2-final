@@ -1,6 +1,5 @@
 package com.polito.bookingsystem.dto;
 
-
 public class ManagerDto extends UserDto {
 
 	public ManagerDto() {

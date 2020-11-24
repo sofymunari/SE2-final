@@ -1,7 +1,5 @@
 package com.polito.bookingsystem.utils.serviceTests;
-
 import static org.junit.Assert.*;
-
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -10,15 +8,12 @@ import java.util.Date;
 import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.StudentRepository;

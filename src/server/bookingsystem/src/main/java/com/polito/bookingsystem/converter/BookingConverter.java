@@ -1,6 +1,4 @@
 package com.polito.bookingsystem.converter;
-
-
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 
@@ -19,7 +17,6 @@ public class BookingConverter {
 		booking.setLecture(LectureConverter.toEntity(bookingDto.getLectureDto()));
 		booking.setStudent(StudentConverter.toEntity(bookingDto.getStudentDto()));
 		return booking;
-		
 	}
 	
     public static BookingDto toDto(Booking booking) {

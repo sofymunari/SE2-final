@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.service.impl;
-
 import com.polito.bookingsystem.converter.NotificationStudentConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.NotificationStudentDto;
@@ -9,11 +8,9 @@ import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.NotificationStudentRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.NotificationStudentService;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,19 +29,18 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 		this.studentRepository = studentRepository;
 	}
 	
-	
 	@Override
 	public boolean sendStudentNotification(StudentDto studentDto, String description, String link) {
 		
 		if (studentDto == null) 
 			return false;
 		
-		Student Student = StudentConverter.toEntity(studentDto);
+		Student student = StudentConverter.toEntity(studentDto);
 		if(studentRepository.findByUserId(studentDto.getUserId()) != null) {
 			NotificationStudent notificationStudent= new NotificationStudent();
 			notificationStudent.setDate(new Date());
 			notificationStudent.setDescription(description);
-			notificationStudent.setStudent(Student);
+			notificationStudent.setStudent(student);
 			notificationStudent.setLink(link);
 			notificationStudent.setStatus(false);
 			notificationStudentRepository.save(notificationStudent);

@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.dto;
-
 import java.util.Date;
 
 public class NotificationDto {
@@ -7,9 +6,10 @@ public class NotificationDto {
 	private String description;
 	private Date date;
 	private boolean status;
-	String link;
+	private String link;
 	
 	public NotificationDto() {}
+	
 	public NotificationDto(Integer notificationId, String description, Date date, boolean status, String link) {
 		super();
 		this.notificationId = notificationId;
@@ -22,9 +22,11 @@ public class NotificationDto {
 	public String getLink() {
 		return link;
 	}
+	
 	public void setLink(String link) {
 		this.link = link;
 	}
+	
 	public Integer getNotificationId() {
 		return notificationId;
 	}
@@ -57,5 +59,4 @@ public class NotificationDto {
 	public void setStatus(boolean status) {
 		this.status= status;
 	}
-	
 }

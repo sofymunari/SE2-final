@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.entity;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +33,7 @@ public class Room {
 		return roomId;
 	}
 
-	public void setClassId(Integer roomId) {
+	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
 	}
 
@@ -42,7 +41,7 @@ public class Room {
 		return name;
 	}
 
-	public void setRoom(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

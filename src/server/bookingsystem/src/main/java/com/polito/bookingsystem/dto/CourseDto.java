@@ -1,6 +1,5 @@
 package com.polito.bookingsystem.dto;
 
-
 public class CourseDto {
 	private Integer courseId;
 	private String name;
@@ -15,7 +14,6 @@ public class CourseDto {
 		this.courseId = courseId;
 		this.name = name;
 		this.descriptions = descriptions;
-
 	}
 
 	public Integer getCourseId() {

@@ -1,25 +1,29 @@
 package com.polito.bookingsystem.service.impl;
-
 import com.polito.bookingsystem.converter.LectureConverter;
+import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
+import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.LectureService;
-
+import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.utils.BookingInfo;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LectureServiceImpl implements LectureService {
+	private static final Long MILLIHOUR = 3600000L;
 	
 	@Autowired
 	private LectureRepository lectureRepository;
@@ -29,6 +33,12 @@ public class LectureServiceImpl implements LectureService {
 	
 	@Autowired
 	private ProfessorRepository professorRepository;
+	
+	@Autowired
+	private BookingRepository bookingRepository;
+	
+	@Autowired
+	private StudentService studentService;
 	
 	@Autowired
 	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository)
@@ -46,11 +56,11 @@ public class LectureServiceImpl implements LectureService {
 			return new ArrayList<>();
 		
 		List<Course> courses = student.getCourses();
-		if(courses.size()==0)
+		if(courses.isEmpty())
 			return new ArrayList<>();
 		
 		List<Lecture> allLectures = lectureRepository.findAll();
-		List<LectureDto> studentLectures = new ArrayList<LectureDto>();
+		List<LectureDto> studentLectures = new ArrayList<>();
 		
 		for(Course course : courses) {
 		   List<Lecture> courseLectures = allLectures.stream()
@@ -63,13 +73,12 @@ public class LectureServiceImpl implements LectureService {
 		return studentLectures;
 	}
 
-
 	@Override
 	public List<LectureDto> getProfessorLectures(String email) {
 		List<LectureDto> lecturesDto = new ArrayList<>();
 		
 		if(email == null)
-			return null;
+			return new ArrayList<>();
 		
 		Professor professor = professorRepository.findByEmail(email);
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
@@ -79,4 +88,43 @@ public class LectureServiceImpl implements LectureService {
 		
 		return lecturesDto;
 	}
+
+
+	@Override
+	public boolean deleteLecture(Integer lectureId) {
+		Boolean result = false;
+		
+		Lecture lecture = lectureRepository.findByLectureId(lectureId);
+		if(lecture == null) {
+			return result;
+		}
+		Long timeNowMilli = System.currentTimeMillis();
+		
+		if((timeNowMilli - lecture.getDate().getTime()) < MILLIHOUR) {
+			return result;
+		}
+		
+		result = true;
+		lecture.setDeleted(result);
+		List<Booking> bookingsDelete = bookingRepository.findAll().stream()  
+				                      .filter(b -> b.getLecture().getLectureId().equals(lectureId))
+				                      .collect(Collectors.toList());
+		
+		for(Booking booking:bookingsDelete) {
+			booking.setLecture(lecture);
+			booking.setBookingInfo(BookingInfo.CANCELED_BY_PROF);
+			Student student = booking.getStudent();
+			String date = new SimpleDateFormat("dd/MM/yyyy").format(lecture.getDate());
+			String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse() + " is cancelled";
+			String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + "of course " 
+			               + lecture.getCourse() + " in date " + date 
+					       + " is cancelled!\nBest regard";
+			studentService.sendEmail(StudentConverter.toDto(student), subject, text);
+			bookingRepository.save(booking);
+		}
+		lectureRepository.save(lecture);
+		return result;
+	}
+	
+	
 }

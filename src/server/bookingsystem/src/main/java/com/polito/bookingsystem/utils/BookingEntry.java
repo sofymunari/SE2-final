@@ -1,7 +1,5 @@
 package com.polito.bookingsystem.utils;
-
 import java.util.Date;
-
 import com.polito.bookingsystem.entity.Course;
 
 public interface BookingEntry {

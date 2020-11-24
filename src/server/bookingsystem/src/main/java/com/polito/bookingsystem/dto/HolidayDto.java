@@ -1,9 +1,7 @@
 package com.polito.bookingsystem.dto;
-
 import java.util.Date;
 
 public class HolidayDto {
-
 	private Integer holidayId;
 
 	private Date date;
@@ -30,7 +28,5 @@ public class HolidayDto {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-	
-	
+	}	
 }

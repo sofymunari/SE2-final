@@ -345,7 +345,7 @@ class BookingsystemEntityTests {
 		Integer id = 0;
 		Room room = null;
 		room = createRoomTestSuite();
-		room.setClassId(id);
+		room.setRoomId(id);
 		assertNotNull("room id is null", room.getRoomId());
 		assertEquals("room id is wrong", room.getRoomId(), id);
 	}
@@ -362,7 +362,7 @@ class BookingsystemEntityTests {
 		String name = "testNameNew";
 		Room room = null;
 		room = createRoomTestSuite();
-		room.setRoom(name);
+		room.setName(name);
 		assertNotNull("room name is null", room.getName());
 		assertEquals("room name is wrong", room.getName(), name);
 	}
