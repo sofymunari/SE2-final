@@ -41,35 +41,27 @@ public class Booking {
 		this.lecture = lecture;
 		this.bookingInfo = bookingInfo;
 	}
-
 	public Integer getBookingId() {
 		return bookingId;
 	}
-
 	public void setBookingId(Integer bookingId) {
 		this.bookingId = bookingId;
 	}
-
 	public Student getStudent() {
 		return student;
 	}
-
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-
 	public Lecture getLecture() {
 		return lecture;
 	}
-
 	public void setLecture(Lecture lecture) {
 		this.lecture = lecture;
 	}
-
 	public BookingInfo getBookingInfo() {
 		return bookingInfo;
 	}
-
 	public void setBookingInfo(BookingInfo bookingInfo) {
 		this.bookingInfo = bookingInfo;
 	}

@@ -13,11 +13,8 @@ public class LectureDto {
     private RoomDto roomDto;
     private Integer bookedSeats;
     private Boolean deleted;
-    
-    
 	public LectureDto() {
     }
-
     public LectureDto(Integer lectureId, Integer numberOfLesson, CourseDto courseDto, ProfessorDto professorDto, Boolean remotly,
                       Date date, Integer duration, String programDetails, RoomDto roomDto) {
         super();
@@ -33,23 +30,18 @@ public class LectureDto {
         this.bookedSeats = 0;
         this.deleted = false;
     }
-    
     public Boolean getDeleted() {
 		return deleted;
 	}
-
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
-
     public Integer getBookedSeats() {
 		return bookedSeats;
 	}
-
 	public void setBookedSeats(Integer bookedSeats) {
 		this.bookedSeats = bookedSeats;
 	}
-
 	public Integer getLectureId() {
         return lectureId;
     }
@@ -62,7 +54,6 @@ public class LectureDto {
     public void setNumberOfLesson(Integer numberOfLesson) {
         this.numberOfLesson = numberOfLesson;
     }
-
     public CourseDto getCourseDto() {
         return courseDto;
     }
@@ -93,21 +84,16 @@ public class LectureDto {
     public void setProgramDetails(String programDetails) {
         this.programDetails = programDetails;
     }
-
     public RoomDto getRoomDto() {
         return roomDto;
     }
-
     public void setRoomDto(RoomDto roomDto) {
         this.roomDto = roomDto;
     }
-
 	public Integer getDuration() {
 		return duration;
 	}
-
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-
 }

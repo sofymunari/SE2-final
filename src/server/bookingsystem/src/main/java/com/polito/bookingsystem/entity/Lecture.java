@@ -51,7 +51,6 @@ public class Lecture {
     @JoinColumn(name ="roomId")
 	private Room room;
     
-	
 	public Lecture() {
 	}
 	
@@ -70,31 +69,24 @@ public class Lecture {
 		this.bookedSeats = 0;
 		this.deleted = false;
 	}
-	
 	public Boolean getDeleted() {
 		return deleted;
 	}
-
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
-
 	public Integer getBookedSeats() {
 		return bookedSeats;
 	}
-	
 	public void setBookedSeats(Integer bookedSeats) {
 		this.bookedSeats = bookedSeats;
 	}
-
 	public Integer getDuration() {
 		return duration;
 	}
-
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-
 	public Integer getLectureId() {
 		return this.lectureId;
 	}
@@ -138,14 +130,10 @@ public class Lecture {
 	public void setProgramDetails(String programDetails) {
 		this.programDetails = programDetails;
 	}
-
 	public Room getRoom() {
 		return room;
 	}
-
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-	
-
 }
