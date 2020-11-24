@@ -31,10 +31,11 @@ public class LectureServiceImpl implements LectureService {
 	private ProfessorRepository professorRepository;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, ProfessorRepository professorRepository)
 	{
 		this.lectureRepository = lectureRepository;
 		this.studentRepository = studentRepository;
+		this.professorRepository = professorRepository;
 	}
 
 
@@ -72,6 +73,8 @@ public class LectureServiceImpl implements LectureService {
 			return null;
 		
 		Professor professor = professorRepository.findByEmail(email);
+		if(professor == null)
+			return null;
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
 		
 		for(Lecture lecture : lectures) 

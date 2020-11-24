@@ -101,6 +101,28 @@ class NotificationStudentServiceTest {
 
 	}
 	
+	@Test
+	void testSendStudentNotification3() throws ParseException {
+		//passing invalid studentDto
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+
+		NotificationStudent notificationStudent = new NotificationStudent();
+	
+		StudentDto studentDto1 = new StudentDto(99, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
+		when(studentRepository.findByUserId(anyInt())).thenReturn(null);
+		when(notificationStudentRepository.save(anyObject())).thenReturn(notificationStudent);
+		
+		assertFalse( "Expected false, invalid studentId", notificationStudentServiceImpl.sendStudentNotification(studentDto1,  "testDescription", "testLink"));
+
+	}
+	
 	
 	@Test
 	void testGetStudentNotifications1() throws ParseException {
@@ -147,6 +169,42 @@ class NotificationStudentServiceTest {
 	}
 	
 	@Test
+	void testGetStudentNotifications3() throws ParseException {
+		//passing invalid studentDto
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+		
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
+	
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+
+		NotificationStudent notificationStudent1 = new NotificationStudent(1, "testDescription1", date, student1, true, "testLink1" );
+		NotificationStudent notificationStudent2 = new NotificationStudent(2, "testDescription2", date, student1, true, "testLink2" );
+		
+		List<NotificationStudent> list = new ArrayList<>();
+		list.add(notificationStudent1);
+		list.add(notificationStudent2);
+
+		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
+
+		when(studentRepository.findByUserId(anyInt())).thenReturn(null);
+		when(notificationStudentRepository.findByStudent(anyObject())).thenReturn(list);
+				
+		assertTrue("Expected an empty list", notificationStudentServiceImpl.getStudentNotifications(studentDto1).isEmpty());
+
+	}
+	
+	@Test
 	void testSetNotificationAsRead1() {
 		//passing null NotificationStudentDto
 		
@@ -187,5 +245,62 @@ class NotificationStudentServiceTest {
 		assertTrue("Expected true", notificationStudentServiceImpl.setNotificationAsRead(notificationStudentDto));
 	}
 	
+	@Test
+	void testSetNotificationAsRead3() throws ParseException {
+		//passing valid NotificationStudentDto
 		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+	
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+		
+		StudentDto studentDto1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses2, "testMatricola");
+
+		
+		NotificationStudentDto notificationStudentDto = new NotificationStudentDto(1, "testDescription1", date, studentDto1, true, "testLink1");
+
+		
+		when(notificationStudentRepository.findByNotificationId(anyInt())).thenReturn(null);
+		when(notificationStudentRepository.save(anyObject())).thenReturn(null);
+		
+		assertFalse("Expected false", notificationStudentServiceImpl.setNotificationAsRead(notificationStudentDto));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId1() {
+		//null notificationId
+		
+		assertNull("Expected null to be returned, null notificationId", notificationStudentServiceImpl.getStudentNotificationByNotificationId(null));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId2() {
+		//negative notificationId
+		
+		assertNull("Expected null to be returned, negative notificationId", notificationStudentServiceImpl.getStudentNotificationByNotificationId(-1));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId3() throws ParseException {
+		//null notificationId
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+		
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
+
+		NotificationStudent notificationStudent = new NotificationStudent(1, "testDescription1", date, student1, true, "testLink1" );
+		
+		when(notificationStudentRepository.findByNotificationId(anyInt())).thenReturn(notificationStudent);
+
+		assertTrue("Expected null to be returned, null notificationId", notificationStudentServiceImpl.getStudentNotificationByNotificationId(1).getNotificationId() == 1);
+	}
 }

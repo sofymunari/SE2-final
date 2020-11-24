@@ -85,9 +85,12 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 
 
 	@Override
-	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer Id) {
-		NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(Id);
-		return NotificationProfessorConverter.toDto(notificationProfessor);
+	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer notificationId) {
+		if(notificationId != null && notificationId > 0) {
+			NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(notificationId);
+			return NotificationProfessorConverter.toDto(notificationProfessor);
+		} else 
+			return null;
 	}
 
 }

@@ -88,5 +88,38 @@ class ProfessorServiceTests {
 		assertNull("Expected a null value returned, invalid email and password", professorServiceImpl.login(null, null));
 	}
 
+	
+	@Test
+	void testGetProfessor1() {
+		//null email 
+		
+		assertNull("Expected a null value to be returned, null email", professorServiceImpl.getProfessor(null));
+	}
+	
+	@Test
+	void testGetProfessor2() {
+		//invalid email 
+		
+		when(professorRepository.findByEmail(anyString())).thenReturn(null);
+		
+		assertNull("Expected a null value to be returned, invalid email", professorServiceImpl.getProfessor("wrong@email.com"));
+	}
+	
+	@Test
+	void testGetProfessor3() {
+		//invalid email 
+		
+		Course course1 = new Course(1, "testName", "testDescription");
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses);
+		
+		when(professorRepository.findByEmail(anyString())).thenReturn(professor);
+		
+		assertEquals("Expected a professor to be returned, valid email", professorServiceImpl.getProfessor("test@email.com").getUserId(), professor.getUserId());
+	}
+	
+	
+	
 
 }

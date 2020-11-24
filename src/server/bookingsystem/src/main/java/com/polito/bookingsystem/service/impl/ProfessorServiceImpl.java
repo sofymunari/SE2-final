@@ -52,6 +52,8 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public ProfessorDto getProfessor(String email) {
+		if (email == null)
+			return null;
 		Professor professor= professorRepository.findByEmail(email);
 		if(professor != null)
 		   return ProfessorConverter.toDto(professor);
