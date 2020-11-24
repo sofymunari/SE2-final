@@ -1,6 +1,7 @@
 import React from 'react';
 import TeacherNotification from './TeacherNotification';
 import TeacherModifyLecture from './TecaherModifyLecture';
+import TeacherStatistics from './TeacherStatistics';
 import API from './API.js';
 import {Route,Switch,Link} from 'react-router-dom';
 import AppComponents from './AppComponents';
@@ -85,6 +86,9 @@ class TeacherHomePage extends React.Component {
                     </div>
                 </div>
                 </Route>
+                <Route exact path="/teacherportal/statistics">
+                    <TeacherStatistics allLectures={this.state.allLectures} lectures={this.state.lectures} bookings={this.state.bookings}/>
+                </Route>
                 <Route exact path ="/teacherportal/notifications">
                     <TeacherNotification teacher={this.state.teacher}/>
                 </Route>           
@@ -113,8 +117,7 @@ class MainPage extends React.Component{
 
     }
     showItem= (lecture)=>{
-        const num= this.props.bookings.filter(b=>b.lectureId===lecture.lectureId).length;
-        return <LectureItem key={lecture.lectureId} lecture={lecture} num={num} showBookings={this.props.showBookings} modifyLecture={this.props.modifyLecture} />
+        return <LectureItem key={lecture.lectureId} lecture={lecture} showBookings={this.props.showBookings} modifyLecture={this.props.modifyLecture} />
     }
 
     render(){
@@ -172,7 +175,7 @@ function LectureItem (props){
             </h4>
             </div>
             <div className="col-2">
-            <h4>{props.num}</h4>
+            <h4>{props.lecture.bookedSeats}</h4>
             </div>
             <div className="col-1">
             {props.num>0?<svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-list-check" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.showBookings(props.lecture.lectureId)}>

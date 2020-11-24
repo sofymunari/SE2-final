@@ -109,6 +109,11 @@ function AppNavbar(props){
                     </svg>
                     </Link >
                     </li>
+                    <Link to="/teacherportal/statistics">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" >STATS</button>
+                    </li>
+                    </Link>
                     <li className="nav-item pr-1">
                         <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     
