@@ -122,8 +122,10 @@ public class HomeController {
 		return lectureService.getProfessorLectures(email);
 	}
 	
-	@GetMapping(value="professor/deletelecture/{lectureId}")
+	@DeleteMapping(value="professor/deletelecture/{lectureId}")
 	public Boolean getStudentLectures(@PathVariable Integer lectureId) {
-        return lectureService.deleteLecture(lectureId);
+		Boolean res=lectureService.deleteLecture(lectureId);
+		System.out.println(res);
+        return res ;
 	}
 }
