@@ -26,13 +26,10 @@ public class Professor extends User{
 		super(userId, name, surname, address, email, password);
 		this.courses = courses;
 	}
-	
 	public List<Course> getCourses() {
 		return courses;
 	}
-
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
-
 }

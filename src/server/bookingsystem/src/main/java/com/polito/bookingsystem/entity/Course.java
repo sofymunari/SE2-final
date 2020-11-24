@@ -31,29 +31,22 @@ public class Course {
 		this.name = name;
 		this.descriptions = descriptions;
 	}
-
 	public Integer getCourseId() {
 		return courseId;
 	}
-
 	public void setCourseId(Integer courseId) {
 		this.courseId = courseId;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public String getDescriptions() {
 		return descriptions;
 	}
-
 	public void setDescriptions(String descriptions) {
 		this.descriptions = descriptions;
 	}
-	
 }

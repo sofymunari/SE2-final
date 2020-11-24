@@ -35,31 +35,22 @@ public class Student extends User{
 		this.dateOfBirth = dateOfBirth;
 		this.matricola = matricola;
 	}
-    
-	
 	public String getMatricola() {
 		return matricola;
 	}
-
 	public void setMatricola(String matricola) {
 		this.matricola = matricola;
 	}
-
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
-
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-
 	public List<Course> getCourses() {
 		return courses;
 	}
-
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
-	
-	
 }

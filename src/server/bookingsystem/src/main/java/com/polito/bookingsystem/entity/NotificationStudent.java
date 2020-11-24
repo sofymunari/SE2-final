@@ -16,19 +16,14 @@ public class NotificationStudent extends Notification{
 	public NotificationStudent() {
 		super();
 	}
-	
 	public NotificationStudent(Integer notificationId, String description, Date date, Student student, boolean status, String link) {
 		super(notificationId, description, date, status, link);
 		this.student = student;
 	}
-
 	public Student getStudent() {
 		return student;
 	}
-
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-    
-	
 }
