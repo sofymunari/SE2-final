@@ -8,7 +8,7 @@ import AppComponents from './AppComponents';
 class TeacherHomePage extends React.Component {
     constructor(props){
         super(props);
-        this.state={'teacher':null,'errorTeacher':null,'students':null,'errorLectures':null,'bookings':null,'lectures':null, 'modifylect':null}
+        this.state={'teacher':null,'errorTeacher':null,'students':null,'errorLectures':null,'bookings':null,'lectures':null, 'modifylect':null,'allLectures':null}
         //teacher prop is the teacher username
         //teacher state is the teacher info
 
@@ -21,20 +21,21 @@ class TeacherHomePage extends React.Component {
     async init(){
         const bookings= await API.getTeacherBookings(this.props.teacher);
         const teacher= await API.getTeacherInfo(this.props.teacher);
-        const lectures= await API.getTeacherLectures(this.props.teacher);
-        //const lectures=bookings.map(b=>{return {lectureId:b.lectureId,lectureNumber:b.lectureNumber,lectureDate:b.lectureDate,course:b.course.name}});
-        
-        /*let ids = [... new Set(bookings.map(b=>b.lectureId))]
-        const lect_unique=lectures.filter(b=>{
-            for (let i of ids){
-                if(b.lectureId===i){
-                    ids=ids.filter(el=>el!==i);
-                    return true;
-                }
+        const allLectures= await API.getTeacherLectures(this.props.teacher);
+        //allLectures are all lectures of a teacher
+        //lectures are the lecture of the teacher which are not passed nor deleted
+        const lectures=allLectures.filter((l)=>{
+            if(l.deleted){
+                return false;
             }
-            return false;
-        })*/
-        this.setState({teacher:teacher,bookings:bookings,lectures:lectures})
+            const now = new Date();
+            const lectDate= new Date(l.date);
+            if(lectDate<now){
+                return false;
+            }
+            return true;
+        })
+        this.setState({teacher:teacher,bookings:bookings,lectures:lectures,allLectures:allLectures})
     }
     modifyLecture=(lectureId)=>{
         const lecture=this.state.lectures.filter((l)=>l.lectureId===lectureId).pop();
@@ -42,8 +43,19 @@ class TeacherHomePage extends React.Component {
     }
     showBookings=(lectureId)=>{
         const students=this.state.bookings.filter(b=>b.lectureId===lectureId);
-        console.log(students)
         this.setState({students:students});
+    }
+    deleteandback=(lectureId)=>{
+        const lectures=this.state.lectures.filter(l=>l.lectureId!==lectureId);
+        const allLectures=this.state.allLectures.map(l=>{
+            let lect={...l};
+            if(lect.lectureId===lectureId){
+                lect.deleted=true;
+            }
+            return lect;
+        })
+        this.setState({students:null,modifylect:null,lectures:lectures,allLectures:allLectures})
+
     }
     back=()=>{
         this.setState({students:null,modifylect:null})
@@ -65,7 +77,7 @@ class TeacherHomePage extends React.Component {
                     </div>
                     <div className="col-10" id="main">
                     {this.state.modifylect?
-                    <TeacherModifyLecture back={this.back} lecture={this.state.modifylect}/>:
+                    <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect}/>:
                     this.state.students?
                     <StudentBookingList students={this.state.students} back={this.back}/>:
                     <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}

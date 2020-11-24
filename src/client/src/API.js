@@ -179,7 +179,7 @@ async function getTeacherLectures(username){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
             courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},roomDto:{name:l.roomDto.name},
-            date:l.date,remotly:l.remotly,programDetails:l.programDetails,duration:l.duration,bookedSeats:l.bookedSeats}
+            date:l.date,remotly:l.remotly,programDetails:l.programDetails,duration:l.duration,bookedSeats:l.bookedSeats,deleted:l.deleted}
         })
     }else{
         throw lects_json;
@@ -199,6 +199,20 @@ async function getTeacherNotifications(username){
     }
 }
 
+async function teacherDeleteLecture(lectureId){
+    const url= BASE_URL+"professor/deletelecture/"+lectureId;
+    const response= await fetch(url,{
+        method: 'DELETE'
+    })
+    const restext=await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications}
+
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture}
 export default API;
