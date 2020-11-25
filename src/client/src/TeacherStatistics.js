@@ -1,4 +1,5 @@
 import React from 'react';
+import { Bar } from "react-chartjs-2";
 
 class TeacherStatistics extends React.Component {
     constructor(props){
@@ -57,54 +58,80 @@ function getMonth(date){
     return now.getMonth();
 }
 
-function PerMonthStats(props){
-    const lectsStats=props.lectures.map((p)=>{
-        return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
-    })
-    const months=lectsStats.map((ls)=>ls.month);
-    const monthsUnique= [... new Set(months)];
-    const stats=monthsUnique.map((m)=>{
-        let intLects=lectsStats.filter((l)=>l.month===m);
-        let avgBookings=0;
-        let nDeleted=0;
-        let nRemote=0;
-        for (let le of intLects){
-            avgBookings=avgBookings+le.bookedSeats;
-            le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
-            le.remotly?nRemote=nRemote+1:nRemote=nRemote;
-        }
-        avgBookings=Math.ceil(avgBookings/intLects.length);
-        return {'month':m,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
-    })
-    return <ul className="list-group list-group-flush">
-                    <li className="list-group-item bg-light">
-                        <div className="d-flex w-100 justify-content-between">
-                        <div className="col-2">
-                        <h4>MONTH</h4>
-                        </div>
-                        <div className="col-2">
-                        <h4>AVG BOOKINGS</h4>
-                        </div>
-                        <div className="col-2">
-                        <h4>TOTAL LESSONS</h4>
-                        </div>
-                        <div className="col-3">
-                        <h4>TOTAL REMOTE LESSONS</h4>
-                        </div>
-                        <div className="col-3">
-                        <h4>TOTAL DELETED LESSONS</h4>
-                        </div>
-                        </div>
-                        </li>
-                    {stats.map((l)=>
-                    <MonthStats key={l.month} monthStats={l} />)}
-                </ul>
+class PerMonthStats extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={'monthStats':null,'showList':true}
+    }
+    componentDidMount(){
+        const lectsStats=this.props.lectures.map((p)=>{
+            return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+        })
+        const months=lectsStats.map((ls)=>ls.month);
+        const monthsUnique= [... new Set(months)];
+        const stats=monthsUnique.map((m)=>{
+            let intLects=lectsStats.filter((l)=>l.month===m);
+            let avgBookings=0;
+            let nDeleted=0;
+            let nRemote=0;
+            for (let le of intLects){
+                avgBookings=avgBookings+le.bookedSeats;
+                le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
+                le.remotly?nRemote=nRemote+1:nRemote=nRemote;
+            }
+            avgBookings=Math.ceil(avgBookings/intLects.length);
+            return {'month':m,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+        })
+        this.setState({'monthStats':stats});
+
+    }
+    showGraph=(value)=>{
+        this.setState({"showList":value});
+    }
+
+    render(){
+            if(!this.state.monthStats){
+                return <h2>LOADING</h2>
+            }
+            if(this.state.showList){
+            return      <>
+                        <ul className="list-group list-group-flush">
+                            <li className="list-group-item bg-light">
+                                <div className="d-flex w-100 justify-content-between">
+                                <div className="col-2">
+                                <h4>MONTH</h4>
+                                </div>
+                                <div className="col-2">
+                                <h4>AVG BOOKINGS</h4>
+                                </div>
+                                <div className="col-2">
+                                <h4>TOTAL LESSONS</h4>
+                                </div>
+                                <div className="col-3">
+                                <h4>TOTAL REMOTE LESSONS</h4>
+                                </div>
+                                <div className="col-3">
+                                <h4>TOTAL DELETED LESSONS</h4>
+                                </div>
+                                </div>
+                                </li>
+                            {this.state.monthStats.map((l)=>
+                            <MonthStats key={l.month} monthStats={l} />)}
+                        </ul>
+                        <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+                        </>
+            }else{
+                let lects = this.state.monthStats.map((s)=>{return {'label': months[s.month], 'data': s.avgBookings }})
+                return <TeacherGraph showGraph={this.showGraph} lectures={lects} title={"Per Month"}/>
+            }
+    }
 }
 
+const months = [ "January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December" ];
 
 function MonthStats(props){
-    let months = [ "January", "February", "March", "April", "May", "June", 
-           "July", "August", "September", "October", "November", "December" ];
+    
 return  <li className="list-group-item" id = {props.monthStats.month}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">          
@@ -130,28 +157,45 @@ return  <li className="list-group-item" id = {props.monthStats.month}>
 
 
 
-function PerWeekStats(props){
+class PerWeekStats extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={'weekStats':null,"showList":true}
+    }
+    showGraph=(value)=>{
+        this.setState({"showList":value});
+    }
     
-    const lectsStats=props.lectures.map((p)=>{
-        return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
-    })
-    const weeks=lectsStats.map((ls)=>ls.week);
-    const weeksUnique= [... new Set(weeks)];
-    const stats=weeksUnique.map((w)=>{
-        let intLects=lectsStats.filter((l)=>l.week===w);
-        let avgBookings=0;
-        let nDeleted=0;
-        let nRemote=0;
-        for (let le of intLects){
-            avgBookings=avgBookings+le.bookedSeats;
-            le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
-            le.remotly?nRemote=nRemote+1:nRemote=nRemote;
+    componentDidMount(){
+        const lectsStats=this.props.lectures.map((p)=>{
+            return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+        })
+        const weeks=lectsStats.map((ls)=>ls.week);
+        const weeksUnique= [... new Set(weeks)];
+        const stats=weeksUnique.map((w)=>{
+            let intLects=lectsStats.filter((l)=>l.week===w);
+            let avgBookings=0;
+            let nDeleted=0;
+            let nRemote=0;
+            for (let le of intLects){
+                avgBookings=avgBookings+le.bookedSeats;
+                le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
+                le.remotly?nRemote=nRemote+1:nRemote=nRemote;
+            }
+            avgBookings=Math.ceil(avgBookings/intLects.length);
+            return {'week':w,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+        })
+        this.setState({'weekStats':stats});
+    }
+
+    render(){
+        if(!this.state.weekStats){
+            return <h2>LOADING</h2>
         }
-        avgBookings=Math.ceil(avgBookings/intLects.length);
-        return {'week':w,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
-    })
-    return <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-light">
+        if(this.state.showList){
+            return <>
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item bg-light">
                     <div className="d-flex w-100 justify-content-between">
                     <div className="col-2">
                     <h4>WEEK NUMBER</h4>
@@ -170,9 +214,16 @@ function PerWeekStats(props){
                     </div>
                     </div>
                     </li>
-                {stats.map((l)=>
+                {this.state.weekStats.map((l)=>
                 <WeekStats key={l.week} weekStats={l} />)}
             </ul>
+            <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+            </>
+        }else{
+            let lectures=this.state.weekStats.map((w)=>{return {'label':"week:"+w.week,'data':w.avgBookings}})
+            return <TeacherGraph lectures={lectures} showGraph={this.showGraph} title={"Per Week"}/>;
+        }
+    }
 }
 
 
@@ -202,9 +253,20 @@ function WeekStats(props){
 
 
 
-function AllLecturesStats (props){
-    let cancellations = props.bookings.filter((b)=>b.bookingInfo==='CANCELLED_BY_STUD');
-    return  <ul className="list-group list-group-flush">
+class AllLecturesStats extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={"showList":true}
+    }
+    showGraph=(value)=>{
+        this.setState({"showList":value});
+    }
+
+    render(){
+        if(this.state.showList){
+    let cancellations = this.props.bookings.filter((b)=>b.bookingInfo==='CANCELLED_BY_STUD');
+    return  <>
+            <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
                     <div className="d-flex w-100 justify-content-between">
                     <div className="col-2">
@@ -230,9 +292,17 @@ function AllLecturesStats (props){
                     </div>
                     </div>
                     </li>
-                {props.lectures.map((l)=>
+                {this.props.lectures.map((l)=>
                 <LectureStats key={l.lectureId} lecture={l} bookingCancelled={cancellations.filter((b)=>b.lectureId===l.lectureId).length}/>)}
             </ul>
+            <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+            
+            </>
+        }else{
+            let lects=this.props.lectures.map((l)=>{return {'label':l.courseDto.name+" "+l.numberOfLesson,'data':l.bookedSeats}})
+            return <TeacherGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture"}/>
+        }
+    }
 }
 
 function LectureStats(props){
@@ -280,5 +350,50 @@ function Filter(props){
 }
 
 
+class TeacherGraph extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={ dataBar: {
+            labels: [... this.props.lectures.map((l)=>{return l.label;})],
+            datasets: [{label: "Number of bookings "+this.props.title,
+                data: [... this.props.lectures.map((l)=>{return l.data;})],
+                backgroundColor: [
+                  "rgba(255, 134,159,0.4)"
+                ],
+                borderWidth: 2,
+                borderColor: [
+                  "rgba(255, 134, 159, 1)",
+                ]}]},
+          barChartOptions: {scales: {xAxes: [{
+                  barPercentage: 0.5,
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  }}],yAxes: [{
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  },
+                  ticks: {
+                    beginAtZero: true
+                  }}]}}
+                }
+    }
+    render(){
+        return (
+        <div className="container">
+        
+            <h3 className="mt-5">Bookings {this.props.title}</h3>
+            <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
+        
+        <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
+        </div>
+        )
+    }
+}
+
+function TeacherGraphPerMonth(props){
+    return <button type="button" className="btn btn-success" onClick={(ev) => props.showGraph(true)}>Show List</button>
+}
 
 export default TeacherStatistics;
