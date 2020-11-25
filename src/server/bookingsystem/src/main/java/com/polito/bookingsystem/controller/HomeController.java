@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.ManagerDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.LectureService;
+import com.polito.bookingsystem.service.ManagerService;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.NotificationStudentService;
 import com.polito.bookingsystem.service.ProfessorService;
@@ -41,6 +43,8 @@ public class HomeController {
 	@Autowired
 	NotificationStudentService notificationStudentService;
 	
+	@Autowired
+	ManagerService managerService;
 	
 	@Autowired
 	NotificationProfessorService notificationProfessorService;
@@ -107,6 +111,15 @@ public class HomeController {
 			return "";
 	}
 	
+	@PostMapping(value= "managerlogin")
+	public String loginManager(@RequestBody Map<String, String> userPass) {
+		String email = managerService.login(userPass.get("username"), userPass.get("password"));
+		
+		if(email != null) return email;
+		
+		return "";
+	}
+	
 	@GetMapping(value= "professorbookings/{email}")
 	public List<BookingEntry> getBooking(@PathVariable String email) {
 			return bookingService.getBooking(email);
@@ -130,5 +143,12 @@ public class HomeController {
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")
 	public Boolean deleteLecture(@PathVariable Integer lectureId) {
         return lectureService.deleteLecture(lectureId);
+	}
+	
+	
+	@GetMapping(value = "managerinfo/{email}")
+	public ManagerDto getManagerInfo(@PathVariable String email) {
+		
+		return managerService.getManager(email);
 	}
 }
