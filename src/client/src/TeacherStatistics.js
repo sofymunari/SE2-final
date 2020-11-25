@@ -358,11 +358,17 @@ class TeacherGraph extends React.Component{
             datasets: [{label: "Number of bookings "+this.props.title,
                 data: [... this.props.lectures.map((l)=>{return l.data;})],
                 backgroundColor: [
-                  "rgba(255, 134,159,0.4)"
+                  "rgba(255, 0,0,0.4)",
+                  "rgba(0, 0,255,0.4)",
+                  "rgba(60, 179,113,0.4)",
+                  "rgba(106, 90,205,0.4)"
                 ],
                 borderWidth: 2,
                 borderColor: [
-                  "rgba(255, 134, 159, 1)",
+                  "rgba(255, 0, 0, 1)",
+                  "rgba(0, 0,255,1)",
+                  "rgba(60, 179,113,1)",
+                  "rgba(106, 90,205,1)"
                 ]}]},
           barChartOptions: {scales: {xAxes: [{
                   barPercentage: 0.5,
@@ -392,8 +398,5 @@ class TeacherGraph extends React.Component{
     }
 }
 
-function TeacherGraphPerMonth(props){
-    return <button type="button" className="btn btn-success" onClick={(ev) => props.showGraph(true)}>Show List</button>
-}
 
 export default TeacherStatistics;
