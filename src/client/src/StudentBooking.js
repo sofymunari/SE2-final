@@ -15,7 +15,6 @@ class StudentBooking extends React.Component{
         .catch((error)=>this.setState({bookingsError:error}))
     }
     showItem= (booking)=>{
-        console.log(booking);
         return <BookingItem key={booking.bookingId} booking={booking} cancelBooking={this.cancelBooking} />
     }
     cancelBooking= (bookingId)=>{

@@ -2,9 +2,11 @@ import React  from 'react';
 import './App.css';
 import StudentLogIn from './StudentLogIn';
 import TeacherLogIn from './TeacherLogIn';
+import ManagerLogIn from './ManagerLogIn';
 import StudentHomePage from './StudentHomePage';
 import TeacherHomePage from './TeacherHomePage';
 import AppComponents from './AppComponents';
+import ManagerHomePage from './ManagerHomePage';
 import { Switch,Route,Link,Redirect } from 'react-router-dom';
 import API from './API';
  
@@ -12,7 +14,7 @@ import API from './API';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state={student:null, teacher:null, loginError:null};
+    this.state={student:null, teacher:null, loginError:null,manager:null};
   }
 
   loginStudent=(username,password)=>{
@@ -26,13 +28,20 @@ class App extends React.Component {
       this.setState({teacher:usr,loginError:null})})
       .catch((error)=>{this.setState({loginError:error})});
   }
+  loginManager=(username,password)=>{
+    API.loginManager(username,password).then((usr)=>{
+      this.setState({manager:usr,loginError:null})})
+      .catch((error)=>{this.setState({loginError:error})});
+  }
   logOutStudent=()=>{
     this.setState({student:null});
   }
   logOutTeacher=()=>{
     this.setState({teacher:null});
   }
-  
+  logOutManager=()=>{
+    this.setState({manager:null});
+  }
   render(){ 
    return (
       <div className="App">
@@ -53,6 +62,12 @@ class App extends React.Component {
           <TeacherLogIn loginTeacher={this.loginTeacher} loginError={this.state.loginError}/>
           }
         </Route>
+        <Route exact path="/managerlogin">
+          {this.state.manager? 
+          <Redirect to="/managerportal" />:
+          <ManagerLogIn loginManager={this.loginManager} loginError={this.state.loginError}/>
+          }
+        </Route>
         <Route path="/studentportal">
           {this.state.student?
           <StudentHomePage student={this.state.student}  logOut={this.logOutStudent}/>:
@@ -64,6 +79,12 @@ class App extends React.Component {
           <TeacherHomePage teacher={this.state.teacher}  logOut={this.logOutTeacher}/>:
           <Redirect to="/"/>
         }
+        </Route>
+        <Route path="/managerportal">
+          {this.state.manager?
+          <ManagerHomePage manager={this.state.manager}  logOut={this.logOutManager}/>:
+          <Redirect to="/"/>
+          }
         </Route>
         </Switch>
         <AppComponents.AppFooter/>

@@ -116,7 +116,7 @@ class MainPage extends React.Component{
 
 function LectureItem (props){
     var date = new Date(props.lecture.date).toLocaleString().slice(0,-3);
-    console.log(props.lecture);
+    
 
     return (
         <li className="list-group-item" id = {props.lecture.lectureId}>

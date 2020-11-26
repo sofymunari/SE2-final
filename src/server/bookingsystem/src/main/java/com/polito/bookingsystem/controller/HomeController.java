@@ -135,9 +135,10 @@ public class HomeController {
 		return lectureService.getProfessorLectures(email);
 	}
 	
-	@GetMapping(value="listbooking/")
+	@GetMapping(value="listbookings")
 	public List<BookingDto> getAllBookings() {
-        return bookingService.getListAllBookings();
+        List<BookingDto> mylist= bookingService.getListAllBookings();
+        return mylist;
 	}
 	
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")

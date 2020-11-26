@@ -25,9 +25,17 @@ function AppTitle(props){
                         <h1>STUDENT PORTAL</h1>
                         <p>Welcome to the Student Portal Page</p>
                     </Route>
+                    <Route path="/managerlogin">
+                        <h1>MANAGER LOGIN</h1>
+                        <p>Welcome to the Manager Login Page</p>
+                    </Route>
                     <Route exact path="/">
                       <h1>WESTERN UNIVERSITY</h1>  
                       <p>Welcome to the Home Page</p> 
+                    </Route>
+                    <Route path="/managerportal">
+                        <h1>MANAGER PORTAL</h1>
+                        <p>Welcome to the Manager Portal Page</p>
                     </Route>
                     <Route path="/teacherportal">
                         <h1>TEACHER PORTAL</h1>
@@ -56,7 +64,9 @@ function AppNavbar(props){
                         </Link>
                         </li>
                         <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >Officer</button>
+                        <Link to="/managerlogin">
+                        <button className="btn btn-success text-dark font-weight-bold" >Manager</button>
+                        </Link>
                         </li>    
                     </ul>
                 </div>  
@@ -120,7 +130,18 @@ function AppNavbar(props){
                     </ul>
                 </div>  
                 </nav>
-            </Route>     
+            </Route> 
+            <Route exact path="/managerportal">
+                <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
+                <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
+                    <ul className="navbar-nav text-right">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
+                    </li>     
+                    </ul>
+                </div>  
+                </nav>
+            </Route> 
             </Switch>
 }
 const AppComponents={AppFooter,AppTitle,AppNavbar}

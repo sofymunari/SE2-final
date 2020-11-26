@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class TeacherLogin extends React.Component {
+class ManagerLogIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {username: '', password: ''};
@@ -16,7 +16,7 @@ class TeacherLogin extends React.Component {
         if (!this.form.checkValidity()) {
             this.form.reportValidity();
         } else {
-            this.props.loginTeacher(this.state.username,this.state.password);
+            this.props.loginManager(this.state.username,this.state.password);
             
         }
     }
@@ -61,4 +61,4 @@ class TeacherLogin extends React.Component {
 
 }
 
-export default TeacherLogin;
+export default ManagerLogIn;

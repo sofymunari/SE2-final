@@ -1,24 +1,6 @@
 
 const BASE_URL = 'http://localhost:8080/'
 
-/*async function loginStudent(username,password){
-    let url=BASE_URL+"studentlogin"
-    return new Promise((resolve,reject)=>{
-        fetch(url,{
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username:username,password:password})
-        }).then((response)=>{
-            response.text()
-            
-        }).catch((err)=>{
-            reject(err);
-        })
-    });
-    //return 's0000@studenti.polito.it';
-}*/
 async function loginStudent(username,password){
     let url=BASE_URL+"studentlogin"
     const response= await fetch(url,{
@@ -37,6 +19,7 @@ async function loginStudent(username,password){
     }
 }
 
+
 async function loginTeacher(username,password){
     let url=BASE_URL+"professorlogin"
     const response= await fetch(url,{
@@ -54,6 +37,24 @@ async function loginTeacher(username,password){
         throw "error";
     }
 
+}
+
+async function loginManager(username,password){
+    let url=BASE_URL+"managerlogin"
+    const response= await fetch(url,{
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:username,password:password})
+    })
+    const restext=await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
 }
 
 
@@ -85,9 +86,19 @@ async function getStudentInfo(username){
     }
 }
 
+async function getManagerInfo(username){
+    let url=BASE_URL+"managerinfo/"+username;
+    const response= await fetch(url);
+    const managInfo=await response.json();
+    if(response.ok){
+    return {userId:managInfo.userId,name:managInfo.name, surname:managInfo.surname,
+        address:managInfo.address,username:managInfo.email}
+    }else{
+        throw managInfo;
+    }
+}
+
 async function addBooking(id,username){
-    console.log(id)
-    console.log(username)
     let url=BASE_URL+"addbooking"
     return new Promise((resolve,reject)=>{
         fetch(url,{
@@ -126,6 +137,27 @@ async function getStudentBookings(username){
         throw response;
     }
 }
+
+
+async function getBookings(){
+    let url=BASE_URL+"listbookings";
+    const response=await fetch(url);
+    const bks=await response.json();
+    if(response.ok){
+        return bks.map((b)=>{return {bookingId:b.bookingId,lectureDto:{lectureId:b.lectureDto.lectureId,
+            numberOfLesson:b.lectureDto.numberOfLesson,remotly:b.lectureDto.remotly,
+            date:b.lectureDto.date,programDetails:b.lectureDto.programDetails,duration:b.lectureDto.duration},
+            courseDto:{courseId:b.lectureDto.courseDto.courseId,name:b.lectureDto.courseDto.name,
+            decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
+            name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
+            address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
+            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
+    }else{
+        throw response;
+    }
+}
+
+
 
 async function cancelBooking(id){
     let url=BASE_URL+"deletebooking/"+id;
@@ -217,5 +249,7 @@ async function teacherDeleteLecture(lectureId){
 }
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture}
+
+
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings}
 export default API;
