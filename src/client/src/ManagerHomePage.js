@@ -26,7 +26,7 @@ class ManagerHomePage extends React.Component{
             return <h1>LOADING</h1>
         }
         return <>
-            <AppComponents.AppNavbar logout={this.props.logout}/>
+            <AppComponents.AppNavbar logOut={this.props.logOut}/>
             <h1>Welcome</h1>
             </>;
     }
