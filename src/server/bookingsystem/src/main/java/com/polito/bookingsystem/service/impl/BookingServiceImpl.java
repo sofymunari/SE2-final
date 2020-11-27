@@ -69,6 +69,10 @@ public class BookingServiceImpl implements BookingService{
 
 	@Override
 	public BookingDto addBooking(Integer lectureId, String email) {
+		
+		if(email == null || lectureId == null || lectureId < 0)
+			return null;
+		
 		Lecture lecture = lectureRepository.findByLectureId(lectureId);
 		if(lecture == null)
 			return null;

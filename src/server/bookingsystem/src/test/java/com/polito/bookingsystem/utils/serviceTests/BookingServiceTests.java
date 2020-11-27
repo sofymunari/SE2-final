@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +30,8 @@ import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
+import com.polito.bookingsystem.service.NotificationProfessorService;
+import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
@@ -56,7 +58,7 @@ class BookingServiceTest {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-
+		
 		professorRepository = mock(ProfessorRepository.class);
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
@@ -431,7 +433,7 @@ class BookingServiceTest {
 	
 	@Test
 	void testAddBooking6() throws ParseException {
-		//passing a valid id an email, result should be waiting	(room number of seats =3 )
+		//passing a valid id and email, result should be waiting (room number of seats =3 )
 		
 		Room room1 = new Room(1, "testName", 3);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -458,12 +460,14 @@ class BookingServiceTest {
 
 		when(bookingRepository.findAll()).thenReturn(bookings);
 		when(bookingRepository.save(anyObject())).thenReturn(null);
+		when(bookingRepository.save(anyObject())).thenReturn(null);
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
 
-		//assertTrue( "Expected a booking with booking info equal to Waiting", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.WAITING);
+		assertTrue( "Expected a booking with booking info equal to Waiting", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.WAITING);
 	}
-	
+
+
 	@Test
 	void testAddBooking7() throws ParseException {
 		//passing a valid id an email, result should be Attended (room number of seats = 4)
@@ -500,14 +504,14 @@ class BookingServiceTest {
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
 
-		//assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.BOOKED);
+		assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.BOOKED);
 	}
 	
 	
 	@Test
 	void testGetBooking1() {
 		//passing an invalid id	
-		//when(bookingRepository.findByProfessor(anyInt())).thenReturn(new ArrayList<BookingEntry>());
+		when(bookingRepository.findByProfessor(anyString())).thenReturn(new ArrayList<BookingEntry>());
 
 		assertTrue("Expected an empty list to be returned", bookingServiceImpl.getBooking("").size() == 0);
 	}
