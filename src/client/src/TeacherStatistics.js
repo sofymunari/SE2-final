@@ -33,7 +33,6 @@ class TeacherStatistics extends React.Component {
 }
 
 function Main(props){
-    console.log(props.passedLectures);
     return <div className="col-sm-10 pl-0">
                 <h2 className="text-center text-success">HERE ARE YOUR STATS FOR {props.choosenTab}</h2>
                 {props.choosenTab==='All Lectures'?
@@ -118,7 +117,7 @@ class PerMonthStats extends React.Component{
                             {this.state.monthStats.map((l)=>
                             <MonthStats key={l.month} monthStats={l} />)}
                         </ul>
-                        <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+                        <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
                         </>
             }else{
                 let lects = this.state.monthStats.map((s)=>{return {'label': months[s.month], 'data': s.avgBookings }})
@@ -217,7 +216,7 @@ class PerWeekStats extends React.Component{
                 {this.state.weekStats.map((l)=>
                 <WeekStats key={l.week} weekStats={l} />)}
             </ul>
-            <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+            <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
             </>
         }else{
             let lectures=this.state.weekStats.map((w)=>{return {'label':"week:"+w.week,'data':w.avgBookings}})
@@ -295,7 +294,7 @@ class AllLecturesStats extends React.Component {
                 {this.props.lectures.map((l)=>
                 <LectureStats key={l.lectureId} lecture={l} bookingCancelled={cancellations.filter((b)=>b.lectureId===l.lectureId).length}/>)}
             </ul>
-            <button type="button" class="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+            <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
             
             </>
         }else{

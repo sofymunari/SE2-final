@@ -205,7 +205,6 @@ class StudentBookingList extends React.Component{
     }
 
     render(){
-        console.log(this.props.students)
         return  <>
                 <h1>STUDENT LIST FOR COURSE {this.props.students[0].course.name} LESSON NUMBER {this.props.students[0].lectureNumber}</h1>
                 <ul className="list-group list-group-flush">
