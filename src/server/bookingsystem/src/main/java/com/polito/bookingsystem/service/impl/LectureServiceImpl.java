@@ -42,8 +42,9 @@ public class LectureServiceImpl implements LectureService {
 	private StudentService studentService;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService)
 	{
+		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
 		this.studentRepository = studentRepository;
 		this.bookingRepository = bookingRepository;

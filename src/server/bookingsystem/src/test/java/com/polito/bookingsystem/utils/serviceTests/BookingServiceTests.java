@@ -27,6 +27,7 @@ import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
+import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.BookingServiceImpl;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
@@ -43,18 +44,20 @@ class BookingServiceTest {
 	@Autowired
 	private BookingRepository bookingRepository;
 	
+	private StudentService studentService;
 	private LectureServiceImpl lectureServiceImpl;
 	private StudentServiceImpl studentServiceImpl;
 	private BookingServiceImpl bookingServiceImpl;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-
+		
+		studentService = mock(StudentService.class);
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		studentServiceImpl = new StudentServiceImpl(studentRepository);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService);
 		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository);
 	}
 	

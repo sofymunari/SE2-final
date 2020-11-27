@@ -6,8 +6,7 @@ import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,9 @@ import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
+import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
+import com.polito.bookingsystem.utils.BookingInfo;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -36,15 +37,18 @@ class LectureServiceTests {
 	private StudentRepository studentRepository;
 	@Autowired
 	private BookingRepository bookingRepository;
-	
+
+	private StudentService studentService;
 	private LectureServiceImpl lectureServiceImpl;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 
+		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository);
+		studentService = mock(StudentService.class);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService);
 	}
 
 	@Test
@@ -119,8 +123,6 @@ class LectureServiceTests {
 	void testDeleteLecture1() {
 		//null lectureId
 		
-		when(lectureRepository.findByLectureId(anyInt())).thenReturn(null);
-
 		assertFalse("Expected false to be returned, null lectureId", lectureServiceImpl.deleteLecture(null));
 		
 	}
@@ -189,8 +191,54 @@ class LectureServiceTests {
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
-		//when(bookingRepository.findAll()).thenReturn(null);
 		when(lectureRepository.save(anyObject())).thenReturn(null);
+		
+		assertTrue("Expected true to be returned, lesson should be cancelled", lectureServiceImpl.deleteLecture(1));
+
+	}
+	
+	
+	@Test
+	void testDeleteLecture6() throws ParseException {
+		//lecture can be deleted
+		
+		Room room1 = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course3 = new Course(3, "testName3", "testDescription3");
+
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+
+		List<Course> courses2 = new ArrayList<>();
+		courses2.add(course1);
+		courses2.add(course2);
+		courses2.add(course3);
+		
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");		
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		
+		BookingInfo bookingInfo = BookingInfo.WAITING;
+		
+		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
+		Booking booking2 = new Booking(2, student1, lecture1, bookingInfo);
+		Booking booking3 = new Booking(3, student1, lecture1, bookingInfo);
+		
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking1);
+		bookings.add(booking2);
+		bookings.add(booking3);
+		
+		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		when(lectureRepository.save(anyObject())).thenReturn(null);
+		when(bookingRepository.save(anyObject())).thenReturn(null);
+		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
 		
 		assertTrue("Expected true to be returned, lesson should be cancelled", lectureServiceImpl.deleteLecture(1));
 
