@@ -14,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
@@ -66,7 +68,7 @@ class LectureServiceTests {
 		//passing a valid mail 
 		
 		Room room1 = new Room(1, "testName", 100);
-		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/3000");
 		
 		Course course1 = new Course(1, "testName1", "testDescription1");
 		Course course2 = new Course(2, "testName2", "testDescription2");
@@ -186,9 +188,8 @@ class LectureServiceTests {
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
-		
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
-		when(bookingRepository.findAll()).thenReturn(null);
+		//when(bookingRepository.findAll()).thenReturn(null);
 		when(lectureRepository.save(anyObject())).thenReturn(null);
 		
 		assertTrue("Expected true to be returned, lesson should be cancelled", lectureServiceImpl.deleteLecture(1));

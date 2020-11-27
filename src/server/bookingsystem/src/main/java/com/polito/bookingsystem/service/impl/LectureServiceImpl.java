@@ -16,6 +16,7 @@ import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,12 @@ public class LectureServiceImpl implements LectureService {
 		List<Lecture> allLectures = lectureRepository.findAll();
 		List<LectureDto> studentLectures = new ArrayList<>();
 		
+		Date today = new Date();
+		
 		for(Course course : courses) {
 		   List<Lecture> courseLectures = allLectures.stream()
 				                    .filter(l -> course.getCourseId().equals(l.getCourse().getCourseId()))
+				                    .filter(l -> l.getDate().after(today))
 				                    .collect(Collectors.toList());
 	       for(Lecture lecture : courseLectures) {
 	    	   studentLectures.add(LectureConverter.toDto(lecture));
