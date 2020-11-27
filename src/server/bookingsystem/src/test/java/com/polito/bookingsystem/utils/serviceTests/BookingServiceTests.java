@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
@@ -52,7 +54,7 @@ class BookingServiceTest {
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		studentServiceImpl = new StudentServiceImpl(studentRepository);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository);
 		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository);
 	}
 	
@@ -502,8 +504,51 @@ class BookingServiceTest {
 		assertTrue("Expected an empty list to be returned", bookingServiceImpl.getBooking("").size() == 0);
 	}
 	
+	@Test
+	void testGetListAllBookings1() {
+		//empty List
+		List<Booking> allBookings = new ArrayList<>();
+		
+		when(bookingRepository.findAll()).thenReturn(allBookings);
+		assertTrue("Expected an empty list", bookingServiceImpl.getListAllBookings().isEmpty());
+	}
+	
 
 	
+	@Test
+	void testGetListAllBookings2() throws ParseException {
+		//list of size 4
+		
+		Room room1 = new Room(1, "testName", 4);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		
+		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1, "testMatricola1");
+		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
+		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
+		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
+		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
+		BookingInfo bookingDeleted = BookingInfo.CANCELED_BY_STUD;
+		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
+		Booking booking2 = new Booking(2, student2, lecture1, bookingInfo);
+		Booking booking3 = new Booking(3, student3, lecture1, bookingDeleted);
+		Booking booking4 = new Booking(4, student3, lecture2, bookingDeleted);
+
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking1);
+		bookings.add(booking2);
+		bookings.add(booking3);
+		bookings.add(booking4);
+		
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		assertTrue("Expected an empty list", bookingServiceImpl.getListAllBookings().size() == 4);
+	}
 	
 
 

@@ -41,10 +41,11 @@ public class LectureServiceImpl implements LectureService {
 	private StudentService studentService;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository)
 	{
 		this.lectureRepository = lectureRepository;
 		this.studentRepository = studentRepository;
+		this.bookingRepository = bookingRepository;
 	}
 
 
@@ -92,12 +93,20 @@ public class LectureServiceImpl implements LectureService {
 
 	@Override
 	public boolean deleteLecture(Integer lectureId) {
+		
+		if(lectureId == null || lectureId<0) 
+			return false;
+		
 		Boolean result = false;
 		
 		Lecture lecture = lectureRepository.findByLectureId(lectureId);
 		if(lecture == null) {
 			return result;
 		}
+		
+		System.out.println(lecture.getDate());
+		System.out.println(lecture.getDate().getTime());
+
 		
 		Long timeNowMilli = System.currentTimeMillis();
 		Long diff = (lecture.getDate().getTime() - timeNowMilli);
