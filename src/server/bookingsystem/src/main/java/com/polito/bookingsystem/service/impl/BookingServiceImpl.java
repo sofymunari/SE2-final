@@ -44,11 +44,13 @@ public class BookingServiceImpl implements BookingService{
 	
 	
 	@Autowired
-	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository)
+	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository, StudentService studentService, NotificationProfessorService notificationProfessorService)
 	{
 		this.bookingRepository = bookingRepository;
 		this.studentRepository = studentRepository;
 		this.lectureRepository = lectureRepository;
+		this.studentService = studentService;
+		this.notificationProfessorService = notificationProfessorService;
 	}
 	
 	@Override

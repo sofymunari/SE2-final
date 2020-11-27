@@ -55,6 +55,8 @@ class BookingServiceTest {
 	private LectureServiceImpl lectureServiceImpl;
 	private StudentServiceImpl studentServiceImpl;
 	private BookingServiceImpl bookingServiceImpl;
+	private StudentService studentService;
+	private NotificationProfessorService notificationProfessorService;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -63,9 +65,11 @@ class BookingServiceTest {
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
+		studentService = mock(StudentService.class);
+		notificationProfessorService = mock(NotificationProfessorService.class);
 		studentServiceImpl = new StudentServiceImpl(studentRepository);
 		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, professorRepository);
-		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository);
+		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository, studentService, notificationProfessorService);
 	}
 	
 	
@@ -463,6 +467,8 @@ class BookingServiceTest {
 		when(bookingRepository.save(anyObject())).thenReturn(null);
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
+		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+		when(notificationProfessorService.sendProfessorNotification(anyObject(), anyString(), anyString())).thenReturn(true);
 
 		assertTrue( "Expected a booking with booking info equal to Waiting", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.WAITING);
 	}
@@ -503,7 +509,9 @@ class BookingServiceTest {
 		when(bookingRepository.save(anyObject())).thenReturn(null);
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
 		when(studentRepository.findByEmail(anyString())).thenReturn(student4);
-
+		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+		when(notificationProfessorService.sendProfessorNotification(anyObject(), anyString(), anyString())).thenReturn(true);
+		
 		assertTrue("Expected a booking with booking info equal to Attended", bookingServiceImpl.addBooking(1, "test4@email.com").getBookingInfo() == BookingInfo.BOOKED);
 	}
 	
