@@ -77,7 +77,9 @@ public class HomeController {
 				}
 			}
 			return true;
-		}).collect(Collectors.toList());
+		})
+		.filter(l -> !l.getDeleted())
+		.collect(Collectors.toList());
         return availableLectures;
 	}
 	
