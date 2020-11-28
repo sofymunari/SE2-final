@@ -86,7 +86,7 @@ public class BookingServiceImpl implements BookingService{
 		Integer numBookingLecture = listBookingLectureAttended.size();
 		
 		Integer id = bookingRepository.findAll().stream()
-				.mapToInt(b->{return b.getBookingId();})
+				.mapToInt(Booking::getBookingId)
 				.max()
 				.orElse(0);
 		

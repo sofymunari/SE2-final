@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
 
         javaMailSender.send(msg);
 		}catch (Exception e) {
-			return;
+			System.err.print(e.getMessage());
 		}
 	}
 	

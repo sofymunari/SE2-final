@@ -2,7 +2,7 @@ package com.polito.bookingsystem.converter;
 import com.polito.bookingsystem.dto.NotificationDto;
 import com.polito.bookingsystem.entity.Notification;
 
-public abstract class NotificationConverter {
+public class NotificationConverter {
 	protected NotificationConverter() {
 		
 	}

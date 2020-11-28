@@ -97,7 +97,7 @@ class BookingsystemEntityTests {
 	void testGetCourseId() {
 		Course c = null;
 		c = createCourseTestSuite();
-		assertTrue("course id is wrong", c.getCourseId()==11);
+		assertTrue("course id is wrong", c.getCourseId().equals(11));
 	}
 	
 	@Test

@@ -28,6 +28,9 @@ import com.polito.bookingsystem.utils.BookingEntry;
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
 public class HomeController {
+	private static final String PASSWORD = "password";
+	private static final String USERNAME = "username";
+	
 	@Autowired
 	StudentService studentService;
 	
@@ -46,13 +49,13 @@ public class HomeController {
 	@Autowired
 	ManagerService managerService;
 	
+	
 	@Autowired
 	NotificationProfessorService notificationProfessorService;
 	
 	
 	@GetMapping(value="studentinfo/{email}")
 	public StudentDto getStudentInfo(@PathVariable String email) {
-		
         return studentService.getStudent(email);
 	}
 	
@@ -66,14 +69,12 @@ public class HomeController {
 		List<BookingDto> bookingList=bookingService.getListBooking(email);
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
 		List<LectureDto> availableLectures=lectureService.getListLectures(email).stream().filter(l->{
-			Boolean result = false;
 			for(Integer id: ids) {
 				if(l.getLectureId().equals(id)) {
-					return result;
+					return false;
 				}
 			}
-			result = true;
-			return result;
+			return true;
 		}).collect(Collectors.toList());
         return availableLectures;
 	}
@@ -95,7 +96,7 @@ public class HomeController {
 	
 	@PostMapping(value= "studentlogin")
 	public String login(@RequestBody Map<String, String> userPass) {
-			String email= studentService.login(userPass.get("username"), userPass.get("password"));
+			String email= studentService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
 			if(email!=null) {
 				return email;
 			}
@@ -104,7 +105,7 @@ public class HomeController {
 	
 	@PostMapping(value= "professorlogin")
 	public String loginProf(@RequestBody Map<String, String> userPass) {
-			String email= professorService.login(userPass.get("username"), userPass.get("password"));
+			String email= professorService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
 			if(email!=null) {
 				return email;
 			}
@@ -113,7 +114,7 @@ public class HomeController {
 	
 	@PostMapping(value= "managerlogin")
 	public String loginManager(@RequestBody Map<String, String> userPass) {
-		String email = managerService.login(userPass.get("username"), userPass.get("password"));
+		String email = managerService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
 		
 		if(email != null) return email;
 		
@@ -137,8 +138,7 @@ public class HomeController {
 	
 	@GetMapping(value="listbookings")
 	public List<BookingDto> getAllBookings() {
-        List<BookingDto> mylist= bookingService.getListAllBookings();
-        return mylist;
+        return bookingService.getListAllBookings();
 	}
 	
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")
@@ -149,7 +149,6 @@ public class HomeController {
 	
 	@GetMapping(value = "managerinfo/{email}")
 	public ManagerDto getManagerInfo(@PathVariable String email) {
-		
 		return managerService.getManager(email);
 	}
 }

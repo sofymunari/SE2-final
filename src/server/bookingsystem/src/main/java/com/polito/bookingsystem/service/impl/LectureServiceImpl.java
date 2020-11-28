@@ -109,10 +109,6 @@ public class LectureServiceImpl implements LectureService {
 			return result;
 		}
 		
-		System.out.println(lecture.getDate());
-		System.out.println(lecture.getDate().getTime());
-
-		
 		Long timeNowMilli = System.currentTimeMillis();
 		Long diff = (lecture.getDate().getTime() - timeNowMilli);
 		

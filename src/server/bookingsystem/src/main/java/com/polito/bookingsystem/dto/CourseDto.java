@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.dto;
-
 public class CourseDto {
 	private Integer courseId;
 	private String name;
