@@ -30,7 +30,6 @@ class StudentHomePage extends React.Component {
             this.setState({lectures:lectures})});
     }
     render(){
-       
         if(this.state.errorStudent||this.state.errorLectures){
             return <h2>we are sorry but an error just occurred</h2>
         }
@@ -115,8 +114,17 @@ class MainPage extends React.Component{
 }
 
 function LectureItem (props){
-    var date = new Date(props.lecture.date).toLocaleString().slice(0,-3);
+    var lectureDate = new Date(props.lecture.date);
+    var date = lectureDate.toLocaleString().slice(0,-3);
+    var today = new Date();
+
+    /*If a lecture is in the past (before today) it is not shown*/
+    lectureDate.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    if(lectureDate.getTime() < today.getTime()) return <></>;
     
+    /*If a lecture is cancelled (deleted=false) it is not shown*/
+    if(props.lecture.deleted) return <></>;
 
     return (
         <li className="list-group-item" id = {props.lecture.lectureId}>
