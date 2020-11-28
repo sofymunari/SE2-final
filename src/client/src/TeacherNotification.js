@@ -38,7 +38,7 @@ class Notification extends React.Component {
         return <h1>page is loading</h1>
         }
         return  <>
-                <h1>Welcome To your Notification Page</h1>
+                <h1>{this.props.teacher.surname}'s notifications</h1>
                 <div className="raw">
                     <div className="col-12">
                 <ul className="list-group list-group-flush">
@@ -56,6 +56,8 @@ class Notification extends React.Component {
 function NotificationItem (props){
     //const className= "d-flex w-100 justify-content-between "+ props.notification.status?"bg-danger":null
     let elem;
+    let date = new Date(props.notification.date).toLocaleString().slice(0,-3);        
+
     props.notification.status?elem= <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-check" fill="green" xmlns="http://www.w3.org/2000/svg">
                                         <path fillRule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
                                     </svg>:
@@ -73,7 +75,7 @@ function NotificationItem (props){
             </div>
 
             <div className="col-3">
-            <h4>{props.notification.date}</h4>
+            <h4>{date}</h4>
             </div>
             <div className="col-3">
             <h4>{props.notification.link }</h4>

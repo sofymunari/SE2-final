@@ -11,8 +11,8 @@ public class RoomConverter {
 			return null;
 		Room room = new Room();
 		room.setRoomId(roomDto.getRoomId());
-		room.setNumberOfSeat(roomDto.getNumberOfSeat());
 		room.setName(roomDto.getName());
+		room.setNumberOfSeat(roomDto.getNumberOfSeat());
 		return room;
 	}
 	
@@ -21,8 +21,8 @@ public class RoomConverter {
 			return null;
 		RoomDto roomDto = new RoomDto();
 		roomDto.setRoomId(room.getRoomId());
-		roomDto.setNumberOfSeat(room.getNumberOfSeat());
 		roomDto.setName(room.getName());
+		roomDto.setNumberOfSeat(room.getNumberOfSeat());
 		return roomDto;
 	}
     

@@ -41,11 +41,13 @@ public class BookingServiceImpl implements BookingService{
 	
 	
 	@Autowired
-	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository)
+	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository, StudentService studentService, NotificationProfessorService notificationProfessorService)
 	{
 		this.bookingRepository = bookingRepository;
 		this.studentRepository = studentRepository;
 		this.lectureRepository = lectureRepository;
+		this.studentService = studentService;
+		this.notificationProfessorService = notificationProfessorService;
 	}
 	
 	@Override
@@ -66,6 +68,10 @@ public class BookingServiceImpl implements BookingService{
 
 	@Override
 	public BookingDto addBooking(Integer lectureId, String email) {
+		
+		if(email == null || lectureId == null || lectureId < 0)
+			return null;
+		
 		Lecture lecture = lectureRepository.findByLectureId(lectureId);
 		if(lecture == null)
 			return null;
@@ -106,12 +112,8 @@ public class BookingServiceImpl implements BookingService{
 		bookingRepository.save(booking);
 		
 		
-		String text = "Dear "+student.getName()+" your booking for lecture "+lecture.getCourse().getName()+" has been confirmed";
-		studentService.sendEmail(StudentConverter.toDto(student), "booking confirmation", text);
-		
-		Professor professor = lecture.getProfessor();
-		String description = "You now have "+ (bookingRepository.findByLecture(lecture)).size() + " student(s) for lecture "+lecture.getCourse().getName();
-		notificationProfessorService.sendProfessorNotification(ProfessorConverter.toDto(professor), description, "");
+		String text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
+		studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
 		
 		return BookingConverter.toDto(booking);		             
 	}

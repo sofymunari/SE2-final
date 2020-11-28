@@ -22,6 +22,7 @@ import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
+import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
@@ -39,6 +40,7 @@ class LectureServiceTests {
 	private BookingRepository bookingRepository;
 
 	private StudentService studentService;
+	private ProfessorRepository professorRepository;
 	private LectureServiceImpl lectureServiceImpl;
 	
 	@BeforeEach
@@ -48,7 +50,9 @@ class LectureServiceTests {
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		studentService = mock(StudentService.class);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService);
+		professorRepository = mock(ProfessorRepository.class);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository);
+
 	}
 
 	@Test
@@ -197,7 +201,6 @@ class LectureServiceTests {
 
 	}
 	
-	
 	@Test
 	void testDeleteLecture6() throws ParseException {
 		//lecture can be deleted
@@ -208,6 +211,7 @@ class LectureServiceTests {
 		Course course1 = new Course(1, "testName1", "testDescription1");
 		Course course2 = new Course(2, "testName2", "testDescription2");
 		Course course3 = new Course(3, "testName3", "testDescription3");
+
 
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
@@ -243,8 +247,58 @@ class LectureServiceTests {
 		assertTrue("Expected true to be returned, lesson should be cancelled", lectureServiceImpl.deleteLecture(1));
 
 	}
-	
-	
-	
 
+	
+	@Test
+	void testGetProfessorLectures1() {
+		//null email
+		assertTrue("Expected empty list, null email",lectureServiceImpl.getProfessorLectures(null).isEmpty());
+	}
+	
+	@Test
+	void testGetProfessorLectures2() {
+		//invalid email
+		
+		when(professorRepository.findByEmail(anyString())).thenReturn(null);
+
+		assertTrue("Expected null, null email", lectureServiceImpl.getProfessorLectures("wrong@email").isEmpty());
+	}
+	
+	void testGetProfessorLectures3() throws ParseException {
+		//valid email		
+		
+		Room room1 = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course3 = new Course(3, "testName3", "testDescription3");
+		
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+		
+		List<Course> courses2 = new ArrayList<>();
+		courses2.add(course1);
+		courses2.add(course2);
+		courses2.add(course3);
+		
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture3 = new Lecture(3, 10, course3, professor1, true, date, 90, "testDetails", room1);
+
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+		lectures.add(lecture2);
+		lectures.add(lecture3);
+		
+		when(professorRepository.findByEmail(anyString())).thenReturn(professor1);
+		when(lectureRepository.findByProfessor(anyObject())).thenReturn(lectures);
+
+		assertTrue("Expected a list of 3 elements",lectureServiceImpl.getProfessorLectures("testProfessor@email").size() == 3 );
+	}
+		
+	
 }

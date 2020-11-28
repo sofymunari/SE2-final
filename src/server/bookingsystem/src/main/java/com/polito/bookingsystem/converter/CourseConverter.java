@@ -12,8 +12,8 @@ public class CourseConverter {
 			return null;
 		Course course = new Course();
 		course.setCourseId(courseDto.getCourseId());
-		course.setDescriptions(courseDto.getDescriptions());
 		course.setName(courseDto.getName());
+		course.setDescriptions(courseDto.getDescriptions());
 		return course;
 	}
 	
@@ -22,8 +22,8 @@ public class CourseConverter {
 			return null;
 		CourseDto courseDto = new CourseDto();
 		courseDto.setCourseId(course.getCourseId());
-		courseDto.setDescriptions(course.getDescriptions());
 		courseDto.setName(course.getName());
+		courseDto.setDescriptions(course.getDescriptions());
 		return courseDto;
 	}
 }

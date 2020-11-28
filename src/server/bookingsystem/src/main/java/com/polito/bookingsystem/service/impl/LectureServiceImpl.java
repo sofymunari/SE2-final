@@ -1,4 +1,5 @@
 package com.polito.bookingsystem.service.impl;
+
 import com.polito.bookingsystem.converter.LectureConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
@@ -42,12 +43,14 @@ public class LectureServiceImpl implements LectureService {
 	private StudentService studentService;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository)
 	{
 		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
 		this.studentRepository = studentRepository;
 		this.bookingRepository = bookingRepository;
+		this.professorRepository = professorRepository;
+
 	}
 
 
@@ -87,6 +90,9 @@ public class LectureServiceImpl implements LectureService {
 			return new ArrayList<>();
 		
 		Professor professor = professorRepository.findByEmail(email);
+		if(professor == null)
+			return new ArrayList<>();
+		
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
 		
 		for(Lecture lecture : lectures) 
