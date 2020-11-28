@@ -3,6 +3,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import java.text.ParseException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.runner.RunWith;
@@ -15,7 +18,6 @@ import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.service.impl.ProfessorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.text.ParseException;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -109,6 +111,29 @@ class ProfessorServiceTests {
 	}
 	
 	
+	@Test 
+	void testGetNextDate1() throws ParseException {
+		//null string
+		
+		assertNull("Expected a null value", professorServiceImpl.getNextDate(null));
+	}
+	
+	@Test 
+	void testGetNextDate2() {
+		//invalid string
+		
+		assertThrows(ParseException.class, ()-> professorServiceImpl.getNextDate("this could not be parsed"), "Expected a parse exception to be thrown");
+	}
+	
+	
+	@Test 
+	void testGetNextDate3() throws ParseException {
+		//null string
+		
+		String date = "2020-12-12";
+		
+		assertTrue("Expected a null value", professorServiceImpl.getNextDate("2020-12-11").equals(date));
+	}
 	
 
 }

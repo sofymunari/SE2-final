@@ -100,12 +100,16 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 
 	public String getNextDate(String curDate) throws ParseException {
+		
+		if(curDate == null)
+			return null;
+		
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		  final Date date = format.parse(curDate);
-		  final Calendar calendar = Calendar.getInstance();
-		  calendar.setTime(date);
-		  calendar.add(Calendar.DAY_OF_YEAR, 1);
-		  return format.format(calendar.getTime()); 
+		final Date date = format.parse(curDate);
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		return format.format(calendar.getTime()); 
 	}
 
 }
