@@ -44,11 +44,13 @@ public class BookingServiceImpl implements BookingService{
 	
 	
 	@Autowired
-	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository)
+	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository, StudentService studentService, NotificationProfessorService notificationProfessorService)
 	{
 		this.bookingRepository = bookingRepository;
 		this.studentRepository = studentRepository;
 		this.lectureRepository = lectureRepository;
+		this.studentService = studentService;
+		this.notificationProfessorService = notificationProfessorService;
 	}
 	
 	@Override
@@ -69,6 +71,10 @@ public class BookingServiceImpl implements BookingService{
 
 	@Override
 	public BookingDto addBooking(Integer lectureId, String email) {
+		
+		if(email == null || lectureId == null || lectureId < 0)
+			return null;
+		
 		Lecture lecture = lectureRepository.findByLectureId(lectureId);
 		if(lecture == null)
 			return null;

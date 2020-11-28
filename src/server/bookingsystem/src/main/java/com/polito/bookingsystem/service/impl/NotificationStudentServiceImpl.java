@@ -47,9 +47,9 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 			notificationStudent.setStudent(Student);
 			notificationStudent.setLink(link);
 			notificationStudent.setStatus(false);
-			if(notificationStudentRepository.save(notificationStudent) != null) {
-				return true;
-			}
+			notificationStudentRepository.save(notificationStudent);
+			
+			return true;
 		}
 
 		return false;
@@ -65,7 +65,7 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 			
 			return NotificationStudentConverter.toDto(notificationStudentList);
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -85,7 +85,11 @@ public class NotificationStudentServiceImpl implements NotificationStudentServic
 
 	@Override
 	public NotificationStudentDto getStudentNotificationByNotificationId(Integer notificationId) {
-		NotificationStudent notificationStudent = notificationStudentRepository.findByNotificationId(notificationId);
-		return NotificationStudentConverter.toDto(notificationStudent);
+		if(notificationId != null &&notificationId > 0 ){
+			NotificationStudent notificationStudent = notificationStudentRepository.findByNotificationId(notificationId);
+			return NotificationStudentConverter.toDto(notificationStudent);
+		}
+		else 
+			return null;
 	}
 }

@@ -8,16 +8,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
-
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
@@ -51,25 +50,19 @@ public class HomeController {
 	@Autowired
 	NotificationProfessorService notificationProfessorService;
 	
-	@RequestMapping(value="/", method = RequestMethod.GET)
-	public String test() throws ParseException {
-		return "test";
-	}
 	
-	
-	
-	@RequestMapping(value="studentinfo/{email}", method = RequestMethod.GET)
+	@GetMapping(value="studentinfo/{email}")
 	public StudentDto getStudentInfo(@PathVariable String email) {
 		
         return studentService.getStudent(email);
 	}
 	
-	@RequestMapping(value="studentbookings/{email}", method = RequestMethod.GET)
+	@GetMapping(value="studentbookings/{email}")
 	public List<BookingDto> getStudentBookings(@PathVariable String email) {
         return bookingService.getListBooking(email);
 	}
 	
-	@RequestMapping(value="studentlectures/{email}", method = RequestMethod.GET)
+	@GetMapping(value="studentlectures/{email}")
 	public List<LectureDto> getStudentLectures(@PathVariable String email) {
 		List<BookingDto> bookingList=bookingService.getListBooking(email);
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
@@ -85,7 +78,7 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "addbooking", headers="Content-Type=application/json", method = RequestMethod.POST)
+	@PostMapping(value = "addbooking", headers="Content-Type=application/json")
     @ResponseBody
 	public BookingDto addBooking(@RequestBody Map<String, String> lectureId) {
 		 Integer lectId=Integer.parseInt(lectureId.get("lectureId"));
@@ -93,14 +86,14 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="deletebooking/{bookingId}", method = RequestMethod.DELETE)
+	@DeleteMapping(value="deletebooking/{bookingId}")
 	public Boolean deleteStudentBookings(@PathVariable String bookingId) {
 		Integer bookingid=Integer.parseInt(bookingId);
         return bookingService.deleteBooking(bookingid);
 	}
 	
 	
-	@RequestMapping(value= "studentlogin", method= RequestMethod.POST)
+	@PostMapping(value= "studentlogin")
 	public String login(@RequestBody Map<String, String> userPass) {
 			String email= studentService.login(userPass.get("username"), userPass.get("password"));
 			if(email!=null) {
@@ -109,7 +102,7 @@ public class HomeController {
 			return "";
 	}
 	
-	@RequestMapping(value= "professorlogin", method= RequestMethod.POST)
+	@PostMapping(value= "professorlogin")
 	public String loginProf(@RequestBody Map<String, String> userPass) {
 			String email= professorService.login(userPass.get("username"), userPass.get("password"));
 			if(email!=null) {
@@ -119,18 +112,18 @@ public class HomeController {
 	}
 
 	
-	@RequestMapping(value= "professorbookings/{email}", method= RequestMethod.GET)
+	@GetMapping(value= "professorbookings/{email}")
 	public List<BookingEntry> getBooking(@PathVariable String email) {
 			return bookingService.getBooking(email);
 	}
 	
-	@RequestMapping(value="professorinfo/{email}", method = RequestMethod.GET)
+	@GetMapping(value="professorinfo/{email}")
 	public ProfessorDto getProfessorInfo(@PathVariable String email) {
         return professorService.getProfessor(email);
 	}
 	
 	
-	@RequestMapping(value="professorlectures/{email}", method = RequestMethod.GET)
+	@GetMapping(value="professorlectures/{email}")
 	public List<LectureDto> getProfessorLectures(@PathVariable String email){
 		return lectureService.getProfessorLectures(email);
 	}

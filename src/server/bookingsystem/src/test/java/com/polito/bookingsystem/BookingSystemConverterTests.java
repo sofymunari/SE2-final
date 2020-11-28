@@ -75,6 +75,17 @@ class BookingSystemConverterTests {
 		assertEquals(user.getPassword(), userDto.getPassword());
 	}
 	
+	@Test
+	void testToStringUser() {
+		
+		UserDto userDto = new UserDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword");
+
+		String userString = userDto.toString();
+		System.out.println(userString);
+
+		System.out.println("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]");
+		assertTrue(userString.equals("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]"), "Expected the wite toString result for user");		
+	}
 	
 	/*
 	 * 

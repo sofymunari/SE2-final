@@ -1,7 +1,8 @@
 package com.polito.bookingsystem.utils.serviceTests;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,14 +22,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.NotificationProfessorDto;
-import com.polito.bookingsystem.dto.NotificationStudentDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
-import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.NotificationProfessor;
-import com.polito.bookingsystem.entity.NotificationStudent;
 import com.polito.bookingsystem.entity.Professor;
-import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.NotificationProfessorRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.service.impl.NotificationProfessorServiceImpl;
@@ -103,6 +100,26 @@ class NotificationProfessorServiceTest {
 	}
 	
 	@Test
+	void testSendProfessorNotification3() throws ParseException {
+		//passing valid professorDto
+						
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+
+		NotificationProfessor notificationProfessor = new NotificationProfessor();
+	
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		when(professorRepository.findByUserId(anyInt())).thenReturn(null);
+		when(notificationProfessorRepository.save(anyObject())).thenReturn(notificationProfessor);
+		
+		assertFalse("Expected false, invalid professor", notificationProfessorServiceImpl.sendProfessorNotification(professorDto1,  "testDescription", "testLink"));
+
+	}
+	
+	@Test
 	void testGetProfessorNotifications1() throws ParseException {
 		//passing null professorDto
 				
@@ -147,6 +164,42 @@ class NotificationProfessorServiceTest {
 	}
 	
 	@Test
+	void testGetProfessorNotifications3() throws ParseException {
+		//passing valid professorDto
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+		
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+
+		NotificationProfessor notificationProfessor1 = new NotificationProfessor(1, "testDescription1", date, professor1, true, "testLink1" );
+		NotificationProfessor notificationProfessor2 = new NotificationProfessor(2, "testDescription2", date, professor1, true, "testLink2" );
+		
+		List<NotificationProfessor> list = new ArrayList<>();
+		list.add(notificationProfessor1);
+		list.add(notificationProfessor2);
+
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+
+		when(professorRepository.findByUserId(anyInt())).thenReturn(null);
+		when(notificationProfessorRepository.findByProfessor(anyObject())).thenReturn(list);
+				
+		assertTrue("Expected an empty list", notificationProfessorServiceImpl.getProfessorNotifications(professorDto1).isEmpty());
+
+	}
+	
+	@Test
 	void testSetNotificationAsRead1() {
 		//passing null NotificationProfessortDto
 		
@@ -184,6 +237,64 @@ class NotificationProfessorServiceTest {
 		when(notificationProfessorRepository.save(anyObject())).thenReturn(null);
 		
 		assertTrue("Expected true", notificationProfessorServiceImpl.setNotificationAsRead(notificationProfessorDto));
+	}
+	
+	@Test
+	void testSetNotificationAsRead3() throws ParseException {
+		//passing valid NotificationProfessorDto
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		List<CourseDto> courses2 = new ArrayList<>();
+		courses2.add(courseDto1);
+		courses2.add(courseDto2);
+		
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+
+		
+		NotificationProfessorDto notificationProfessorDto = new NotificationProfessorDto(1, "testDescription1", date,  professorDto1, true, "testLink1");
+
+		
+		when(notificationProfessorRepository.findByNotificationId(anyInt())).thenReturn(null);
+		when(notificationProfessorRepository.save(anyObject())).thenReturn(null);
+		
+		assertFalse("Expected false", notificationProfessorServiceImpl.setNotificationAsRead(notificationProfessorDto));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId1() {
+		//null notificationId
+		
+		assertNull("Expected null to be returned, null notificationId", notificationProfessorServiceImpl.getProfessorNotificationByNotificationId(null));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId2() {
+		//negative notificationId
+		
+		assertNull("Expected null to be returned, negative notificationId", notificationProfessorServiceImpl.getProfessorNotificationByNotificationId(-1));
+	}
+	
+	@Test
+	void testGetNotificationByNotificationId3() throws ParseException {
+		//null notificationId
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		courses1.add(course2);
+		
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);	
+
+		NotificationProfessor notificationProfessor = new NotificationProfessor(1, "testDescription1", date,  professor1, true, "testLink1" );
+		
+		when(notificationProfessorRepository.findByNotificationId(anyInt())).thenReturn(notificationProfessor);
+
+		assertTrue("Expected null to be returned, null notificationId", notificationProfessorServiceImpl.getProfessorNotificationByNotificationId(1).getNotificationId() == 1);
 	}
 	
 }

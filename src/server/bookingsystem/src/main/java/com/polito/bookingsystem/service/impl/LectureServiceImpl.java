@@ -31,21 +31,25 @@ public class LectureServiceImpl implements LectureService {
 	private ProfessorRepository professorRepository;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, ProfessorRepository professorRepository)
 	{
 		this.lectureRepository = lectureRepository;
 		this.studentRepository = studentRepository;
+		this.professorRepository = professorRepository;
 	}
 
 
 	@Override
 	public List<LectureDto> getListLectures(String email) {
 		Student student = studentRepository.findByEmail(email);
+		
 		if(student == null)
-			return null;
+			return new ArrayList<>();
+		
 		List<Course> courses = student.getCourses();
 		if(courses.size()==0)
-			return null;
+			return new ArrayList<>();
+		
 		List<Lecture> allLectures = lectureRepository.findAll();
 		List<LectureDto> studentLectures = new ArrayList<LectureDto>();
 		
@@ -69,6 +73,8 @@ public class LectureServiceImpl implements LectureService {
 			return null;
 		
 		Professor professor = professorRepository.findByEmail(email);
+		if(professor == null)
+			return null;
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
 		
 		for(Lecture lecture : lectures) 

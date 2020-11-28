@@ -23,32 +23,15 @@ public class Course {
 	@Column
 	private String descriptions;
 	
-	/*@ManyToMany
-	@JoinTable(name = "course_professor",
-	    joinColumns = @JoinColumn(name = "course_id"),
-	    inverseJoinColumns = @JoinColumn(name = "professor_id")
-	)
-	private List<Professor> professors = new ArrayList<>();
-	
-	@ManyToMany
-	@JoinTable(name = "course_student",
-	    joinColumns = @JoinColumn(name = "course_id"),
-	    inverseJoinColumns = @JoinColumn(name = "user_id")
-	)
-	private List<Student> students = new ArrayList<>();*/
-	
 	public Course() {
 		
 	}
 	
-	public Course(Integer courseId, String name, String descriptions/*, List<Professor> professors,
-			List<Student> students*/) {
+	public Course(Integer courseId, String name, String descriptions) {
 		super();
 		this.courseId = courseId;
 		this.name = name;
 		this.descriptions = descriptions;
-		//this.professors = professors;
-		//this.students = students;
 	}
 
 	public Integer getCourseId() {
@@ -74,21 +57,5 @@ public class Course {
 	public void setDescriptions(String descriptions) {
 		this.descriptions = descriptions;
 	}
-
-	/*public List<Professor> getProfessors() {
-		return professors;
-	}
-
-	public void setProfessors(List<Professor> professors) {
-		this.professors = professors;
-	}
-
-	public List<Student> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}*/
 	
 }

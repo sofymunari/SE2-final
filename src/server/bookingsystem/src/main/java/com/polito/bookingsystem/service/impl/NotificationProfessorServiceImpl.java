@@ -38,7 +38,9 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 	public boolean sendProfessorNotification(ProfessorDto professorDto, String description, String link) {
 		if (professorDto == null) 
 			return false;
+		
 		Professor professor = ProfessorConverter.toEntity(professorDto);
+		
 		if(professorRepository.findByUserId(professorDto.getUserId()) != null) {
 			NotificationProfessor notificationProfessor= new NotificationProfessor();
 			notificationProfessor.setDate(new Date());
@@ -46,9 +48,9 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 			notificationProfessor.setProfessor(professor);
 			notificationProfessor.setLink(link);
 			notificationProfessor.setStatus(false);
-			if(notificationProfessorRepository.save(notificationProfessor) != null) {
-				return true;
-			}
+			notificationProfessorRepository.save(notificationProfessor);
+			
+			return true;
 		}
 
 		return false;
@@ -63,7 +65,7 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 			
 			return NotificationProfessorConverter.toDto(notificationProfessorList);
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -83,9 +85,12 @@ public class NotificationProfessorServiceImpl implements NotificationProfessorSe
 
 
 	@Override
-	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer Id) {
-		NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(Id);
-		return NotificationProfessorConverter.toDto(notificationProfessor);
+	public NotificationProfessorDto getProfessorNotificationByNotificationId(Integer notificationId) {
+		if(notificationId != null && notificationId > 0) {
+			NotificationProfessor notificationProfessor = notificationProfessorRepository.findByNotificationId(notificationId);
+			return NotificationProfessorConverter.toDto(notificationProfessor);
+		} else 
+			return null;
 	}
 
 }
