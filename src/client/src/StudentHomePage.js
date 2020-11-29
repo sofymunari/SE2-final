@@ -7,7 +7,7 @@ import AppComponents from './AppComponents';
 class StudentHomePage extends React.Component {
     constructor(props){
         super(props);
-        this.state={'student':null,'errorStudent':null,'errorLectures':null,'lectures':null}
+        this.state={'student':null,'errorStudent':null,'errorLectures':null,'lectures':null,'loading':false}
         //student prop is the student username
         //student state is the student info
     }
@@ -19,9 +19,10 @@ class StudentHomePage extends React.Component {
         .catch((err)=>{this.setState({'errorLectures':err})})
     }
     addBooking=(lectureId)=>{
+        this.setState({loading:lectureId})
         API.addBooking(lectureId, this.props.student)
         .then(()=>API.getStudentLectures(this.props.student)
-        .then((lectures)=>{this.setState({lectures:lectures})})
+        .then((lectures)=>{this.setState({'lectures':lectures,'loading':false})})
         .catch((err)=>{this.setState({'errorLectures':err})}))
         .catch((err)=>{this.setState({'errorBooking':err})})
     }
@@ -45,7 +46,7 @@ class StudentHomePage extends React.Component {
                     <Aside student={this.state.student} />
                     </div>
                     <div className="col-10 p-0" id="main">
-                    <MainPage lectures={this.state.lectures} addBooking={this.addBooking} student={this.props.student}/>
+                    <MainPage lectures={this.state.lectures} addBooking={this.addBooking} student={this.props.student} loading={this.state.loading}/>
                     </div>
                     </div>
                 </div>
@@ -76,7 +77,7 @@ class MainPage extends React.Component{
 
     }
     showItem= (lecture)=>{
-        return <LectureItem key={lecture.lectureId} lecture={lecture} addBooking={this.addBooking}/>
+        return <LectureItem key={lecture.lectureId} lecture={lecture} addBooking={this.addBooking} loading={this.props.loading}/>
     }
     addBooking=(lectureId)=>{
         this.props.addBooking(lectureId,this.props.student);
@@ -150,7 +151,13 @@ function LectureItem (props){
             <div className="col-1">
             {
                 props.lecture.remotly?
-                   <p></p>:<svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-bookmark-plus" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.addBooking(props.lecture.lectureId)}>
+                   <p></p>:
+                   props.loading===props.lecture.lectureId?
+                    <div class="spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                   :
+                   <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-bookmark-plus" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.addBooking(props.lecture.lectureId)}>
                    <path fillRule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                     <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
                    </svg>   
