@@ -5,12 +5,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.BookingConverter;
-import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
-import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
@@ -37,17 +35,12 @@ public class BookingServiceImpl implements BookingService{
 	private StudentService studentService;
 	
 	@Autowired
-	private NotificationProfessorService notificationProfessorService;
-	
-	
-	@Autowired
 	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository, StudentService studentService, NotificationProfessorService notificationProfessorService)
 	{
 		this.bookingRepository = bookingRepository;
 		this.studentRepository = studentRepository;
 		this.lectureRepository = lectureRepository;
 		this.studentService = studentService;
-		this.notificationProfessorService = notificationProfessorService;
 	}
 	
 	@Override
