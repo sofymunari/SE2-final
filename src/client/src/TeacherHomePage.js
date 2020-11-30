@@ -186,7 +186,7 @@ function LectureItem (props){
             </div>
             <div className="col-2">
             <h4>
-            {props.lecture.roomDto.name}
+            {props.lecture.remotly?"Remote":props.lecture.roomDto.name}
             </h4>
             </div>
             <div className="col-2">
