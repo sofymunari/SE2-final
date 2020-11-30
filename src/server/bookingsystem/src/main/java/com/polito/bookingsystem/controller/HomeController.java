@@ -1,4 +1,12 @@
 package com.polito.bookingsystem.controller;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +33,7 @@ import com.polito.bookingsystem.service.NotificationStudentService;
 import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingEntry;
+import com.polito.bookingsystem.utils.BookingInfo;
 
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
@@ -122,6 +132,33 @@ public class HomeController {
 		
 		return "";
 	}
+	
+	@PutMapping(value = "lecture/toremote/{id}")
+	boolean lectureToRemote(@PathVariable Integer id) {
+		LectureDto lectureDto = lectureService.getLectureById(id);
+		
+		Date date = new Date();  
+		
+		long diffInMillies = lectureDto.getDate().getTime() - date.getTime();
+		long diffInMinutes = TimeUnit.MINUTES.convert(diffInMillies,TimeUnit.MILLISECONDS);
+		if(lectureDto!=null && diffInMinutes>30) {
+			lectureDto.setRemotly(true);
+			lectureService.save(lectureDto);
+			List<BookingDto> bookingDtos = bookingService.getBookingsByLecture(lectureDto);
+			for (BookingDto bookingDto : bookingDtos) {
+				if(bookingDto.getBookingInfo()==BookingInfo.CANCELED_BY_STUD) {
+					continue;
+				}
+				bookingDto.setBookingInfo(BookingInfo.MOVED_AS_REMOTLY);
+				bookingService.save(bookingDto);
+			}
+			return true;
+		}
+		return false;
+	} 
+
+
+	
 	
 	@GetMapping(value= "professorbookings/{email}")
 	public List<BookingEntry> getBooking(@PathVariable String email) {

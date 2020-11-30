@@ -1,4 +1,7 @@
 package com.polito.bookingsystem.converter;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Booking;
 
@@ -29,4 +32,15 @@ public class BookingConverter {
 		bookingDto.setStudentDto(StudentConverter.toDto(booking.getStudent()));
 		return bookingDto;
     }
+    
+    public static List<BookingDto> toDto(List<Booking> bookingList) {
+		if( bookingList == null)
+			return new ArrayList<>();
+		
+		List<BookingDto> bookingDtoList = new ArrayList<BookingDto>(); 
+		for (Booking booking: bookingList) {
+			bookingDtoList.add(toDto(booking));
+		}
+		return bookingDtoList;
+	}
 }

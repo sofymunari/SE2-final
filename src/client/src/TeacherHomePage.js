@@ -58,8 +58,23 @@ class TeacherHomePage extends React.Component {
         this.setState({students:null,modifylect:null,lectures:lectures,allLectures:allLectures})
 
     }
-    back=()=>{
-        this.setState({students:null,modifylect:null})
+    back=(lecture)=>{
+        const lectures=this.state.lectures.map(l=>{
+            if(l.lectureId===lecture.lectureId){
+                l.remotly=lecture.remotly;
+            }
+            let newL = {...l}
+            return newL;
+        })
+        const allLectures=this.state.allLectures.map(l=>{
+            if(l.lectureId===lecture.lectureId){
+                l.remotly=lecture.remotly;
+            }
+            let newL = {...l}
+            return newL;
+        })
+
+        this.setState({students:null,modifylect:null,lectures:lectures,allLectures:allLectures})
     }
     render(){
         if(this.state.errorTeacher||this.state.errorLectures){

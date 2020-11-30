@@ -248,8 +248,24 @@ async function teacherDeleteLecture(lectureId){
     }
 }
 
+async function teacherRemoteLecture(lectureId){
+    const url= BASE_URL+"lecture/toremote/"+lectureId;
+    const response= await fetch(url,{
+        method: 'PUT'
+    })
+    const restext=await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
 
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings}
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture}
 export default API;

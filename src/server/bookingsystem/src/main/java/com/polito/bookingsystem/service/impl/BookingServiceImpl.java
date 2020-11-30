@@ -1,12 +1,15 @@
 package com.polito.bookingsystem.service.impl;
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.BookingConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
+import com.polito.bookingsystem.converter.LectureConverter;
 import com.polito.bookingsystem.dto.BookingDto;
+import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Student;
@@ -140,4 +143,16 @@ public class BookingServiceImpl implements BookingService{
         }
 		return allBookingsDto;
 	}
+	
+	@Override
+	public List<BookingDto> getBookingsByLecture(LectureDto lectureDto) {
+		Lecture lecture = LectureConverter.toEntity(lectureDto);
+		return BookingConverter.toDto(bookingRepository.findByLecture(lecture));
+	}
+
+	@Override
+	public void save(BookingDto bookingDto) {
+		bookingRepository.save(BookingConverter.toEntity(bookingDto));
+	}
+
 }

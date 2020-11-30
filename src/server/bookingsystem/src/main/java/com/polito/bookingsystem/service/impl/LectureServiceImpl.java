@@ -143,6 +143,17 @@ public class LectureServiceImpl implements LectureService {
 		lectureRepository.save(lecture);
 		return result;
 	}
+	@Override
+	public LectureDto getLectureById(Integer id) {
+		return LectureConverter.toDto(lectureRepository.findByLectureId(id));
+	}
+
+
+	@Override
+	public void save(LectureDto lectureDto) {
+		lectureRepository.save(LectureConverter.toEntity(lectureDto));
+		
+	}
 	
 	
 }
