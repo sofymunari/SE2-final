@@ -76,6 +76,9 @@ class TeacherHomePage extends React.Component {
 
         this.setState({students:null,modifylect:null,lectures:lectures,allLectures:allLectures})
     }
+    backList=()=>{
+        this.setState({students:null,modifylect:null});
+    }
     render(){
         if(this.state.errorTeacher||this.state.errorLectures){
             return <h2>we are sorry but an error just occurred</h2>
@@ -95,7 +98,7 @@ class TeacherHomePage extends React.Component {
                     {this.state.modifylect?
                     <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect}/>:
                     this.state.students?
-                    <StudentBookingList students={this.state.students} back={this.back}/>:
+                    <StudentBookingList students={this.state.students} back={this.backList}/>:
                     <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                     </div>
                     </div>
