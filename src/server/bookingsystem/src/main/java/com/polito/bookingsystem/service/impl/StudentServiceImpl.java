@@ -13,14 +13,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 @Service
 public class StudentServiceImpl implements StudentService {
 	@Autowired
-	private JavaMailSender javaMailSender;
+	JavaMailSender javaMailSender;
 
     @Autowired
     StudentRepository studentRepository;
 	
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository)
-    {
+    public StudentServiceImpl(StudentRepository studentRepository,  JavaMailSender javaMailSender){
+    	this.javaMailSender = javaMailSender;
     	this.studentRepository = studentRepository;
     }
 
@@ -45,16 +45,20 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public void sendEmail(StudentDto studentDto, String subject, String text) {
-		try {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(studentDto.getEmail());
-
-        msg.setSubject(subject);
-        msg.setText(text);
-
-        javaMailSender.send(msg);
-		}catch (Exception e) {
-			System.err.print(e.getMessage());
+		
+		if(studentDto != null) {
+			
+			try {
+				SimpleMailMessage msg = new SimpleMailMessage();
+				msg.setTo(studentDto.getEmail());
+				
+				msg.setSubject(subject);
+				msg.setText(text);
+				
+				javaMailSender.send(msg);
+			}catch (Exception e) {
+				System.err.print(e.getMessage());
+			}
 		}
 	}
 	

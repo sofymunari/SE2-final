@@ -143,8 +143,12 @@ public class LectureServiceImpl implements LectureService {
 		lectureRepository.save(lecture);
 		return result;
 	}
+	
+	
 	@Override
 	public LectureDto getLectureById(Integer id) {
+		if(id == null || id < 0)
+			return null;
 		return LectureConverter.toDto(lectureRepository.findByLectureId(id));
 	}
 

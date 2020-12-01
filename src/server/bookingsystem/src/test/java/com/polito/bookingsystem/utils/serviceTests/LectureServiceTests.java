@@ -1,5 +1,7 @@
 package com.polito.bookingsystem.utils.serviceTests;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.polito.bookingsystem.dto.BookingDto;
+import com.polito.bookingsystem.dto.CourseDto;
+import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.ProfessorDto;
+import com.polito.bookingsystem.dto.RoomDto;
+import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
@@ -264,6 +272,7 @@ class LectureServiceTests {
 		assertTrue("Expected null, null email", lectureServiceImpl.getProfessorLectures("wrong@email").isEmpty());
 	}
 	
+	@Test
 	void testGetProfessorLectures3() throws ParseException {
 		//valid email		
 		
@@ -299,6 +308,81 @@ class LectureServiceTests {
 
 		assertTrue("Expected a list of 3 elements",lectureServiceImpl.getProfessorLectures("testProfessor@email").size() == 3 );
 	}
-		
 	
+	@Test
+	void testGetLectureById1 () {
+		//null id
+		
+		assertNull("Expected null to be returned, null id passed", lectureServiceImpl.getLectureById(null));
+	}
+	
+	@Test
+	void testGetLectureById2 () {
+		//negative id
+		
+		assertNull("Expected null to be returned, negative id passed", lectureServiceImpl.getLectureById(-4));
+	}
+	
+	@Test
+	void testGetLectureById3 () {
+		//valid id
+		
+		Room room1 = new Room(1, "testName", 100);
+		Date date = new Date();
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course3 = new Course(3, "testName3", "testDescription3");
+
+		List<Course> courses2 = new ArrayList<>();
+		courses2.add(course1);
+		courses2.add(course2);
+		courses2.add(course3);
+		
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		
+		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
+		
+		assertTrue("Expected lecture 1 to be returned", lectureServiceImpl.getLectureById(1).getLectureId() == 1);
+	}
+	
+	
+	
+		
+	@Test
+	public void testsave1(){
+	   try{
+			RoomDto roomDto = new RoomDto(1, "testName", 4);
+			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+			
+			CourseDto courseDto = new CourseDto(1, "testName1", "testDescription1");
+			List<CourseDto> coursesDto = new ArrayList<>();
+			coursesDto.add(courseDto);
+
+			StudentDto studentDto = new StudentDto(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, coursesDto, "testMatricola4");
+			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto);
+			LectureDto lectureDto = new LectureDto(2, 10, courseDto, professorDto, false, date, 90, "testDetails2", roomDto);
+			
+		
+			when(lectureRepository.save(anyObject())).thenReturn(null);
+			
+			lectureServiceImpl.save(lectureDto);
+	   }
+	   catch(Exception e){
+	      fail("Should not have thrown any exception");
+	   }
+	}
+	
+	@Test
+	public void testsave2(){
+	   try{
+		   lectureServiceImpl.save(null);
+	   }
+	   catch(Exception e){
+	      fail("Should not have thrown any exception");
+	   }
+	}
 }
+	

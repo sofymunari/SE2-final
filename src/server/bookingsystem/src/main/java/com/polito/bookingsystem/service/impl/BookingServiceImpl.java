@@ -146,13 +146,16 @@ public class BookingServiceImpl implements BookingService{
 	
 	@Override
 	public List<BookingDto> getBookingsByLecture(LectureDto lectureDto) {
+		if(lectureDto == null)
+			return new ArrayList<>();
 		Lecture lecture = LectureConverter.toEntity(lectureDto);
 		return BookingConverter.toDto(bookingRepository.findByLecture(lecture));
 	}
 
 	@Override
 	public void save(BookingDto bookingDto) {
-		bookingRepository.save(BookingConverter.toEntity(bookingDto));
+		if(bookingDto != null)
+			bookingRepository.save(BookingConverter.toEntity(bookingDto));
 	}
 
 }

@@ -27,19 +27,22 @@ public class ProfessorServiceImpl implements ProfessorService {
     private JavaMailSender javaMailSender;
 
 	@Autowired
-    ProfessorRepository professorRepository;
+    private ProfessorRepository professorRepository;
 	
 	@Autowired
-    LectureRepository lectureRepository;
+    private LectureRepository lectureRepository;
 	
 	@Autowired
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
 	
 	
     @Autowired
-    public ProfessorServiceImpl(ProfessorRepository professorRepository)
+    public ProfessorServiceImpl(ProfessorRepository professorRepository, JavaMailSender javaMailSender, LectureRepository lectureRepository, BookingRepository bookingRepository)
     {
     	this.professorRepository = professorRepository;
+    	this.javaMailSender = javaMailSender;
+    	this.bookingRepository = bookingRepository;
+    	this.lectureRepository = lectureRepository;
     }
     
     
@@ -54,13 +57,16 @@ public class ProfessorServiceImpl implements ProfessorService {
     
     @Override
 	public void sendEmail(ProfessorDto professorDto, String subject, String text) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(professorDto.getEmail());
-
-        msg.setSubject(subject);
-        msg.setText(text);
-
-        javaMailSender.send(msg);
+    	if(professorDto != null) {
+    		
+    		SimpleMailMessage msg = new SimpleMailMessage();
+    		msg.setTo(professorDto.getEmail());
+    		
+    		msg.setSubject(subject);
+    		msg.setText(text);
+    		
+    		javaMailSender.send(msg);
+    	}
     }
 
 
