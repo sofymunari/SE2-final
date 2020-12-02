@@ -1,10 +1,10 @@
 backend:
-  image: se2final/se2final:first_version_backend
+  image: se2final/se2final:backend_release1
   ports:
    - "8080:8080"
   links:
    - "frontend"
 frontend:
-  image: se2final/se2final:first_version_frontend
+  image: se2final/se2final:frontend_release1
   ports:
    - "3000:3000"
