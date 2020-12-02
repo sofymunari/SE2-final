@@ -8,4 +8,5 @@ public interface LectureService {
 	boolean deleteLecture(Integer lectureId);
 	LectureDto getLectureById(Integer id);
 	void save(LectureDto lectureDto);
+	List<LectureDto> getListAllLectures();
 }

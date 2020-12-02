@@ -244,7 +244,7 @@ class StudentBookingList extends React.Component{
                     </li>
                     {this.props.students.map(this.showStudent)}
                 </ul>
-                <button type="button" class="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
+                <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
                 </>
     }
 }

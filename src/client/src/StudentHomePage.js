@@ -153,8 +153,8 @@ function LectureItem (props){
                 props.lecture.remotly?
                    <p></p>:
                    props.loading===props.lecture.lectureId?
-                    <div class="spinner-border text-success" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <div className="spinner-border text-success" role="status">
+                    <span className="sr-only">Loading...</span>
                     </div>
                    :
                    <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-bookmark-plus" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.addBooking(props.lecture.lectureId)}>

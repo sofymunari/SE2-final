@@ -151,9 +151,25 @@ async function getBookings(){
             decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
-            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
+            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
     }else{
         throw response;
+    }
+}
+
+async function getLectures(){
+    const url= BASE_URL+"listlectures";
+    const response= await fetch(url);
+    const lects_json= await response.json();
+    if(response.ok){
+        return lects_json.map((l)=>{
+            return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,deleted:l.deleted,
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
+            professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
+            email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
+        })
+    }else{
+        throw lects_json;
     }
 }
 
@@ -267,5 +283,5 @@ async function teacherRemoteLecture(lectureId){
 
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture}
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
 export default API;

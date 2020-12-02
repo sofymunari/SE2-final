@@ -180,6 +180,11 @@ public class HomeController {
         return bookingService.getListAllBookings();
 	}
 	
+	@GetMapping(value="listlectures")
+	public List<LectureDto> getAllLectures() {
+        return lectureService.getListAllLectures();
+	}
+	
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")
 	public Boolean deleteLecture(@PathVariable Integer lectureId) {
         return lectureService.deleteLecture(lectureId);

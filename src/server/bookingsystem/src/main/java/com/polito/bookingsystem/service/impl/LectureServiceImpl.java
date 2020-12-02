@@ -1,7 +1,9 @@
 package com.polito.bookingsystem.service.impl;
 
+import com.polito.bookingsystem.converter.BookingConverter;
 import com.polito.bookingsystem.converter.LectureConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
+import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
@@ -157,6 +159,16 @@ public class LectureServiceImpl implements LectureService {
 	public void save(LectureDto lectureDto) {
 		lectureRepository.save(LectureConverter.toEntity(lectureDto));
 		
+	}
+	
+	@Override
+	public List<LectureDto> getListAllLectures(){
+		List<Lecture> allLectures = lectureRepository.findAll();
+        List<LectureDto> allLecturesDto = new ArrayList<>();
+        for(Lecture lecture:allLectures) {
+        	allLecturesDto.add(LectureConverter.toDto(lecture));
+        }
+		return allLecturesDto;
 	}
 	
 	
