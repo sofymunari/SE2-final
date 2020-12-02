@@ -69,10 +69,15 @@ class StudentBooking extends React.Component{
 
 function BookingItem(props){
     /*extracting date (format dd/mm/yyyy) and time of lecture from props*/
-    var date = new Date(props.booking.lectureDto.date);
-    var dateString = date.toLocaleString().slice(0,-10);
-    var time = date.toTimeString().substr(0,5);
-
+    let date = new Date(props.booking.lectureDto.date);
+    let dateString = date.toLocaleString().slice(0,-10);
+    let time = date.toTimeString().substr(0,5);
+    let today = new Date()
+    let dateSet = date;
+    dateSet.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+    let expired = false;
+    if(dateSet.getTime() < today.getTime()) expired = true;
     return  <li className="list-group-item" id = {props.booking.bookingId}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">
@@ -91,9 +96,10 @@ function BookingItem(props){
                 <h4>{props.booking.roomDto.name}</h4>
                 </div>
                 <div className="col-1">
+                    {!expired?
                             <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-trash-fill" fill="red" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.cancelBooking(props.booking.bookingId)}>
                                 <path fillRule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                            </svg>
+                            </svg>:<></>}
                 </div>
             </div>
             </li>
