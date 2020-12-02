@@ -126,7 +126,7 @@ class Lecture extends React.Component{
                     </div>
                     </div>
                     </li>
-                    {this.props.lectures.map(this.showlecture)}
+                    {this.props.lectures.map(this.showLecture)}
                 </ul>
                 <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
                 </>);
@@ -146,9 +146,9 @@ function LectureItem (props){
             <h4>{date}</h4>
             </div>
             <div className="col-2">
-            <h4>{props.lecture.deleted?'Lecture Deleted':props.lecture.remote?'Lecture Remote':'Lecture in presence'}</h4>
+            <h4>{props.lecture.deleted?'Lecture Deleted':props.lecture.remotly?'Lecture Remote':'Lecture in presence'}</h4>
             </div>
-            {!props.lecture.deleted && !props.lecture.remote?
+            {!props.lecture.deleted && !props.lecture.remotly?
             <>
             <div className="col-2">
             <h4>{props.del_bookings}</h4>
@@ -160,7 +160,7 @@ function LectureItem (props){
             <h4>{props.waiting_bookings}</h4>
             </div>
             </>
-            :<></>}
+            :<><div className="col-6"></div></>}
         </div>
         </li>       
         )

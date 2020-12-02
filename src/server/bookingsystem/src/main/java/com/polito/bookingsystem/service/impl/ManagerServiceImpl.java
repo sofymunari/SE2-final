@@ -24,7 +24,6 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public String login(String email, String password) {
 		Manager manager = managerRepository.findByEmail(email);
-		System.out.println(manager);
 		if(manager != null && manager.getPassword().equals(password)) return email;
 			
 		return null;
