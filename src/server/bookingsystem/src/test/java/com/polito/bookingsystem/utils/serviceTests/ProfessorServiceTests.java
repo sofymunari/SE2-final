@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.junit.runner.RunWith;
@@ -196,8 +197,11 @@ class ProfessorServiceTests {
 	public void testNotifyProfessorsAboutNumberOfStudents() throws ParseException {
 		
 		Room room1 = new Room(1, "testName", 100);
-		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("02/12/2020");
-		
+		Date date = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(date); 
+		c.add(Calendar.DATE, 1);
+		date = c.getTime();		
 		Course course1 = new Course(1, "testName1", "testDescription1");
 		Course course2 = new Course(2, "testName2", "testDescription2");
 		Course course3 = new Course(3, "testName3", "testDescription3");
