@@ -1,7 +1,6 @@
 package com.polito.bookingsystem.utils.serviceTests;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.dto.ProfessorDto;

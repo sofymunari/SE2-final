@@ -1,12 +1,6 @@
 package com.polito.bookingsystem.controller;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,7 +72,7 @@ public class HomeController {
 	public List<LectureDto> getStudentLectures(@PathVariable String email) {
 		List<BookingDto> bookingList=bookingService.getListBooking(email);
 		List<Integer> ids=bookingList.stream().map(b->b.getLectureDto().getLectureId()).collect(Collectors.toList());
-		List<LectureDto> availableLectures=lectureService.getListLectures(email).stream().filter(l->{
+		return lectureService.getListLectures(email).stream().filter(l->{
 			for(Integer id: ids) {
 				if(l.getLectureId().equals(id)) {
 					return false;
@@ -88,7 +82,6 @@ public class HomeController {
 		})
 		.filter(l -> !l.getDeleted())
 		.collect(Collectors.toList());
-        return availableLectures;
 	}
 	
 	@PostMapping(value = "addbooking", headers="Content-Type=application/json")

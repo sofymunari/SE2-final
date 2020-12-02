@@ -1,9 +1,6 @@
 package com.polito.bookingsystem.service.impl;
-
-import com.polito.bookingsystem.converter.BookingConverter;
 import com.polito.bookingsystem.converter.LectureConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
-import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
@@ -135,9 +132,9 @@ public class LectureServiceImpl implements LectureService {
 			booking.setBookingInfo(BookingInfo.CANCELED_BY_PROF);
 			Student student = booking.getStudent();
 			String date = new SimpleDateFormat("dd/MM/yyyy").format(lecture.getDate());
-			String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse() + " is cancelled";
-			String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + "of course " 
-			               + lecture.getCourse() + " in date " + date 
+			String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse().getName() + " is cancelled";
+			String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + " of course " 
+			               + lecture.getCourse().getName() + " in date " + date 
 					       + " is cancelled!\nBest regard";
 			studentService.sendEmail(StudentConverter.toDto(student), subject, text);
 			bookingRepository.save(booking);
