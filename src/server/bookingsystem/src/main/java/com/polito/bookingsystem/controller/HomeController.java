@@ -130,11 +130,14 @@ public class HomeController {
 	public boolean lectureToRemote(@PathVariable Integer id) {
 		LectureDto lectureDto = lectureService.getLectureById(id);
 		
+		if(lectureDto == null)
+			return false;
+		
 		Date date = new Date();  
 		
 		long diffInMillies = lectureDto.getDate().getTime() - date.getTime();
 		long diffInMinutes = TimeUnit.MINUTES.convert(diffInMillies,TimeUnit.MILLISECONDS);
-		if(lectureDto!=null && diffInMinutes>30) {
+		if(diffInMinutes>30) {
 			lectureDto.setRemotly(true);
 			lectureService.save(lectureDto);
 			List<BookingDto> bookingDtos = bookingService.getBookingsByLecture(lectureDto);

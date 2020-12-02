@@ -49,8 +49,8 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public List<BookingDto> getListBooking(String email){
 		if(email == null) {
-			List<BookingDto> bookingsDto = new ArrayList<>();
-			return bookingsDto;
+			return new ArrayList<>();
+			
 		}
 		List<Booking> bookings = bookingRepository.findAll().stream()
 				                                 .filter(b -> b.getStudent().getEmail().compareTo(email) == 0 && b.getBookingInfo()!= BookingInfo.CANCELED_BY_STUD && b.getBookingInfo()!= BookingInfo.CANCELED_BY_PROF)

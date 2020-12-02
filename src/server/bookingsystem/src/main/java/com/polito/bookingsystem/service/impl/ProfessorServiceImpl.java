@@ -98,7 +98,6 @@ public class ProfessorServiceImpl implements ProfessorService {
 						+ "Best Regards,\n"
 						+ "Politecnico";
 				sendEmail(professorDto, subject, text);
-				//System.out.println(professorDto.getEmail() + "\n" + subject + "\n" + text+"\n");
 			}
 		}
 		

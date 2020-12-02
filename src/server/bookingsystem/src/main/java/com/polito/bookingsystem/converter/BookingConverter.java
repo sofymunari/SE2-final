@@ -37,7 +37,7 @@ public class BookingConverter {
 		if( bookingList == null)
 			return new ArrayList<>();
 		
-		List<BookingDto> bookingDtoList = new ArrayList<BookingDto>(); 
+		List<BookingDto> bookingDtoList = new ArrayList<>(); 
 		for (Booking booking: bookingList) {
 			bookingDtoList.add(toDto(booking));
 		}

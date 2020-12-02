@@ -1,4 +1,5 @@
 package com.polito.bookingsystem.controller;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +21,8 @@ public abstract class BookingController {
 	
 	@GetMapping(value="studentbookings/{email}")
 	public List<BookingDto> getStudentBookings(@PathVariable String email) {
+		if(email == null)
+			return new ArrayList<>();
         return bookingService.getListBooking(email);
 	}
 	

@@ -1,5 +1,6 @@
 package com.polito.bookingsystem;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.SimpleDateFormat;
@@ -84,7 +85,7 @@ class BookingSystemConverterTests {
 		System.out.println(userString);
 
 		System.out.println("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]");
-		assertTrue(userString.equals("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]"), "Expected the wite toString result for user");		
+		assertTrue( "Expected the wite toString result for user", userString.compareTo("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]") == 0);		
 	}
 	
 	/*
