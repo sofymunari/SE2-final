@@ -127,7 +127,7 @@ public class HomeController {
 	}
 	
 	@PutMapping(value = "lecture/toremote/{id}")
-	boolean lectureToRemote(@PathVariable Integer id) {
+	public boolean lectureToRemote(@PathVariable Integer id) {
 		LectureDto lectureDto = lectureService.getLectureById(id);
 		
 		Date date = new Date();  
