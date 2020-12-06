@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.dto.ManagerDto;
+import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
@@ -24,6 +25,7 @@ import com.polito.bookingsystem.service.LectureService;
 import com.polito.bookingsystem.service.ManagerService;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.NotificationStudentService;
+import com.polito.bookingsystem.service.OfficerService;
 import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingEntry;
@@ -53,6 +55,8 @@ public class HomeController {
 	@Autowired
 	ManagerService managerService;
 	
+	@Autowired
+	OfficerService officerService;
 	
 	@Autowired
 	NotificationProfessorService notificationProfessorService;
@@ -190,5 +194,21 @@ public class HomeController {
 	@GetMapping(value = "managerinfo/{email}")
 	public ManagerDto getManagerInfo(@PathVariable String email) {
 		return managerService.getManager(email);
+	}
+	
+	
+	@PostMapping(value = "officerlogin")
+	public String officerLogin(@RequestBody Map<String,String> userPass) {
+		String email = officerService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
+		
+		if(email == null) return "";
+		
+		return email;
+	}
+	
+	
+	@GetMapping(value = "officerinfo/{email}")
+	public OfficerDto getOfficerInfo(@PathVariable String email) {
+		return officerService.getOfficer(email);
 	}
 }
