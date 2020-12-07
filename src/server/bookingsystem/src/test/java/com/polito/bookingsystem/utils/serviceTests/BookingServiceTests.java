@@ -342,7 +342,44 @@ class BookingServiceTest {
 	
 	@Test
 	void testDeleteBooking3() throws ParseException {
-		//passing a valid id	
+		//passing a valid id and testing the waiting list 	
+		
+		Room room1 = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
+		Student student2 = new Student(2,"testName", "testSurname", "testAddress","test@email.com","testPassword",date,courses1,"testMatricola");
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture2 = new Lecture(2,11,course1,professor1,false,date,90,"testDetails",room1);
+		BookingInfo bookingInfo = BookingInfo.WAITING;
+		BookingInfo bookingInfo1 = BookingInfo.BOOKED;
+		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
+		Booking booking2 = new Booking(2,student1,lecture2,bookingInfo1);
+		Booking booking3 = new Booking(3,student2,lecture1,bookingInfo);
+		Booking booking4 = new Booking(4,student2, lecture2, bookingInfo);
+		Booking booking5 = new Booking(5, student2,lecture1,bookingInfo1);
+		
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking2);
+		bookings.add(booking3);
+		bookings.add(booking4);
+		bookings.add(booking5);
+		
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking1);
+		when(bookingRepository.save(anyObject())).thenReturn(null);
+
+		assertTrue( "Expected true", bookingServiceImpl.deleteBooking(null));
+	}
+	
+	@Test
+	void testDeleteBooking4() throws ParseException {
+		//passing a valid id and testing the waiting list 	
 		
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -355,12 +392,58 @@ class BookingServiceTest {
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		BookingInfo bookingInfo = BookingInfo.WAITING;
+		
 		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
 		
+		List<Booking> bookings = new ArrayList<>();
+		
+		
+		when(bookingRepository.findAll()).thenReturn(bookings);
 		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking1);
 		when(bookingRepository.save(anyObject())).thenReturn(null);
 
 		assertTrue( "Expected true", bookingServiceImpl.deleteBooking(null));
+	}
+	
+	
+	@Test
+	void testDeleteBooking5() throws ParseException {
+		//passing a valid id	
+		
+		Room room1 = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Course course1 = new Course(1, "testName1", "testDescription1");
+		List<Course> courses1 = new ArrayList<>();
+		courses1.add(course1);
+		
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
+		Student student2 = new Student(2,"testName", "testSurname", "testAddress","test@email.com","testPassword",date,courses1,"testMatricola");
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture2 = new Lecture(2,11,course1,professor1,false,date,90,"testDetails",room1);
+		BookingInfo bookingInfo1 = BookingInfo.WAITING;
+		BookingInfo bookingInfo2 = BookingInfo.BOOKED;
+		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo1);
+		Booking booking2 = new Booking(2,student2,lecture1,bookingInfo1);
+		Booking booking3 = new Booking(1, student2, lecture2, bookingInfo1);
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking3);
+		bookings.add(booking2);
+		
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking1);
+		when(bookingRepository.save(anyObject())).thenReturn(null);
+
+		assertTrue( "Expected true", bookingServiceImpl.deleteBooking(null));
+	}
+	
+	@Test
+	void testAddBooking0(){
+		//passing an invalid id 		
+		when(lectureRepository.findByLectureId(anyInt())).thenReturn(null);
+
+		assertNull("Expected a null value to be returned", bookingServiceImpl.addBooking(150, "test@email.com"));
 	}
 	
 	
