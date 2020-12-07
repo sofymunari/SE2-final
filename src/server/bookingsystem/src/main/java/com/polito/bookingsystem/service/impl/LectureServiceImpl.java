@@ -16,6 +16,7 @@ import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,10 +75,16 @@ public class LectureServiceImpl implements LectureService {
 				                    .filter(l -> course.getCourseId().equals(l.getCourse().getCourseId()))
 				                    .filter(l -> l.getDate().after(today))
 				                    .collect(Collectors.toList());
+		   
 	       for(Lecture lecture : courseLectures) {
 	    	   studentLectures.add(LectureConverter.toDto(lecture));
 	       }
 		}
+		
+		
+		//Sort the lecture by date
+		studentLectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
+		
 		return studentLectures;
 	}
 
@@ -93,6 +100,9 @@ public class LectureServiceImpl implements LectureService {
 			return new ArrayList<>();
 		
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
+		
+		//Sort the lecture by date
+		lectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
 		
 		for(Lecture lecture : lectures) 
 			lecturesDto.add(LectureConverter.toDto(lecture));
@@ -162,6 +172,10 @@ public class LectureServiceImpl implements LectureService {
 	public List<LectureDto> getListAllLectures(){
 		List<Lecture> allLectures = lectureRepository.findAll();
         List<LectureDto> allLecturesDto = new ArrayList<>();
+        
+        //Sort the lecture by date
+        allLectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
+        
         for(Lecture lecture:allLectures) {
         	allLecturesDto.add(LectureConverter.toDto(lecture));
         }
