@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.dto.ManagerDto;
@@ -21,15 +26,19 @@ import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.BookingService;
+import com.polito.bookingsystem.service.CourseService;
+import com.polito.bookingsystem.service.FileStorageService;
 import com.polito.bookingsystem.service.LectureService;
 import com.polito.bookingsystem.service.ManagerService;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.NotificationStudentService;
 import com.polito.bookingsystem.service.OfficerService;
 import com.polito.bookingsystem.service.ProfessorService;
+import com.polito.bookingsystem.service.RoomService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.utils.UploadFileResponse;
 
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
 @RestController
@@ -42,6 +51,12 @@ public class HomeController {
 	
 	@Autowired
 	BookingService bookingService;
+	
+	@Autowired
+	RoomService roomService;
+	
+	@Autowired
+	CourseService courseService;
 	
 	@Autowired
 	LectureService lectureService;
@@ -58,6 +73,9 @@ public class HomeController {
 	@Autowired
 	OfficerService officerService;
 	
+	 @Autowired
+	 private FileStorageService fileStorageService;
+	 
 	@Autowired
 	NotificationProfessorService notificationProfessorService;
 	
@@ -211,4 +229,76 @@ public class HomeController {
 	public OfficerDto getOfficerInfo(@PathVariable String email) {
 		return officerService.getOfficer(email);
 	}
+	
+
+	@PostMapping(value = "/uploadStudents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadStudents(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        
+        studentService.addStudents(fileName);
+        
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("../../downloads/StudentsList")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+	
+	@PostMapping(value = "/uploadProfessors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadProfessors(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        professorService.addProfessors(fileName);
+        
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("../../downloads/ProfessorsList")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+	
+	@PostMapping(value = "/uploadRooms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadRooms(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        roomService.addRooms(fileName);
+        
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("../../downloads/RoomsList")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+	
+	@PostMapping(value = "/uploadLectures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadLectures(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        lectureService.addLectures(fileName);
+        
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("../../downloads/LecturesList")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+	
+	@PostMapping(value = "/uploadCourses", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadCourses(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        courseService.addCourses(fileName);
+        
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("../../downloads/CoursesList")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
 }

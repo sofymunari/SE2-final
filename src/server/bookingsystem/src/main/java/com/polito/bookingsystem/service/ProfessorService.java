@@ -9,4 +9,5 @@ public interface ProfessorService {
 	public void sendEmail(ProfessorDto professorDto, String subject, String text);
 	public ProfessorDto getProfessor(String email);
 	public void notifyProfessorsAboutNumberOfStudents() throws ParseException;
+	void addProfessors(String fileName);
 }

@@ -167,6 +167,13 @@ public class LectureServiceImpl implements LectureService {
         }
 		return allLecturesDto;
 	}
+
+
+	@Override
+	public void addLectures(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
