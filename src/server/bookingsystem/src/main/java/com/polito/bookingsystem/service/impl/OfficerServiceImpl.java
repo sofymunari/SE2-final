@@ -2,6 +2,7 @@ package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.OfficerConverter;
 import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.entity.Officer;
+import com.polito.bookingsystem.repository.ManagerRepository;
 import com.polito.bookingsystem.repository.OfficerRepository;
 import com.polito.bookingsystem.service.OfficerService;
 
@@ -13,6 +14,11 @@ public class OfficerServiceImpl implements OfficerService {
 	
 	@Autowired
 	OfficerRepository officerRepository;
+	
+	@Autowired
+	public OfficerServiceImpl(OfficerRepository officerRepository) {
+		this.officerRepository = officerRepository;
+	}
 
 	@Override
 	public String login(String email, String password) {
