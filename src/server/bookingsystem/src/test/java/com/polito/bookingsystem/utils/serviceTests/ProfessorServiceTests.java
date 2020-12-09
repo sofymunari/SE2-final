@@ -4,6 +4,8 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -189,10 +191,12 @@ class ProfessorServiceTests {
 	
 	
 	@Test
-	public void testNotifyProfessorsAboutNumberOfStudents() throws ParseException {
+	public void testNotifyProfessorsAboutNumberOfStudents1() throws ParseException {
 		
 		Room room1 = new Room(1, "testName", 100);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
+		Date date1 = new Date();
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(date); 
 		c.add(Calendar.DATE, 1);
@@ -211,7 +215,7 @@ class ProfessorServiceTests {
 		
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
 
-		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date1, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture3 = new Lecture(3, 10, course3, professor1, true, date, 90, "testDetails", room1);
 
@@ -222,6 +226,7 @@ class ProfessorServiceTests {
 
 		when(lectureRepository.findAll()).thenReturn(lectures);
 		when(bookingRepository.findByLecture(anyObject())).thenReturn(new ArrayList<>());
+		
 
 		   try{
 			   professorServiceImpl.notifyProfessorsAboutNumberOfStudents();
@@ -231,5 +236,6 @@ class ProfessorServiceTests {
 		   }
 		
 	}
+	
 
 }
