@@ -10,5 +10,5 @@ public interface StudentService {
 	StudentDto getStudent(String email);
 	public void sendEmail(StudentDto studentDto, String subject, String text);
 	void addStudents(String fileName);
-
+	void addClasses(String fileName);
 }

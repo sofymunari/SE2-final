@@ -3,6 +3,9 @@ package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.service.ProfessorService;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 
@@ -120,7 +124,32 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public void addProfessors(String fileName) {
-		// TODO Auto-generated method stub
+		try {
+			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			 String currentLine = reader.readLine(); //read first line
+			 while((currentLine = reader.readLine()) != null){
+				  String[] fields = currentLine.split(",");
+				  Professor professor = professorRepository.findByCode(fields[0]);
+				  if(professor == null) {
+					  Professor newProfessor = new Professor();
+					  newProfessor.setCode(fields[0]);
+					  newProfessor.setName(fields[1]);
+					  newProfessor.setSurname(fields[2]);
+					  newProfessor.setEmail(fields[3]);
+					  newProfessor.setPassword("password");
+					  String subject = "Account created!";
+						String text = "Dear Professor "+ newProfessor.getName() + " " + newProfessor.getSurname() +","
+								+ "your account is created correctly. Use this password to access at your home page: " + newProfessor.getPassword() + "\n"
+								+ "\n"
+								+ "Best Regards,\n"
+								+ "Politecnico";
+						sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
+				  }
+			 }
+			 reader.close();
+		}catch(Exception e) {
+			System.err.println(e.getMessage());
+		}
 		
 	}
 

@@ -19,17 +19,25 @@ public class Course {
 	private String name;
 	
 	@Column
-	private String descriptions;
+	private String code;
+	
+	@Column
+	private Integer year;
+	
+	@Column
+	private Integer semester;
 	
 	public Course() {
 		
 	}
 	
-	public Course(Integer courseId, String name, String descriptions) {
+	public Course(Integer courseId, String name, String code, Integer year, Integer semester) {
 		super();
 		this.courseId = courseId;
 		this.name = name;
-		this.descriptions = descriptions;
+		this.code = code;
+		this.semester = semester;
+		this.year = year;
 	}
 	public Integer getCourseId() {
 		return courseId;
@@ -43,10 +51,29 @@ public class Course {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescriptions() {
-		return descriptions;
+
+	public String getCode() {
+		return code;
 	}
-	public void setDescriptions(String descriptions) {
-		this.descriptions = descriptions;
+
+	public void setCode(String code) {
+		this.code = code;
 	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public Integer getSemester() {
+		return semester;
+	}
+
+	public void setSemester(Integer semester) {
+		this.semester = semester;
+	}
+	
 }

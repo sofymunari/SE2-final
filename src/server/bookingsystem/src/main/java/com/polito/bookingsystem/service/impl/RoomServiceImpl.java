@@ -4,10 +4,4 @@ import com.polito.bookingsystem.service.RoomService;
 
 @Service
 public class RoomServiceImpl implements RoomService{
-
-	@Override
-	public void addRooms(String fileName) {
-		// TODO Auto-generated method stub
-		
-	}
 }

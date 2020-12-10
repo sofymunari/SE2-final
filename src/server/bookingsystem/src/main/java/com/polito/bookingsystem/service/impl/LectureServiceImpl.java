@@ -6,19 +6,29 @@ import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
+import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
+import com.polito.bookingsystem.entity.User;
 import com.polito.bookingsystem.repository.BookingRepository;
+import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.repository.RoomRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.LectureService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +48,12 @@ public class LectureServiceImpl implements LectureService {
 	
 	@Autowired
 	private BookingRepository bookingRepository;
+	
+	@Autowired
+	private RoomRepository roomRepository;
+	
+	@Autowired
+	private CourseRepository courseRepository;
 	
 	@Autowired
 	private StudentService studentService;
@@ -185,9 +201,119 @@ public class LectureServiceImpl implements LectureService {
 
 	@Override
 	public void addLectures(String fileName) {
-		// TODO Auto-generated method stub
+		try {
+			 Calendar startSemester = Calendar.getInstance();
+			 startSemester.set(2020, 8, 28);
+			 Calendar endSemester = Calendar.getInstance();
+			 endSemester.set(2021, 0, 17);
+			 Calendar calendar = Calendar.getInstance();
+			
+			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			 String currentLine = reader.readLine(); //read first line
+			 while((currentLine = reader.readLine()) != null){
+				  String[] fields = currentLine.split(",");
+				  if(calendar.before(startSemester)) {
+					  calendar = startSemester;
+				  }else {
+					  calendar = Calendar.getInstance();
+				  }
+				  calendar = getFirstDate(calendar, fields[2]);
+				  if(calendar != null) {
+					  //create lessons for this schedule
+					  Course course = courseRepository.findByCode(fields[0]);
+					  if(course != null)
+					  {
+						  Room room = roomRepository.findByName(fields[1]);
+						  if(room == null)
+						  {
+							  room.setName(fields[1]);
+							  room.setNumberOfSeat(Integer.parseInt(fields[3]));
+							  roomRepository.save(room);
+						  }
+						  
+						  Professor  professor = professorRepository.findAll().stream().filter(p -> 
+												  {
+													  Course courseProf = p.getCourses().stream()
+															  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
+															  .collect(Collectors.toList()).get(0);
+													  if(courseProf == null)
+														  return false;
+													  return true;
+												  }).collect(Collectors.toList()).get(0);
+						  if(professor != null) {
+							  String[] timestamp = fields[4].split("-");
+							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+							  Date timeStart = df.parse(timestamp[0]);
+							  Date timeEnd = df.parse(timestamp[1]);
+							  Long duration = (timeStart.getTime() - timeEnd.getTime())/(1000*60);
+							  
+							  while(calendar.before(endSemester)){
+								  Integer numberOfLesson = lectureRepository.findAll().stream()
+										                   .mapToInt(l -> l.getNumberOfLesson())
+										                   .max()
+										                   .orElse(0);
+								  
+								  Lecture lecture = new Lecture();
+								  lecture.setNumberOfLesson(numberOfLesson + 1); 
+								  lecture.setDeleted(false);
+								  lecture.setDuration(duration.intValue());
+								  lecture.setCourse(course);
+								  lecture.setBookedSeats(0);
+								  lecture.setDate(calendar.getTime());
+								  lecture.setProfessor(professor);
+								  lecture.setRemotly(false);
+								  lecture.setProgramDetails("");
+								  lecture.setRoom(room);
+							      calendar.add(Calendar.DATE, 7);
+							  }
+						  }	
+					  }
+				  }
+			 }
+			 reader.close();
+		}catch(Exception e) {
+			System.err.println(e.getMessage());
+		}
 		
 	}
+	
+	
+	private Calendar getFirstDate(Calendar calendar, String day) {
+	   switch(day) {
+	   case "Mon":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		   break;
+	   case "Tue":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+		   break;
+	   case "Wed":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		   break;
+	   case "Thu:":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+		   break;
+	   case "Fri":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		   break;
+	   case "Sat":
+		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+		   break;
+	    default:
+		   calendar = null;
+	   }
+	   return calendar;
+	}
+	
+    private List<User> getListFromIterator(Iterable<User> iterator) 
+    { 
+        // Create an empty list 
+        List<User> list = new ArrayList<>(); 
+  
+        iterator.forEach(list::add); 
+  
+        return list; 
+    } 
+	
 	
 	
 }
