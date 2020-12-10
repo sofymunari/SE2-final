@@ -158,4 +158,16 @@ public class BookingServiceImpl implements BookingService{
 			bookingRepository.save(BookingConverter.toEntity(bookingDto));
 	}
 
+	@Override
+	public BookingDto getByLectureAndStudent(Integer lectureId, Integer studentId) {
+		Student student = studentRepository.findByUserId(studentId);
+		Lecture lecture = lectureRepository.findByLectureId(lectureId);
+		
+		if(student == null || lecture == null) return null;
+		
+		BookingDto bookingDto = BookingConverter.toDto(bookingRepository.findByLectureAndStudent(lecture, student));
+		
+		return bookingDto;
+	}
+
 }

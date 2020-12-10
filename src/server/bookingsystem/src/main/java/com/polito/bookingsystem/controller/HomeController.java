@@ -191,4 +191,19 @@ public class HomeController {
 	public ManagerDto getManagerInfo(@PathVariable String email) {
 		return managerService.getManager(email);
 	}
+	
+	@PutMapping(value = "lecture/{lectureId}/attendance")
+	public Boolean attendance(@RequestBody Map<String, List<Integer>> studentsList, @PathVariable Integer lectureId) {
+		List<Integer> students = studentsList.get("studentIds");
+		BookingDto bookingDto;
+		
+		for(Integer id : students) {
+			bookingDto = bookingService.getByLectureAndStudent(lectureId, id);
+			if(bookingDto == null) return false;
+			
+			bookingDto.setBookingInfo(BookingInfo.ATTENDED);
+		}
+		
+		return true;
+	}
 }
