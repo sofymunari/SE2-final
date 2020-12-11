@@ -105,8 +105,8 @@ async function uploadProfessorsFile(file){
     }
 }
 
-async function uploadRoomsFile(file){
-    let url = BASE_URL+"uploadRooms"
+async function uploadEnrollmentFile(file){
+    let url = BASE_URL+"uploadEnrollment"
     const response = await fetch(url, {
         method: "POST",
         body: file
@@ -387,5 +387,5 @@ async function teacherRemoteLecture(lectureId){
 const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
            getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
            teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
-           uploadProfessorsFile, uploadRoomsFile, uploadLecturesFile, uploadCoursesFile,}
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,}
 export default API;

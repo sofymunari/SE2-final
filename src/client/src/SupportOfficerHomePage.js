@@ -1,7 +1,6 @@
 import React from 'react';
 import API from './API.js';
 import AppComponents from './AppComponents';
-import { Alert } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,7 +9,7 @@ class SupportOfficerHomePage extends React.Component {
         super(props);
         this.state = {
             supportOfficer: null, lecturesfile: false, coursesfile: false, studentsfile: false,
-            teachersfile: false, classesfile: false, selectedFile: null
+            teachersfile: false, enrollmentfile: false, selectedFile: null
         }
     }
 
@@ -46,7 +45,7 @@ class SupportOfficerHomePage extends React.Component {
                 'coursesfile': false,
                 'studentsfile': false,
                 'teachersfile': false,
-                'classesfile': false
+                'enrollmentfile': false
             });
             this.setState({
                 'selectedFile': event.target.files[0],
@@ -66,8 +65,8 @@ class SupportOfficerHomePage extends React.Component {
 
         formData.append("file", this.state.selectedFile, this.state.selectedFile.name);
 
-        if (this.state.classesfile) {
-            API.uploadClassesFile(formData).then(() => {
+        if (this.state.enrollmentfile) {
+            API.uploadEnrollmentFile(formData).then(() => {
                 this.setState({ /*loaded: true, */selectedFile: null });
                 toast.success('upload success');
             }).catch((error) => {
@@ -177,20 +176,20 @@ class SupportOfficerHomePage extends React.Component {
                                     </div>
                                 </div>
                             </li>
-                            <li className="list-group-item" id="files">
+                            <li className="list-group-item bg-light">
                                 <div className="d-flex w-100">
                                     <div className="col-2">
-                                        <h4>CLASSES</h4>
+                                        <h4>ENROLLMENT</h4>
                                     </div>
                                     <div className="col-2">
                                         <form encType="multipart/form-data">
-                                            <input type="file" name="classesfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                            <input type="file" name="enrollmentfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
                                         </form>
                                     </div>
                                 </div>
                             </li>
-                            <li className="list-group-item" id="files">
+                            <li className="list-group-item bg-light">
                                 <div className="d-flex w-100 ">
                                     <div className="col-2">
                                         <h4>LECTURES</h4>
