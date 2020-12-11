@@ -19,6 +19,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.polito.bookingsystem.converter.LectureConverter;
+import com.polito.bookingsystem.converter.StudentConverter;
+import com.polito.bookingsystem.converter.BookingConverter;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.LectureDto;
@@ -690,4 +693,65 @@ class BookingServiceTest {
 	      fail("Should not have thrown any exception");
 	   }
 	}
+	
+	@Test
+	public void testgetByLectureAndStudent1()throws ParseException {
+		//invalid student id
+		Integer lectureId = 1;
+		Integer studentId = 1;
+		Course course = new Course(1, "testName1", "testDescription1");
+		List<Course> courses= new ArrayList<Course>();
+		courses.add(course);
+		Room room = new Room(1, "testName", 4);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		
+		Lecture lecture = new Lecture(lectureId, 10, course, professor, false, date, 90, "testDetails", room);
+		when (studentRepository.findByUserId(anyObject())).thenReturn(null);
+		when (lectureRepository.findByLectureId(anyObject())).thenReturn(lecture);
+		assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentId));
+	}
+	
+	@Test
+	public void testgetByLectureAndStudent3() throws ParseException {
+				
+				Integer lectureId = 1;
+				Integer studentId = 1;
+				Course course = new Course(1, "testName1", "testDescription1");
+				List<Course> courses= new ArrayList<Course>();
+				courses.add(course);
+				Room room = new Room(1, "testName", 4);
+				Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses);
+				Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+				Student student = new Student(studentId, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses, "testMatricola1");
+				
+				Lecture lecture = new Lecture(lectureId, 10, course, professor, false, date, 90, "testDetails", room);
+				
+				Booking booking = new Booking(1, student, lecture, BookingInfo.ATTENDED);
+				when (studentRepository.findByUserId(anyObject())).thenReturn(student);
+				when (lectureRepository.findByLectureId(anyObject())).thenReturn(lecture);
+				when (bookingRepository.findByLectureAndStudent(lecture, student)).thenReturn(booking);
+				
+				assertNotNull(bookingServiceImpl.getByLectureAndStudent(lectureId, studentId),"Expected not null value");
+	}
+	
+	@Test
+	public void testgetByLectureAndStudent2() throws ParseException {
+		//invalid lecture id
+				Integer lectureId = 1;
+				Integer studentId = 1;
+				Course course = new Course(1, "testName1", "testDescription1");
+				List<Course> courses= new ArrayList<Course>();
+				courses.add(course);
+				Room room = new Room(1, "testName", 4);
+				Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses);
+				Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+				Student student = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses, "testMatricola1");
+				
+				when (studentRepository.findByUserId(anyObject())).thenReturn(student);
+				when (lectureRepository.findByLectureId(anyObject())).thenReturn(null);
+				assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentId));
+	}
+	
+	
 }
