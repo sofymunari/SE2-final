@@ -83,11 +83,18 @@ public class StudentServiceImpl implements StudentService {
 		try {
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
 			 String currentLine = reader.readLine(); //read first line
+			 System.out.println(currentLine);
 			 while((currentLine = reader.readLine()) != null){
+				  System.out.println(currentLine);
 				  String[] fields = currentLine.split(",");
 				  Student student = studentRepository.findByMatricola(fields[0]);
 				  if(student == null) {
 					  Student newStudent = new Student();
+					  Integer userId = studentRepository.findAll().stream()
+					           .mapToInt(p -> p.getUserId())
+					           .max()
+					           .orElse(0);
+			          newStudent.setUserId(userId+1);
 					  newStudent.setMatricola(fields[0]);
 					  newStudent.setName(fields[1]);
 					  newStudent.setSurname(fields[2]);
@@ -99,12 +106,17 @@ public class StudentServiceImpl implements StudentService {
 					  newStudent.setDateOfBirth(calendar.getTime());
 					  newStudent.setPassword("password");
 					  String subject = "Account created!";
-						String text = "Dear Student "+ newStudent.getName() + " " + newStudent.getSurname() +","
+					  String text = "Dear Student "+ newStudent.getName() + " " + newStudent.getSurname() +","
 								+ "your account is created correctly. Use this password to access at your home page: " + newStudent.getPassword() + "\n"
 								+ "\n"
 								+ "Best Regards,\n"
 								+ "Politecnico";
-						sendEmail(StudentConverter.toDto(newStudent), subject, text);
+					  try {
+						//sendEmail(StudentConverter.toDto(newStudent), subject, text);
+					  }catch(Exception e) {}
+					  System.out.println(studentRepository.count());
+					  studentRepository.save(newStudent);
+					  
 				  }
 			 }
 			 reader.close();

@@ -35,8 +35,9 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public void addCourses(String fileName) {
 		try {
+			System.out.println(fileName);
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
-			 System.out.println(fileName);
+			 
 			 
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
@@ -44,6 +45,11 @@ public class CourseServiceImpl implements CourseService{
 				  Course course = courseRepository.findByCode(fields[0]);
 				  if(course == null) {
 					  Course newCourse = new Course();
+					  Integer courseId = courseRepository.findAll().stream()
+					           .mapToInt(p -> p.getCourseId())
+					           .max()
+					           .orElse(0);
+			          newCourse.setCourseId(courseId+1);
 					  newCourse.setCode(fields[0]);
 					  newCourse.setName(fields[3]);
 					  newCourse.setYear(Integer.parseInt(fields[1]));

@@ -212,11 +212,13 @@ public class LectureServiceImpl implements LectureService {
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
+				  System.out.println(currentLine);
 				  if(calendar.before(startSemester)) {
 					  calendar = startSemester;
 				  }else {
 					  calendar = Calendar.getInstance();
 				  }
+				  
 				  calendar = getFirstDate(calendar, fields[2]);
 				  if(calendar != null) {
 					  //create lessons for this schedule
@@ -224,46 +226,71 @@ public class LectureServiceImpl implements LectureService {
 					  if(course != null)
 					  {
 						  Room room = roomRepository.findByName(fields[1]);
-						  if(room == null)
-						  {
+						  if(room == null){
+							  room = null;
+							  room = new Room();
+							  Integer id = roomRepository.findAll().stream()
+			                              .mapToInt(l -> l.getRoomId())
+			                              .max()
+						                  .orElse(0);
+							  
+							  room.setRoomId(id+1);
 							  room.setName(fields[1]);
 							  room.setNumberOfSeat(Integer.parseInt(fields[3]));
 							  roomRepository.save(room);
 						  }
 						  
-						  Professor  professor = professorRepository.findAll().stream().filter(p -> 
-												  {
-													  Course courseProf = p.getCourses().stream()
-															  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
-															  .collect(Collectors.toList()).get(0);
-													  if(courseProf == null)
-														  return false;
-													  return true;
-												  }).collect(Collectors.toList()).get(0);
-						  if(professor != null) {
+						  List<Professor>  professors = professorRepository.findAll().stream()
+								                       .filter(p -> 
+												               {
+																  List<Course> courseProf = p.getCourses().stream()
+																		  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
+																		  .collect(Collectors.toList());
+																  if(courseProf.size() == 0)
+																	  return false;
+																  return true;
+												               })
+								                       .collect(Collectors.toList());
+						  
+						  if(professors.size() > 0) {
+							  Professor professor = professors.get(0);
+							  System.out.println(professor.getCode());
 							  String[] timestamp = fields[4].split("-");
 							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
 							  Date timeStart = df.parse(timestamp[0]);
 							  Date timeEnd = df.parse(timestamp[1]);
-							  Long duration = (timeStart.getTime() - timeEnd.getTime())/(1000*60);
-							  
+							  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
+							  System.out.println(duration);
+							  Long d = (timeStart.getTime() + calendar.getTime().getTime());
+							  Date dd = new Date(d);
+							  calendar.setTime(dd);
 							  while(calendar.before(endSemester)){
+								  Integer id = lectureRepository.findAll().stream()
+                                               .mapToInt(l -> l.getLectureId())
+                                               .max()
+							                   .orElse(0);
+								  
 								  Integer numberOfLesson = lectureRepository.findAll().stream()
+										                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
 										                   .mapToInt(l -> l.getNumberOfLesson())
 										                   .max()
 										                   .orElse(0);
 								  
 								  Lecture lecture = new Lecture();
+								  lecture.setLectureId(id+1);
 								  lecture.setNumberOfLesson(numberOfLesson + 1); 
 								  lecture.setDeleted(false);
 								  lecture.setDuration(duration.intValue());
+								  System.out.println(course.getCode());
 								  lecture.setCourse(course);
 								  lecture.setBookedSeats(0);
 								  lecture.setDate(calendar.getTime());
 								  lecture.setProfessor(professor);
 								  lecture.setRemotly(false);
 								  lecture.setProgramDetails("");
+								  System.out.println(room.getName());
 								  lecture.setRoom(room);
+								  lectureRepository.save(lecture);
 							      calendar.add(Calendar.DATE, 7);
 							  }
 						  }	
@@ -272,7 +299,7 @@ public class LectureServiceImpl implements LectureService {
 			 }
 			 reader.close();
 		}catch(Exception e) {
-			System.err.println(e.getMessage());
+			//System.err.println(e.getMessage());
 		}
 		
 	}
@@ -282,38 +309,45 @@ public class LectureServiceImpl implements LectureService {
 	   switch(day) {
 	   case "Mon":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	   case "Tue":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	   case "Wed":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	   case "Thu:":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	   case "Fri":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	   case "Sat":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+		   calendar.set(Calendar.HOUR, 0);
+		   calendar.set(Calendar.MINUTE, 0);
+		   calendar.set(Calendar.SECOND, 0);
 		   break;
 	    default:
 		   calendar = null;
 	   }
+	  
 	   return calendar;
 	}
-	
-    private List<User> getListFromIterator(Iterable<User> iterator) 
-    { 
-        // Create an empty list 
-        List<User> list = new ArrayList<>(); 
-  
-        iterator.forEach(list::add); 
-  
-        return list; 
-    } 
-	
-	
 	
 }

@@ -106,7 +106,7 @@ async function uploadProfessorsFile(file){
 }
 
 async function uploadEnrollmentFile(file){
-    let url = BASE_URL+"uploadEnrollment"
+    let url = BASE_URL+"uploadEnrollments"
     const response = await fetch(url, {
         method: "POST",
         body: file
