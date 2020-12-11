@@ -34,6 +34,7 @@ public class FileStorageServiceImpl implements FileStorageService{
         try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
+            	
                 return null;
             }
 
@@ -42,6 +43,7 @@ public class FileStorageServiceImpl implements FileStorageService{
 
             return fileName;
         } catch (Exception ex) {
+        	
             return "";
         }
 	}

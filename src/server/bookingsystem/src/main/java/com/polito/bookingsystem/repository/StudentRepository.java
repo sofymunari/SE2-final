@@ -6,4 +6,5 @@ import com.polito.bookingsystem.entity.Student;
 public interface StudentRepository extends UserRepository{
    Student findByUserId(Integer userId);
    Student findByEmail(String email);
+   Student findByMatricola(String matricola);
 }

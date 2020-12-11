@@ -4,6 +4,8 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -69,10 +71,10 @@ class ProfessorServiceTests {
 	void testLoginProfessor2() throws ParseException {
 		//passing a valid mail but an invalid password
 		
-		Course course1 = new Course(1, "testName", "testDescription");
+		Course course1 = new Course(1, "testName", "A", 1,1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");
 		
 		when(professorRepository.findByEmail(anyString())).thenReturn(professor);
 
@@ -83,10 +85,10 @@ class ProfessorServiceTests {
 	void testLoginProfessor3() throws ParseException {
 		//passing a valid mail and a valid password
 		
-		Course course1 = new Course(1, "testName", "testDescription");
+		Course course1 = new Course(1, "testName", "A", 1,1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");
 		
 		when(professorRepository.findByEmail(anyString())).thenReturn(professor);
 
@@ -123,10 +125,10 @@ class ProfessorServiceTests {
 	void testGetProfessor3() {
 		//invalid email 
 		
-		Course course1 = new Course(1, "testName", "testDescription");
+		Course course1 = new Course(1, "testName", "A", 1,1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(course1);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");
 		
 		when(professorRepository.findByEmail(anyString())).thenReturn(professor);
 		
@@ -173,10 +175,10 @@ class ProfessorServiceTests {
 	   try{
 			SimpleMailMessage msg = new SimpleMailMessage();
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-			CourseDto course1 = new CourseDto(1, "testName", "testDescription");
+			CourseDto course1 = new CourseDto(1, "testName", "A", 1,1);
 			List<CourseDto> courses = new ArrayList<>();
 			courses.add(course1);
-			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses);		 
+			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");		 
 			doNothing().when(javaMailSender).send(msg);
 			professorServiceImpl.sendEmail(professorDto, "test", "test");
 	  
@@ -189,17 +191,19 @@ class ProfessorServiceTests {
 	
 	
 	@Test
-	public void testNotifyProfessorsAboutNumberOfStudents() throws ParseException {
+	public void testNotifyProfessorsAboutNumberOfStudents1() throws ParseException {
 		
 		Room room1 = new Room(1, "testName", 100);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
+		Date date1 = new Date();
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(date); 
 		c.add(Calendar.DATE, 1);
 		date = c.getTime();		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2","B", 1,1);
+		Course course3 = new Course(3, "testName3","C", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -209,9 +213,9 @@ class ProfessorServiceTests {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2, "d0");
 
-		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date1, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture3 = new Lecture(3, 10, course3, professor1, true, date, 90, "testDetails", room1);
 
@@ -222,6 +226,7 @@ class ProfessorServiceTests {
 
 		when(lectureRepository.findAll()).thenReturn(lectures);
 		when(bookingRepository.findByLecture(anyObject())).thenReturn(new ArrayList<>());
+		
 
 		   try{
 			   professorServiceImpl.notifyProfessorsAboutNumberOfStudents();
@@ -231,5 +236,6 @@ class ProfessorServiceTests {
 		   }
 		
 	}
+	
 
 }

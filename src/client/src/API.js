@@ -155,7 +155,7 @@ async function getStudentLectures(username){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,deleted:l.deleted,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},
             professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
             email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
         })
@@ -230,7 +230,7 @@ async function getStudentBookings(username){
             numberOfLesson:b.lectureDto.numberOfLesson,remotly:b.lectureDto.remotly,
             date:b.lectureDto.date,programDetails:b.lectureDto.programDetails,duration:b.lectureDto.duration},
             courseDto:{courseId:b.lectureDto.courseDto.courseId,name:b.lectureDto.courseDto.name,
-            decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
+            code:b.lectureDto.courseDto.code},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
             name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
@@ -249,7 +249,7 @@ async function getBookings(){
             numberOfLesson:b.lectureDto.numberOfLesson,remotly:b.lectureDto.remotly,
             date:b.lectureDto.date,programDetails:b.lectureDto.programDetails,duration:b.lectureDto.duration},
             courseDto:{courseId:b.lectureDto.courseDto.courseId,name:b.lectureDto.courseDto.name,
-            decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
+            code:b.lectureDto.courseDto.code},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
             name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
@@ -265,7 +265,7 @@ async function getLectures(){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,deleted:l.deleted,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},
             professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
             email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
         })
@@ -312,7 +312,7 @@ async function getTeacherBookings(username){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
-            course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
+            course:{courseId:l.course.courseId,name:l.course.name,code:l.course.code},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
         })
     }else{
@@ -327,7 +327,7 @@ async function getTeacherLectures(username){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},roomDto:{name:l.roomDto.name},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},roomDto:{name:l.roomDto.name},
             date:l.date,remotly:l.remotly,programDetails:l.programDetails,duration:l.duration,bookedSeats:l.bookedSeats,deleted:l.deleted}
         })
     }else{
@@ -341,7 +341,7 @@ async function getTeacherNotifications(username){
     const notifications_json= await response.json();
     if(response.ok){
         return notifications_json.map((n)=>{
-            return {notificationId:n.notificationId,description:n.description,date:n.date,status:n.status,link:n.link}
+            return {notificationId:n.notificationId,code:n.code,date:n.date,status:n.status,link:n.link}
         })
     }else{
         throw notifications_json;

@@ -51,13 +51,13 @@ class NotificationProfessorServiceTest {
 	void testSendProfessorNotification1()  {
 		//passing null professorDto
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1,"d0");
 		
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		
@@ -70,23 +70,23 @@ class NotificationProfessorServiceTest {
 	void testSendProfessorNotification2() throws ParseException {
 		//passing valid professorDto
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1,"d0");
 				
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A",1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B",1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
 
 		NotificationProfessor notificationProfessor = new NotificationProfessor();
 	
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		when(notificationProfessorRepository.save(anyObject())).thenReturn(notificationProfessor);
 		
@@ -98,15 +98,15 @@ class NotificationProfessorServiceTest {
 	void testSendProfessorNotification3() throws ParseException {
 		//passing valid professorDto
 						
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A",1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B",1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
 
 		NotificationProfessor notificationProfessor = new NotificationProfessor();
 	
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 		when(professorRepository.findByUserId(anyInt())).thenReturn(null);
 		when(notificationProfessorRepository.save(anyObject())).thenReturn(notificationProfessor);
 		
@@ -128,16 +128,16 @@ class NotificationProfessorServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1,"d0");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -149,7 +149,7 @@ class NotificationProfessorServiceTest {
 		list.add(notificationProfessor1);
 		list.add(notificationProfessor2);
 
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 
 		when(professorRepository.findByUserId(anyInt())).thenReturn(professor1);
 		when(notificationProfessorRepository.findByProfessor(anyObject())).thenReturn(list);
@@ -164,16 +164,16 @@ class NotificationProfessorServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1, "d0");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -185,7 +185,7 @@ class NotificationProfessorServiceTest {
 		list.add(notificationProfessor1);
 		list.add(notificationProfessor2);
 
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 
 		when(professorRepository.findByUserId(anyInt())).thenReturn(null);
 		when(notificationProfessorRepository.findByProfessor(anyObject())).thenReturn(list);
@@ -207,21 +207,21 @@ class NotificationProfessorServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1, "d0");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1","A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
 		
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 
 		
 		NotificationProfessorDto notificationProfessorDto = new NotificationProfessorDto(1, "testDescription1", date,  professorDto1, true, "testLink1");
@@ -240,13 +240,13 @@ class NotificationProfessorServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1","A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
 		
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses2, "d0");
 
 		
 		NotificationProfessorDto notificationProfessorDto = new NotificationProfessorDto(1, "testDescription1", date,  professorDto1, true, "testLink1");
@@ -277,13 +277,13 @@ class NotificationProfessorServiceTest {
 		//null notificationId
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1);	
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses1, "d0");	
 
 		NotificationProfessor notificationProfessor = new NotificationProfessor(1, "testDescription1", date,  professor1, true, "testLink1" );
 		

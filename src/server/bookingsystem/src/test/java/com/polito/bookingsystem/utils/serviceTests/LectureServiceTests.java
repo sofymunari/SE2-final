@@ -83,9 +83,9 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/3000");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -96,7 +96,7 @@ class LectureServiceTests {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -161,16 +161,16 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new Date();
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 
 		List<Course> courses2 = new ArrayList<>();
 		courses2.add(course1);
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		
@@ -187,16 +187,16 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 
 		List<Course> courses2 = new ArrayList<>();
 		courses2.add(course1);
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
@@ -213,9 +213,9 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 
 
 		List<Course> courses1 = new ArrayList<>();
@@ -228,7 +228,7 @@ class LectureServiceTests {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		
@@ -276,9 +276,9 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
@@ -289,7 +289,7 @@ class LectureServiceTests {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -327,16 +327,16 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new Date();
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 
 		List<Course> courses2 = new ArrayList<>();
 		courses2.add(course1);
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		
@@ -354,12 +354,12 @@ class LectureServiceTests {
 			RoomDto roomDto = new RoomDto(1, "testName", 4);
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 			
-			CourseDto courseDto = new CourseDto(1, "testName1", "testDescription1");
+			CourseDto courseDto = new CourseDto(1, "testName1", "A",1,1);
 			List<CourseDto> coursesDto = new ArrayList<>();
 			coursesDto.add(courseDto);
 
 			StudentDto studentDto = new StudentDto(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, coursesDto, "testMatricola4");
-			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto);
+			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto,"d0");
 			LectureDto lectureDto = new LectureDto(2, 10, courseDto, professorDto, false, date, 90, "testDetails2", roomDto);
 			
 		
@@ -400,9 +400,9 @@ class LectureServiceTests {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
@@ -413,7 +413,7 @@ class LectureServiceTests {
 		courses2.add(course2);
 		courses2.add(course3);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);

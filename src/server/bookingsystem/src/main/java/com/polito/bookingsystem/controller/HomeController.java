@@ -52,7 +52,8 @@ public class HomeController {
 	@Autowired
 	BookingService bookingService;
 	
-	@Autowired	RoomService roomService;
+	@Autowired
+	RoomService roomService;
 	
 	@Autowired
 	CourseService courseService;
@@ -262,10 +263,10 @@ public class HomeController {
                 file.getContentType(), file.getSize());
     }
 	
-	@PostMapping(value = "/uploadRooms", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/uploadClasses", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadRooms(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
-        roomService.addRooms(fileName);
+        studentService.addClasses(fileName);
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("../../downloads/RoomsList")
