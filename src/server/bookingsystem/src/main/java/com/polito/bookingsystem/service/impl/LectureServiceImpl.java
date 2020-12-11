@@ -217,43 +217,62 @@ public class LectureServiceImpl implements LectureService {
 				  }else {
 					  calendar = Calendar.getInstance();
 				  }
+				  
 				  calendar = getFirstDate(calendar, fields[2]);
 				  if(calendar != null) {
 					  //create lessons for this schedule
 					  Course course = courseRepository.findByCode(fields[0]);
 					  if(course != null)
 					  {
-						  Room room = roomRepository.findByName(fields[1]);
-						  if(room == null)
+						  Room room = null;
+						  if(roomRepository.findByName(fields[1]) == null)
 						  {
+							  room = new Room();
+							  Integer id = roomRepository.findAll().stream()
+			                              .mapToInt(l -> l.getRoomId())
+			                              .max()
+						                  .orElse(0);
+							  
+							  room.setRoomId(id+1);
 							  room.setName(fields[1]);
 							  room.setNumberOfSeat(Integer.parseInt(fields[3]));
 							  roomRepository.save(room);
+						  }else {
+							 room = roomRepository.findByName(fields[1]); 
 						  }
 						  
-						  Professor  professor = professorRepository.findAll().stream().filter(p -> 
+						  List<Professor>  professors = professorRepository.findAll().stream().filter(p -> 
 												  {
-													  Course courseProf = p.getCourses().stream()
+													  List<Course> courseProf = p.getCourses().stream()
 															  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
-															  .collect(Collectors.toList()).get(0);
-													  if(courseProf == null)
+															  .collect(Collectors.toList());
+													  if(courseProf.size() == 0)
 														  return false;
 													  return true;
-												  }).collect(Collectors.toList()).get(0);
-						  if(professor != null) {
+												  }).collect(Collectors.toList());
+						  
+						  if(professors.size() > 0) {
+							  Professor professor = professors.get(0);
 							  String[] timestamp = fields[4].split("-");
-							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+							  SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 							  Date timeStart = df.parse(timestamp[0]);
 							  Date timeEnd = df.parse(timestamp[1]);
-							  Long duration = (timeStart.getTime() - timeEnd.getTime())/(1000*60);
-							  
+							  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
+							  calendar.setTime(timeStart);
 							  while(calendar.before(endSemester)){
+								  Integer id = lectureRepository.findAll().stream()
+                                               .mapToInt(l -> l.getLectureId())
+                                               .max()
+							                   .orElse(0);
+								  
 								  Integer numberOfLesson = lectureRepository.findAll().stream()
+										                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
 										                   .mapToInt(l -> l.getNumberOfLesson())
 										                   .max()
 										                   .orElse(0);
 								  
 								  Lecture lecture = new Lecture();
+								  lecture.setLectureId(id+1);
 								  lecture.setNumberOfLesson(numberOfLesson + 1); 
 								  lecture.setDeleted(false);
 								  lecture.setDuration(duration.intValue());
@@ -264,6 +283,8 @@ public class LectureServiceImpl implements LectureService {
 								  lecture.setRemotly(false);
 								  lecture.setProgramDetails("");
 								  lecture.setRoom(room);
+								  lectureRepository.save(lecture);
+								  System.out.println(lectureRepository.count());
 							      calendar.add(Calendar.DATE, 7);
 							  }
 						  }	

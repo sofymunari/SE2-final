@@ -132,19 +132,30 @@ public class ProfessorServiceImpl implements ProfessorService {
 				  Professor professor = professorRepository.findByCode(fields[0]);
 				  if(professor == null) {
 					  Professor newProfessor = new Professor();
+					  Integer userId = professorRepository.findAll().stream()
+							           .mapToInt(p -> p.getUserId())
+							           .max()
+							           .orElse(0);
+					  newProfessor.setUserId(userId+1);
 					  newProfessor.setCode(fields[0]);
 					  newProfessor.setName(fields[1]);
 					  newProfessor.setSurname(fields[2]);
 					  newProfessor.setEmail(fields[3]);
 					  newProfessor.setPassword("password");
+					  newProfessor.setAddress("");
 					  String subject = "Account created!";
 						String text = "Dear Professor "+ newProfessor.getName() + " " + newProfessor.getSurname() +","
 								+ "your account is created correctly. Use this password to access at your home page: " + newProfessor.getPassword() + "\n"
 								+ "\n"
 								+ "Best Regards,\n"
 								+ "Politecnico";
-						sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
+						try {
+							//sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
+						  }catch(Exception e) {}
+						professorRepository.save(newProfessor);
+						System.out.println(professorRepository.count());
 				  }
+				  
 			 }
 			 reader.close();
 		}catch(Exception e) {

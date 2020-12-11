@@ -233,15 +233,13 @@ public class HomeController {
 
 	@PostMapping(value = "/uploadStudents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadStudents(@RequestParam("file") MultipartFile file) {
-		System.out.println("First");
-        String fileName = fileStorageService.storeFile(file);
-		System.out.println("Second");
 
-        studentService.addStudents(fileName);
-		System.out.println("Third");
+        String fileName = fileStorageService.storeFile(file);
+        studentService.addStudents("../../uploads/" + fileName);
+        System.out.println("stud ok");
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("../../downloads/StudentsList")
+        		.path("../../uploads")
                 .path(fileName)
                 .toUriString();
 
@@ -252,10 +250,11 @@ public class HomeController {
 	@PostMapping(value = "/uploadProfessors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadProfessors(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
-        professorService.addProfessors(fileName);
+        professorService.addProfessors("../../uploads/" +fileName);
+        System.out.println("prof ok");
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("../../downloads/ProfessorsList")
+        		.path("../../uploads")
                 .path(fileName)
                 .toUriString();
 
@@ -266,10 +265,11 @@ public class HomeController {
 	@PostMapping(value = "/uploadClasses", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadRooms(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
-        studentService.addClasses(fileName);
+        studentService.addClasses("../../uploads/" +fileName);
+        System.out.println("class ok");
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("../../downloads/RoomsList")
+        		.path("../../uploads")
                 .path(fileName)
                 .toUriString();
 
@@ -280,10 +280,11 @@ public class HomeController {
 	@PostMapping(value = "/uploadLectures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadLectures(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
-        lectureService.addLectures(fileName);
+        lectureService.addLectures("../../uploads/" +fileName);
+        System.out.println("lect ok");
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("../../downloads/LecturesList")
+        		.path("../../uploads")
                 .path(fileName)
                 .toUriString();
 
@@ -294,10 +295,11 @@ public class HomeController {
 	@PostMapping(value = "/uploadCourses", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadCourses(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
-        courseService.addCourses(fileName);
+        courseService.addCourses("../../uploads/" +fileName);
+        System.out.println("course ok");
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("../../downloads/CoursesList")
+                .path("../../uploads")
                 .path(fileName)
                 .toUriString();
 

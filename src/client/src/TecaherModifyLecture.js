@@ -52,7 +52,7 @@ class TeacherModifyLecture extends React.Component{
                     <div className="container border border-success">
                     <h4>Course: {this.state.lecture.courseDto.name}</h4>
                     <h4>Lecture: {this.state.lecture.numberOfLesson}</h4>
-                    <h4>Course details: {this.state.lecture.courseDto.description}</h4>
+                    <h4>Course Code: {this.state.lecture.courseDto.code}</h4>
                     <h4>Lecture program: {this.state.lecture.programDetails}</h4>
                     <h4>Lecture duration: {this.state.lecture.duration}</h4>
                     <h4>Lecture schedule date: {dateshow} </h4>
