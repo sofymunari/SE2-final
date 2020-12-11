@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Route,Switch,Link, Redirect} from 'react-router-dom';
+import {Route,Switch,Link} from 'react-router-dom';
 
 function AppFooter(props){
     return  <div className="jumbotron text-center  mt-3" >
@@ -21,17 +21,17 @@ function AppTitle(props){
                       <h1>PROFESSOR PORTAL</h1>  
                       <p>Welcome to the Teacher Login Page</p>
                     </Route>
-                    <Route path="/studentportal">
-                        <h1>STUDENT PORTAL</h1>
-                        <p>Welcome to the Student Portal Page</p>
-                    </Route>
                     <Route path="/managerlogin">
                         <h1>MANAGER LOGIN</h1>
                         <p>Welcome to the Manager Login Page</p>
                     </Route>
-                    <Route exact path="/">
-                      <h1>WESTERN UNIVERSITY</h1>  
-                      <p>Welcome to the Home Page</p> 
+                    <Route path="/supportOfficerlogin">
+                        <h1>SUPPORT OFFICER LOGIN</h1>
+                        <p>Welcome to the Support Officer Login Page</p>
+                    </Route>
+                    <Route path="/studentportal">
+                        <h1>STUDENT PORTAL</h1>
+                        <p>Welcome to the Student Portal Page</p>
                     </Route>
                     <Route path="/managerportal">
                         <h1>MANAGER PORTAL</h1>
@@ -40,6 +40,10 @@ function AppTitle(props){
                     <Route path="/teacherportal">
                         <h1>TEACHER PORTAL</h1>
                         <p>Welcome to the Teacher Portal Page</p>
+                    </Route>
+                    <Route exact path="/">
+                      <h1>WESTERN UNIVERSITY</h1>  
+                      <p>Welcome to the Home Page</p> 
                     </Route>
                  
                   </Switch>
@@ -66,6 +70,11 @@ function AppNavbar(props){
                         <li className="nav-item pr-1">
                         <Link to="/managerlogin">
                         <button className="btn btn-success text-dark font-weight-bold" >Manager</button>
+                        </Link>
+                        </li>    
+                        <li className="nav-item pr-1">
+                        <Link to="/supportOfficerlogin">
+                        <button className="btn btn-success text-dark font-weight-bold" >Support Officer</button>
                         </Link>
                         </li>    
                     </ul>
@@ -132,6 +141,17 @@ function AppNavbar(props){
                 </nav>
             </Route> 
             <Route exact path="/managerportal">
+                <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
+                <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
+                    <ul className="navbar-nav text-right">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
+                    </li>     
+                    </ul>
+                </div>  
+                </nav>
+            </Route> 
+            <Route exact path="/supportOfficerportal">
                 <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
                 <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">

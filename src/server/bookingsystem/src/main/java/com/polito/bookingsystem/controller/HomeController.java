@@ -52,8 +52,7 @@ public class HomeController {
 	@Autowired
 	BookingService bookingService;
 	
-	@Autowired
-	RoomService roomService;
+	@Autowired	RoomService roomService;
 	
 	@Autowired
 	CourseService courseService;
@@ -148,6 +147,16 @@ public class HomeController {
 		return "";
 	}
 	
+	
+	@PostMapping(value = "supportOfficerlogin")
+	public String officerLogin(@RequestBody Map<String,String> userPass) {
+		String email = officerService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
+		
+		if(email == null) return "";
+		
+		return email;
+	}
+	
 	@PutMapping(value = "lecture/toremote/{id}")
 	public boolean lectureToRemote(@PathVariable Integer id) {
 		LectureDto lectureDto = lectureService.getLectureById(id);
@@ -213,17 +222,7 @@ public class HomeController {
 	public ManagerDto getManagerInfo(@PathVariable String email) {
 		return managerService.getManager(email);
 	}
-	
-	
-	@PostMapping(value = "officerlogin")
-	public String officerLogin(@RequestBody Map<String,String> userPass) {
-		String email = officerService.login(userPass.get(USERNAME), userPass.get(PASSWORD));
 		
-		if(email == null) return "";
-		
-		return email;
-	}
-	
 	
 	@GetMapping(value = "officerinfo/{email}")
 	public OfficerDto getOfficerInfo(@PathVariable String email) {
@@ -233,10 +232,13 @@ public class HomeController {
 
 	@PostMapping(value = "/uploadStudents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadStudents(@RequestParam("file") MultipartFile file) {
+		System.out.println("First");
         String fileName = fileStorageService.storeFile(file);
-        
+		System.out.println("Second");
+
         studentService.addStudents(fileName);
-        
+		System.out.println("Third");
+
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("../../downloads/StudentsList")
                 .path(fileName)

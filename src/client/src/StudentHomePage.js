@@ -1,7 +1,7 @@
 import React from 'react';
 import API from './API.js';
 import StudentBooking from './StudentBooking';
-import {Route,Switch,Link} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 import AppComponents from './AppComponents';
 
 class StudentHomePage extends React.Component {

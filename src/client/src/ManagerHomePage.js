@@ -1,8 +1,6 @@
 import React from 'react';
 import API from './API.js';
 import AppComponents from './AppComponents';
-import {Route,Switch,Link} from 'react-router-dom';
-
 
 class ManagerHomePage extends React.Component{
     constructor(props){
@@ -100,7 +98,6 @@ class Lecture extends React.Component{
     }
 
     render(){
-        console.log(this.props.lectures)
         return  (<>
                 <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
                 <ul className="list-group list-group-flush">

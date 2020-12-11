@@ -57,6 +57,96 @@ async function loginManager(username,password){
     }
 }
 
+async function loginSupportOfficer(username, password){
+    let url = BASE_URL + "supportOfficerlogin"
+    const response = await fetch(url, {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:username,password:password})
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadStudentsFile(file){
+    let url = BASE_URL+"uploadStudents"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadProfessorsFile(file){
+    let url = BASE_URL+"uploadProfessors"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadRoomsFile(file){
+    let url = BASE_URL+"uploadRooms"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}async function uploadLecturesFile(file){
+    let url = BASE_URL+"uploadLectures"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}async function uploadCoursesFile(file){
+    let url = BASE_URL+"uploadCourses"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+
 
 async function getStudentLectures(username){
     const url= BASE_URL+"studentlectures/"+username;
@@ -97,6 +187,17 @@ async function getManagerInfo(username){
         throw managInfo;
     }
 }
+
+async function getSupportOfficerInfo(username){
+    let url=BASE_URL+"officerinfo/"+username;
+    const response= await fetch(url);
+    const officerInfo=await response.json();
+    if(response.ok){
+    return {userId:officerInfo.userId,name:officerInfo.name, surname:officerInfo.surname,
+        address:officerInfo.address,username:officerInfo.email}
+    }else{
+        throw officerInfo;
+    }}
 
 async function addBooking(id,username){
     let url=BASE_URL+"addbooking"
@@ -283,5 +384,8 @@ async function teacherRemoteLecture(lectureId){
 
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
+const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
+           getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
+           teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
+           uploadProfessorsFile, uploadRoomsFile, uploadLecturesFile, uploadCoursesFile,}
 export default API;
