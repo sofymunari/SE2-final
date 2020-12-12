@@ -12,6 +12,6 @@ public interface BookingService {
 	List<BookingEntry> getBooking(String email);
 	List<BookingDto> getBookingsByLecture(LectureDto lectureDto);
 	void save(BookingDto bookingDto);
-	BookingDto getByLectureAndStudent(Integer lectureId, Integer studentId);
+	BookingDto getByLectureAndStudent(Integer lectureId, String email);
 }
 
