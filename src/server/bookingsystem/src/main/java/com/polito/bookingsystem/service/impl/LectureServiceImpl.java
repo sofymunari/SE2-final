@@ -209,6 +209,7 @@ public class LectureServiceImpl implements LectureService {
 			 Calendar calendar = Calendar.getInstance();
 			
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			 
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
@@ -302,12 +303,13 @@ public class LectureServiceImpl implements LectureService {
 			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
+			
 		}
 		
 	}
 	
 	
-	private Calendar getFirstDate(Calendar calendar, String day) {
+	public Calendar getFirstDate(Calendar calendar, String day) {
 	   switch(day) {
 	   case "Mon":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -320,7 +322,7 @@ public class LectureServiceImpl implements LectureService {
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
 		   
 		   break;
-	   case "Thu:":
+	   case "Thu":
 		   calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
 		   
 		   break;

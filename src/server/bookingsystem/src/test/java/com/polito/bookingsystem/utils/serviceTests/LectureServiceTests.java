@@ -2,14 +2,23 @@ package com.polito.bookingsystem.utils.serviceTests;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
+
+import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,6 +36,7 @@ import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
+import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
@@ -43,7 +53,9 @@ class LectureServiceTests {
 	private StudentRepository studentRepository;
 	@Autowired
 	private BookingRepository bookingRepository;
-
+	@Autowired
+	private CourseRepository courseRepository;
+	
 	private StudentService studentService;
 	private ProfessorRepository professorRepository;
 	private LectureServiceImpl lectureServiceImpl;
@@ -54,11 +66,13 @@ class LectureServiceTests {
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
+		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
 		professorRepository = mock(ProfessorRepository.class);
 		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository);
-
+		
 	}
+	
 
 	@Test
 	void testGetListLectures1() {
@@ -429,6 +443,55 @@ class LectureServiceTests {
 		assertTrue("Expected an empty list to be returned", lectureServiceImpl.getListAllLectures().size() == 3);
 		
 	}
+	
+	@Test
+	void testAddLectures1() {
+		String fileName = "testFile";
+		String firstline = "Code,Room,Day,Seats,Time";
+		String lines = "XY1211,1,,120,8:30-11:30";
+		Calendar startSemester = Calendar.getInstance();
+		Calendar mockedCalendar = mock(Calendar.class);  
+		
+		try {
+			BufferedReader reader = mock(BufferedReader.class);
+			when(reader.readLine()).thenReturn(firstline).thenReturn(lines);
+			when(mockedCalendar.before(startSemester)).thenReturn(true);
+			when(courseRepository.findAllById(anyObject())).thenReturn(null);
+			lectureServiceImpl.addLectures(fileName);
+			
+		}catch(IOException e) {
+		}
+		
+	}
+	
+	@Test
+	void testGetFirstDate1() {
+		Calendar myCalendar = Calendar.getInstance();
+		Calendar testCalendar = Calendar.getInstance();
+		Integer[] days = {Calendar.MONDAY,Calendar.TUESDAY,Calendar.WEDNESDAY,Calendar.THURSDAY,Calendar.FRIDAY,Calendar.SATURDAY};
+		String[] days1 = {"Mon","Tue","Wed","Thu","Fri","Sat"};
+		for(int i=0;i<6;i++) {
+			myCalendar.set(Calendar.DAY_OF_WEEK,days[i] );
+			assertEquals("Expected",lectureServiceImpl.getFirstDate(testCalendar, days1[i]),myCalendar );
+		}
+		
+	}
+	
+	@Test
+	void testGetFirstDate() {
+		//null case
+		
+		Calendar testCalendar = Calendar.getInstance();
+		String day = "wrongDay";
+		
+		assertNull("Expected",lectureServiceImpl.getFirstDate(testCalendar, day));
+	}
+		
+	
+	
+
+	    
+	
 	
 	
 }
