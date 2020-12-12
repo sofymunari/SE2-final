@@ -192,16 +192,19 @@ public class HomeController {
 		return managerService.getManager(email);
 	}
 	
+
 	@PostMapping(value = "lecture/{lectureId}/attendance")
-	public Boolean attendance(@RequestBody Map<String, List<Integer>> studentsList, @PathVariable Integer lectureId) {
-		List<Integer> students = studentsList.get("studentIds");
+	public Boolean attendance(@RequestBody Map<String, List<String>> studentsList, @PathVariable Integer lectureId) {
+		List<String> students = studentsList.get("studentIds");
 		BookingDto bookingDto;
 		
-		for(Integer id : students) {
-			bookingDto = bookingService.getByLectureAndStudent(lectureId, id);
+		for(String email : students) {
+			bookingDto = bookingService.getByLectureAndStudent(lectureId, email);
 			if(bookingDto == null) return false;
 			
+			
 			bookingDto.setBookingInfo(BookingInfo.ATTENDED);
+			bookingService.save(bookingDto);
 		}
 		
 		return true;

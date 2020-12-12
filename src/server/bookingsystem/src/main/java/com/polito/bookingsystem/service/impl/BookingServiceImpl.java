@@ -159,8 +159,8 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public BookingDto getByLectureAndStudent(Integer lectureId, Integer studentId) {
-		Student student = studentRepository.findByUserId(studentId);
+	public BookingDto getByLectureAndStudent(Integer lectureId, String email) {
+		Student student = studentRepository.findByEmail(email);
 		Lecture lecture = lectureRepository.findByLectureId(lectureId);
 		
 		if(student == null || lecture == null) return null;
