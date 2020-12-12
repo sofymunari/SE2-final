@@ -10,8 +10,10 @@ import Alert from 'react-bootstrap/Alert'
 class TeacherHomePage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 'teacher': null, 'errorTeacher': null, 'students': null, 'errorLectures': null, 
-                       'bookings': null, 'lectures': null, 'modifylect': null, 'allLectures': null, 'lectureId': null}
+        this.state = {
+            'teacher': null, 'errorTeacher': null, 'students': null, 'errorLectures': null,
+            'bookings': null, 'lectures': null, 'modifylect': null, 'allLectures': null, 'lectureId': null
+        }
         //teacher prop is the teacher username
         //teacher state is the teacher info
 
@@ -49,7 +51,7 @@ class TeacherHomePage extends React.Component {
 
     showBookings = (lectureId) => {
         const students = this.state.bookings.filter(b => b.lectureId === lectureId);
-        this.setState({ students: students, lectureId: lectureId});
+        this.setState({ students: students, lectureId: lectureId });
     }
 
     deleteandback = (lectureId) => {
@@ -106,7 +108,7 @@ class TeacherHomePage extends React.Component {
                             {this.state.modifylect ?
                                 <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect} /> :
                                 this.state.students ?
-                                    <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId}/> :
+                                    <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId} /> :
                                     <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                         </div>
                     </div>
@@ -140,10 +142,10 @@ class MainPage extends React.Component {
 
     constructor(props) {
         super(props);
-       
+
     }
     showItem = (lecture) => {
-        return <LectureItem key={lecture.lectureId} lecture={lecture} showBookings={this.props.showBookings} modifyLecture={this.props.modifyLecture}/>
+        return <LectureItem key={lecture.lectureId} lecture={lecture} showBookings={this.props.showBookings} modifyLecture={this.props.modifyLecture} />
     }
 
     render() {
@@ -224,7 +226,7 @@ function LectureItem(props) {
 class StudentBookingList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {'attendencesSet':false, 'studentsChecked': [], 'studentsNumber': 0};
+        this.state = { 'attendencesSet': false, 'studentsChecked': [], 'studentsNumber': 0 };
     }
 
     handleCheck = (ev, studentEmail) => {
@@ -244,31 +246,33 @@ class StudentBookingList extends React.Component {
     }
 
     sendAttendences = () => {
-        API.setAttendences(this.state.studentsChecked, this.props.lectureId)
-        .then(() =>{
-            this.setState({attendencesSet: true, studentsChecked: []});
-        })
-        .catch((error)=>this.setState({error:error}));
+        if (this.state.studentsChecked.length > 0) {
+            API.setAttendences(this.state.studentsChecked, this.props.lectureId)
+                .then(() => {
+                    this.setState({ attendencesSet: true, studentsChecked: [] });
+                })
+                .catch((error) => this.setState({ error: error }));
+        }
 
     }
 
 
     showStudent = (student) => {
-        return <StudentItem key={student.bookingId} student={student} handleCheck={this.handleCheck}/>
+        return <StudentItem key={student.bookingId} student={student} handleCheck={this.handleCheck} />
     }
 
     render() {
         return <>
-        {
-            this.state.attendencesSet &&
-            <Alert transition={null} className='fixed-top col-2 mt-2 mx-auto'
-            onClose={() => this.setState({ attendencesSet: false })}
-            variant='success'
-            dismissible>
-            Attendences set!
+            {
+                this.state.attendencesSet &&
+                <Alert transition={null} className='col-6 mt-2 mx-auto'
+                    onClose={() => this.setState({ attendencesSet: false })}
+                    variant='success'
+                    dismissible>
+                    Attendences set!
         </Alert>
-        
-        }
+
+            }
             <h1>STUDENT LIST FOR COURSE {this.props.students[0].course.name} LESSON NUMBER {this.props.students[0].lectureNumber}</h1>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
@@ -315,9 +319,16 @@ function StudentItem(props) {
                 <div className="col-2">
                     <h4>{props.student.bookingInfo}</h4>
                 </div>
-                <div className="col-2">
-                    <input name="presente" type="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)}/>
-                </div>
+                {
+                    props.student.bookingInfo === "ATTENDED" ?
+                        <div className="col-2">
+                            <input name="presente" type="checkbox" disabled checked/>
+                        </div>
+                        :
+                        <div className="col-2">
+                            <input name="presente" type="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)} />
+                        </div>
+                }
             </div>
         </li>
     )
