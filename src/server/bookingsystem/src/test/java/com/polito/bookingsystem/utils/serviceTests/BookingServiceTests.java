@@ -698,7 +698,7 @@ class BookingServiceTest {
 	public void testgetByLectureAndStudent1()throws ParseException {
 		//invalid student id
 		Integer lectureId = 1;
-		Integer studentId = 1;
+		String studentemail = null;
 		Course course = new Course(1, "testName1", "testDescription1");
 		List<Course> courses= new ArrayList<Course>();
 		courses.add(course);
@@ -707,39 +707,16 @@ class BookingServiceTest {
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
 		Lecture lecture = new Lecture(lectureId, 10, course, professor, false, date, 90, "testDetails", room);
-		when (studentRepository.findByUserId(anyObject())).thenReturn(null);
+		when (studentRepository.findByEmail(anyObject())).thenReturn(null);
 		when (lectureRepository.findByLectureId(anyObject())).thenReturn(lecture);
-		assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentId));
+		assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentemail));
 	}
 	
 	@Test
 	public void testgetByLectureAndStudent3() throws ParseException {
 				
 				Integer lectureId = 1;
-				Integer studentId = 1;
-				Course course = new Course(1, "testName1", "testDescription1");
-				List<Course> courses= new ArrayList<Course>();
-				courses.add(course);
-				Room room = new Room(1, "testName", 4);
-				Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses);
-				Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-				Student student = new Student(studentId, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses, "testMatricola1");
-				
-				Lecture lecture = new Lecture(lectureId, 10, course, professor, false, date, 90, "testDetails", room);
-				
-				Booking booking = new Booking(1, student, lecture, BookingInfo.ATTENDED);
-				when (studentRepository.findByUserId(anyObject())).thenReturn(student);
-				when (lectureRepository.findByLectureId(anyObject())).thenReturn(lecture);
-				when (bookingRepository.findByLectureAndStudent(lecture, student)).thenReturn(booking);
-				
-				assertNotNull(bookingServiceImpl.getByLectureAndStudent(lectureId, studentId),"Expected not null value");
-	}
-	
-	@Test
-	public void testgetByLectureAndStudent2() throws ParseException {
-		//invalid lecture id
-				Integer lectureId = 1;
-				Integer studentId = 1;
+				String studentemail = "test1@email.com";
 				Course course = new Course(1, "testName1", "testDescription1");
 				List<Course> courses= new ArrayList<Course>();
 				courses.add(course);
@@ -748,9 +725,32 @@ class BookingServiceTest {
 				Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 				Student student = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses, "testMatricola1");
 				
-				when (studentRepository.findByUserId(anyObject())).thenReturn(student);
+				Lecture lecture = new Lecture(lectureId, 10, course, professor, false, date, 90, "testDetails", room);
+				
+				Booking booking = new Booking(1, student, lecture, BookingInfo.ATTENDED);
+				when (studentRepository.findByEmail(anyObject())).thenReturn(student);
+				when (lectureRepository.findByLectureId(anyObject())).thenReturn(lecture);
+				when (bookingRepository.findByLectureAndStudent(lecture, student)).thenReturn(booking);
+				
+				assertNotNull(bookingServiceImpl.getByLectureAndStudent(lectureId, studentemail),"Expected not null value");
+	}
+	
+	@Test
+	public void testgetByLectureAndStudent2() throws ParseException {
+		//invalid lecture id
+				Integer lectureId = 1;
+				String studentemail = "test1@email.com";
+				Course course = new Course(1, "testName1", "testDescription1");
+				List<Course> courses= new ArrayList<Course>();
+				courses.add(course);
+				Room room = new Room(1, "testName", 4);
+				Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses);
+				Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+				Student student = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses, "testMatricola1");
+				
+				when (studentRepository.findByEmail(anyObject())).thenReturn(student);
 				when (lectureRepository.findByLectureId(anyObject())).thenReturn(null);
-				assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentId));
+				assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentemail));
 	}
 	
 	
