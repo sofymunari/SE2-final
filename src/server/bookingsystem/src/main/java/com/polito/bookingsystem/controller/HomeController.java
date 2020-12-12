@@ -263,7 +263,7 @@ public class HomeController {
     }
 	
 
-	@PostMapping(value = "/uploadEnrollmnets", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/uploadEnrollments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadEnrollments(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
         studentService.addClasses("../../uploads/" +fileName);
