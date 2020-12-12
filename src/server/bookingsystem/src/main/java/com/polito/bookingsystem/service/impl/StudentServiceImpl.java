@@ -84,13 +84,22 @@ public class StudentServiceImpl implements StudentService {
 						if(bookingDto2.getStudentDto().getEmail().equals(studentDto.getEmail())) {
 							continue;
 						}
+						boolean contains = false;
+						for (StudentDto contactedStudent : contactedStudents) {
+							if(contactedStudent.getEmail().equals(bookingDto2.getStudentDto().getEmail())) {
+								contains = true;
+								break;
+							}
+						}
+						if(contains == true) {
+							continue;
+						}
 						contactedStudents.add(bookingDto2.getStudentDto());
 					}
 				}
 			}
 		}
 		return contactedStudents;
-	}
-	
+	}	
     
 }
