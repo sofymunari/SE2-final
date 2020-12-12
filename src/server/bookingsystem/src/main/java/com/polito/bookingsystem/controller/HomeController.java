@@ -233,8 +233,8 @@ public class HomeController {
 
 	@PostMapping(value = "/uploadStudents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadStudents(@RequestParam("file") MultipartFile file) {
-
         String fileName = fileStorageService.storeFile(file);
+        System.out.println("wait...");
         studentService.addStudents("../../uploads/" + fileName);
         System.out.println("stud ok");
 
@@ -250,6 +250,7 @@ public class HomeController {
 	@PostMapping(value = "/uploadProfessors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadProfessors(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
+        System.out.println("wait...");
         professorService.addProfessors("../../uploads/" +fileName);
         System.out.println("prof ok");
         
@@ -265,8 +266,9 @@ public class HomeController {
 	@PostMapping(value = "/uploadEnrollments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadEnrollments(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
+        System.out.println("wait...");
         studentService.addClasses("../../uploads/" +fileName);
-        System.out.println("class ok");
+        System.out.println("enrollments ok");
         
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
         		.path("../../uploads")
@@ -280,6 +282,7 @@ public class HomeController {
 	@PostMapping(value = "/uploadLectures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadLectures(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
+        System.out.println("wait...");
         lectureService.addLectures("../../uploads/" +fileName);
         System.out.println("lect ok");
         
@@ -295,6 +298,7 @@ public class HomeController {
 	@PostMapping(value = "/uploadCourses", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadCourses(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
+        System.out.println("wait...");
         courseService.addCourses("../../uploads/" +fileName);
         System.out.println("course ok");
         

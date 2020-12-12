@@ -6,6 +6,7 @@ import com.polito.bookingsystem.service.ProfessorService;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -150,15 +151,15 @@ public class ProfessorServiceImpl implements ProfessorService {
 								+ "Best Regards,\n"
 								+ "Politecnico";
 						try {
+							//commantare durante la demo
 							//sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
 						  }catch(Exception e) {}
 						professorRepository.save(newProfessor);
-						System.out.println(professorRepository.count());
 				  }
 				  
 			 }
 			 reader.close();
-		}catch(Exception e) {
+		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
 		

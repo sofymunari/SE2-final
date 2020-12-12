@@ -1,6 +1,7 @@
 package com.polito.bookingsystem.service.impl;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -35,10 +36,7 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public void addCourses(String fileName) {
 		try {
-			System.out.println(fileName);
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
-			 
-			 
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
@@ -63,7 +61,7 @@ public class CourseServiceImpl implements CourseService{
 				  }
 			 }
 			 reader.close();
-		}catch(Exception e) {
+		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}		
 	}

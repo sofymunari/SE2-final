@@ -8,7 +8,6 @@ import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
-import com.polito.bookingsystem.entity.User;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
@@ -18,10 +17,10 @@ import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.LectureService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
-
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -223,6 +222,7 @@ public class LectureServiceImpl implements LectureService {
 					  calendar.set(Calendar.HOUR, 0);
 					  calendar.set(Calendar.MINUTE, 0);
 					  calendar.set(Calendar.SECOND, 0);
+					  calendar.set(Calendar.MILLISECOND, 0);
 					  
 					  //create lessons for this schedule
 					  Course course = courseRepository.findByCode(fields[0]);
@@ -258,51 +258,50 @@ public class LectureServiceImpl implements LectureService {
 						  
 						  if(professors.size() > 0) {
 							  Professor professor = professors.get(0);
-							  
-							  
 							  String[] timestamp = fields[4].split("-");
 							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
-							  Date timeStart = df.parse(timestamp[0]);
-							  Date timeEnd = df.parse(timestamp[1]);
-							  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
-							  //Long d = (timeStart.getTime() + calendar.getTime().getTime());
-							  //Date dd = new Date(d);
-							  //System.out.println(dd.toLocaleString());
-							  //calendar.setTime(dd);
-							  while(calendar.before(endSemester)){
-								  Integer lectureId = lectureRepository.findAll().stream()
-                                               .mapToInt(l -> l.getLectureId())
-                                               .max()
-							                   .orElse(0);
-								  
-								  Integer numberOfLesson = lectureRepository.findAll().stream()
-										                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
-										                   .mapToInt(l -> l.getNumberOfLesson())
-										                   .max()
-										                   .orElse(0);
-								  
-								  Lecture newLecture = new Lecture();
-								  newLecture.setLectureId(lectureId+1);
-								  newLecture.setNumberOfLesson(numberOfLesson + 1); 
-								  newLecture.setDeleted(false);
-								  newLecture.setDuration(duration.intValue());
-								  newLecture.setCourse(course);
-								  newLecture.setBookedSeats(0);
-								  newLecture.setDate(calendar.getTime());
-								  newLecture.setProfessor(professor);
-								  newLecture.setRemotly(false);
-								  newLecture.setProgramDetails("");
-								  newLecture.setRoom(room);
-								  lectureRepository.save(newLecture);
-							      calendar.add(Calendar.DATE, 7);
-							  }
-						  }	
-					  }
-				  }
+							  try {
+								  Date timeStart = df.parse(timestamp[0]);
+								  Date timeEnd = df.parse(timestamp[1]);
+								  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
+								  Long milliseconds = (timeStart.getTime() + calendar.getTime().getTime() + 60*60*1000);
+								  Date date = new Date(milliseconds);
+								  calendar.setTime(date);
+								  while(calendar.before(endSemester)){
+									  Integer lectureId = lectureRepository.findAll().stream()
+	                                               .mapToInt(l -> l.getLectureId())
+	                                               .max()
+								                   .orElse(0);
+									  
+									  Integer numberOfLesson = lectureRepository.findAll().stream()
+											                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
+											                   .mapToInt(l -> l.getNumberOfLesson())
+											                   .max()
+											                   .orElse(0);
+									  
+									  Lecture newLecture = new Lecture();
+									  newLecture.setLectureId(lectureId+1);
+									  newLecture.setNumberOfLesson(numberOfLesson + 1); 
+									  newLecture.setDeleted(false);
+									  newLecture.setDuration(duration.intValue());
+									  newLecture.setCourse(course);
+									  newLecture.setBookedSeats(0);
+									  newLecture.setDate(calendar.getTime());
+									  newLecture.setProfessor(professor);
+									  newLecture.setRemotly(false);
+									  newLecture.setProgramDetails("");
+									  newLecture.setRoom(room);
+									  lectureRepository.save(newLecture);
+								      calendar.add(Calendar.DATE, 7);
+								 }
+						    }catch(ParseException e) {continue;}
+					    }
+				    }
+			    }
 			 }
 			 reader.close();
-		}catch(Exception e) {
-			System.err.println(e.getMessage() + " q");
+		}catch(IOException e) {
+			System.err.println(e.getMessage());
 		}
 		
 	}

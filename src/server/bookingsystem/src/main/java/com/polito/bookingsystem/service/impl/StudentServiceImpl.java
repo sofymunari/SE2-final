@@ -83,9 +83,8 @@ public class StudentServiceImpl implements StudentService {
 		try {
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
 			 String currentLine = reader.readLine(); //read first line
-			 System.out.println(currentLine);
 			 while((currentLine = reader.readLine()) != null){
-				  System.out.println(currentLine);
+				  //System.out.println(currentLine);
 				  String[] fields = currentLine.split(",");
 				  Student student = studentRepository.findByMatricola(fields[0]);
 				  if(student == null) {
@@ -112,15 +111,14 @@ public class StudentServiceImpl implements StudentService {
 								+ "Best Regards,\n"
 								+ "Politecnico";
 					  try {
+						//commantare durante la demo
 						//sendEmail(StudentConverter.toDto(newStudent), subject, text);
 					  }catch(Exception e) {}
-					  System.out.println(studentRepository.count());
 					  studentRepository.save(newStudent);
-					  
 				  }
 			 }
 			 reader.close();
-		}catch(Exception e) {
+		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
 		
@@ -138,10 +136,11 @@ public class StudentServiceImpl implements StudentService {
 				  if(student != null && course != null) {
 					  student.getCourses().add(course);
 					  studentRepository.save(student);
+					  //System.out.println(studentRepository.count());
 				  }
 			 }
 			 reader.close();
-		}catch(Exception e) {
+		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
 	}
