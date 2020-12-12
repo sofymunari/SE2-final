@@ -192,7 +192,7 @@ public class HomeController {
 		return managerService.getManager(email);
 	}
 	
-	@PutMapping(value = "lecture/{lectureId}/attendance")
+	@PostMapping(value = "lecture/{lectureId}/attendance")
 	public Boolean attendance(@RequestBody Map<String, List<Integer>> studentsList, @PathVariable Integer lectureId) {
 		List<Integer> students = studentsList.get("studentIds");
 		BookingDto bookingDto;

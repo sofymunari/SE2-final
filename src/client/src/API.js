@@ -119,6 +119,28 @@ async function addBooking(id,username){
     })
 }
 
+async function setAttendences(idList, lectureId){
+    let url = BASE_URL+ "lecture/"+ lectureId+"/attendance"
+
+    return new Promise((resolve,reject) =>{
+        fetch(url, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({studentIds: idList})
+        }).then((response)=>{
+            if(response.ok){
+                if(!response.json()){
+                    reject("error:setting attendences")
+                }
+                resolve();
+            }
+            reject("connection error");
+        }).catch((err)=>reject(err));
+    })
+}
+
 
 async function getStudentBookings(username){
     let url=BASE_URL+"studentbookings/"+username;
@@ -210,9 +232,10 @@ async function getTeacherBookings(username){
     const lects_json= await response.json();
     if(response.ok){
         return lects_json.map((l)=>{
+            console.log(l)
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
             course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
-            lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
+            lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname, studentId:l.userId}
         })
     }else{
         throw lects_json;
@@ -283,5 +306,5 @@ async function teacherRemoteLecture(lectureId){
 
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
+const API={loginStudent, loginTeacher, setAttendences, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
 export default API;
