@@ -2,11 +2,11 @@ package com.polito.bookingsystem.utils.serviceTests;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
+import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
@@ -156,5 +157,93 @@ class StudentServiceTests {
 	      fail("Should not have thrown any exception");
 	   }
 	}
+	
+	
+	@Test
+	void testAddStudents1() throws ParseException {
+		String fileName = "../../test-files/Students.csv";
+		
+		
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		List<Student> students = new ArrayList<>();
+		
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		students.add(student);
+		
+		try {
+		     
+			when(studentRepository.findByMatricola(anyObject())).thenReturn(student).thenReturn(null);
+			when(studentRepository.findAll()).thenReturn(students);
+		
+			when(studentRepository.save(anyObject())).thenReturn(null);
+			studentServiceImpl.addStudents(fileName);
+			
+		} catch (Exception e) {
+		          fail("should't come here. exception wrongly thrown");
+		}
+	}
+	
+	@Test
+	void testAddStudents2() {
+		String fileName = "test-wrong";
+		IOException e= new IOException();
+		try {
+			studentServiceImpl.addStudents(fileName);
+			
+		}catch (Exception ex) {
+			fail("Shouldn't come here");
+		}
+	}
+	
+	@Test
+	void testAddClasses1() throws ParseException  {
+		String fileName = "../../test-files/Enrollment.csv";
+		
+		
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		List<Student> students = new ArrayList<>();
+		
+		Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		students.add(student);
+		
+		try {
+		     
+			when(studentRepository.findByMatricola(anyObject())).thenReturn(student).thenReturn(null);
+			
+			when(courseRepository.findByCode(anyObject())).thenReturn(course1).thenReturn(null);
+			when(studentRepository.save(anyObject())).thenReturn(null);
+			studentServiceImpl.addClasses(fileName);
+			
+		} catch (Exception e) {
+		          fail("should't come here. exception wrongly thrown");
+		}
+	}
+	
+	@Test
+	void testAddClasses2() {
+		String fileName = "test-wrong";
+		IOException e= new IOException();
+		try {
+			studentServiceImpl.addClasses(fileName);
+			
+		}catch (Exception ex) {
+			fail("Shouldn't come here");
+		}
+	}
+	
 
 }

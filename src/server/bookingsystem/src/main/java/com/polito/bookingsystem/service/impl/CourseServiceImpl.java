@@ -40,6 +40,7 @@ public class CourseServiceImpl implements CourseService{
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
+				  
 				  Course course = courseRepository.findByCode(fields[0]);
 				  if(course == null) {
 					  Course newCourse = new Course();
@@ -50,6 +51,7 @@ public class CourseServiceImpl implements CourseService{
 			          newCourse.setCourseId(courseId+1);
 					  newCourse.setCode(fields[0]);
 					  newCourse.setName(fields[3]);
+					  
 					  newCourse.setYear(Integer.parseInt(fields[1]));
 					  newCourse.setSemester(Integer.parseInt(fields[2]));
 					  Professor professor = professorRepository.findByCode(fields[4]);

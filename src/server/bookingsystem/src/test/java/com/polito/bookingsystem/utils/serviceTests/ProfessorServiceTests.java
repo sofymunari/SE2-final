@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
+import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
@@ -235,6 +237,48 @@ class ProfessorServiceTests {
 		      fail("Should not have thrown any exception");
 		   }
 		
+	}
+	
+	@Test
+	void testAddProfessors1() throws ParseException  {
+		String fileName = "../../test-files/Professors.csv";
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses, "d0");
+		List<Professor> professors = new ArrayList<>();
+		
+		//Student student = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		professors.add(professor1);
+		
+		try {
+		     
+			when(professorRepository.findByCode(anyObject())).thenReturn(professor1).thenReturn(null);
+			
+			when(professorRepository.findAll()).thenReturn(professors);
+			when(professorRepository.save(anyObject())).thenReturn(null);
+			professorServiceImpl.addProfessors(fileName);
+			
+		} catch (Exception e) {
+		          fail("should't come here. exception wrongly thrown");
+		}
+	}
+	
+	@Test
+	void testAddProfessors2() {
+		String fileName = "test-wrong";
+		IOException e= new IOException();
+		try {
+			professorServiceImpl.addProfessors(fileName);
+			
+		}catch (Exception ex) {
+			fail("Shouldn't come here");
+		}
 	}
 	
 

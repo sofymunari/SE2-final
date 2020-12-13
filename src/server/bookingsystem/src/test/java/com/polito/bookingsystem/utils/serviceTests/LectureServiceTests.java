@@ -18,10 +18,11 @@ import static org.mockito.Mockito.*;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.TemporaryFolder;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import org.springframework.test.context.junit4.SpringRunner;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.LectureDto;
@@ -35,12 +36,14 @@ import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
+import com.polito.bookingsystem.repository.RoomRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
+import com.polito.bookingsystem.service.impl.CourseServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 @RunWith(SpringRunner.class)
@@ -55,10 +58,16 @@ class LectureServiceTests {
 	private BookingRepository bookingRepository;
 	@Autowired
 	private CourseRepository courseRepository;
+	@Autowired
+	private ProfessorRepository professorRepository;
+	@Autowired
+	private RoomRepository roomRepository;
 	
 	private StudentService studentService;
-	private ProfessorRepository professorRepository;
+	
 	private LectureServiceImpl lectureServiceImpl;
+	
+	
 	
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -66,9 +75,11 @@ class LectureServiceTests {
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
+		roomRepository = mock(RoomRepository.class);
 		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
 		professorRepository = mock(ProfessorRepository.class);
+		
 		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository);
 		
 	}
@@ -446,22 +457,56 @@ class LectureServiceTests {
 	
 	@Test
 	void testAddLectures1() {
-		String fileName = "testFile";
-		String firstline = "Code,Room,Day,Seats,Time";
-		String lines = "XY1211,1,,120,8:30-11:30";
-		Calendar startSemester = Calendar.getInstance();
-		Calendar mockedCalendar = mock(Calendar.class);  
+		String fileName = "wrong-file";
 		
 		try {
-			BufferedReader reader = mock(BufferedReader.class);
-			when(reader.readLine()).thenReturn(firstline).thenReturn(lines);
-			when(mockedCalendar.before(startSemester)).thenReturn(true);
-			when(courseRepository.findAllById(anyObject())).thenReturn(null);
+			
 			lectureServiceImpl.addLectures(fileName);
 			
-		}catch(IOException e) {
+		}catch(Exception e) {
+			fail("Shouldn't get here");
 		}
 		
+	}
+	
+	
+	@Test
+	void testAddLectures2() throws ParseException {
+		String fileName = "../../test-files/Schedule.csv";
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		Room room = new Room(1, "testName", 100);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		List<Professor> proflist=new ArrayList<>();
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(room);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		proflist.add(professor1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room);
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+
+		try {
+		     
+			//when(courseRepository.findByCode(anyObject())).thenReturn(course1);
+			when(roomRepository.findByName(anyObject())).thenReturn(room);
+			when(roomRepository.findAll()).thenReturn(rooms);
+			when(professorRepository.findAll()).thenReturn(proflist);
+			when(roomRepository.save(anyObject())).thenReturn(null);
+			when(lectureRepository.findAll()).thenReturn(lectures);
+			when(lectureRepository.save(anyObject())).thenReturn(null);
+			lectureServiceImpl.addLectures(fileName);
+		        
+
+		} catch (Exception e) {
+		          System.out.println(e.getMessage());
+		          e.printStackTrace();
+		       }
 	}
 	
 	@Test
@@ -472,7 +517,7 @@ class LectureServiceTests {
 		String[] days1 = {"Mon","Tue","Wed","Thu","Fri","Sat"};
 		for(int i=0;i<6;i++) {
 			myCalendar.set(Calendar.DAY_OF_WEEK,days[i] );
-			assertEquals("Expected",lectureServiceImpl.getFirstDate(testCalendar, days1[i]),myCalendar );
+			assertEquals("Expected",lectureServiceImpl.getFirstDate(testCalendar, days1[i]).getFirstDayOfWeek(),myCalendar.getFirstDayOfWeek() );
 		}
 		
 	}
