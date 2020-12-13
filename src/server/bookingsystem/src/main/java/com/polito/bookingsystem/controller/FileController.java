@@ -20,7 +20,7 @@ public class FileController {
 	@Autowired
 	StudentService studentService;
 
-    @RequestMapping("/file/tracereport/student/{email}/{dateString}")
+    @RequestMapping("/managerportal/file/tracereport/student/{email}/{dateString}")
     public String welcome(Map<String, Object> model, @PathVariable String email, @PathVariable String dateString) throws ParseException {
     	SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = sdformat.parse(dateString);

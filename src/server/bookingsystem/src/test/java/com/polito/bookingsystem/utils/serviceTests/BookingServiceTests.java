@@ -38,8 +38,6 @@ import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.NotificationProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.BookingServiceImpl;
-import com.polito.bookingsystem.service.impl.LectureServiceImpl;
-import com.polito.bookingsystem.service.impl.StudentServiceImpl;
 import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
 
@@ -56,11 +54,11 @@ class BookingServiceTest {
 	@Autowired
 	private ProfessorRepository professorRepository;
 	
-	private  JavaMailSender javaMailSender;
+	
 	
 	private StudentService studentService;
-	private LectureServiceImpl lectureServiceImpl;
-	private StudentServiceImpl studentServiceImpl;
+	
+	
 	private BookingServiceImpl bookingServiceImpl;
 	private NotificationProfessorService notificationProfessorService;
 	
@@ -72,9 +70,9 @@ class BookingServiceTest {
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		studentService = mock(StudentService.class);
+		
 		notificationProfessorService = mock(NotificationProfessorService.class);
-		studentServiceImpl = new StudentServiceImpl(studentRepository, javaMailSender);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository);
+		
 		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository, studentService, notificationProfessorService);
 	}
 	

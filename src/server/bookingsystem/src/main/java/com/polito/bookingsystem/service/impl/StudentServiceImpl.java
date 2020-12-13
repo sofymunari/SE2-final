@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
@@ -28,9 +29,10 @@ public class StudentServiceImpl implements StudentService {
     BookingService bookingService;
     
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository,  JavaMailSender javaMailSender){
+    public StudentServiceImpl(StudentRepository studentRepository,  JavaMailSender javaMailSender, @Lazy BookingService bookingService){
     	this.javaMailSender = javaMailSender;
     	this.studentRepository = studentRepository;
+    	this.bookingService = bookingService;
     }
 
     
