@@ -66,7 +66,6 @@ public class LectureServiceImpl implements LectureService {
 		this.studentRepository = studentRepository;
 		this.bookingRepository = bookingRepository;
 		this.professorRepository = professorRepository;
-
 	}
 
 
@@ -260,14 +259,14 @@ public class LectureServiceImpl implements LectureService {
 						  if(professors.size() > 0) {
 							  Professor professor = professors.get(0);
 							  String[] timestamp = fields[4].split("-");
+							  String[] timeS = timestamp[0].split(":");
 							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
 							  try {
 								  Date timeStart = df.parse(timestamp[0]);
 								  Date timeEnd = df.parse(timestamp[1]);
 								  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
-								  Long milliseconds = (timeStart.getTime() + calendar.getTime().getTime() + 60*60*1000);
-								  Date date = new Date(milliseconds);
-								  calendar.setTime(date);
+								  calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeS[0]));
+								  calendar.set(Calendar.MINUTE, Integer.parseInt(timeS[1]));
 								  while(calendar.before(endSemester)){
 									  Integer lectureId = lectureRepository.findAll().stream()
 	                                               .mapToInt(l -> l.getLectureId())
