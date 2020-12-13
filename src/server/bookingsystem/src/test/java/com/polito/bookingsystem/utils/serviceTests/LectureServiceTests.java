@@ -80,7 +80,7 @@ class LectureServiceTests {
 		studentService = mock(StudentService.class);
 		professorRepository = mock(ProfessorRepository.class);
 		
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository);
 		
 	}
 	
@@ -493,7 +493,7 @@ class LectureServiceTests {
 
 		try {
 		     
-			//when(courseRepository.findByCode(anyObject())).thenReturn(course1);
+			when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 			when(roomRepository.findByName(anyObject())).thenReturn(room);
 			when(roomRepository.findAll()).thenReturn(rooms);
 			when(professorRepository.findAll()).thenReturn(proflist);
@@ -508,6 +508,45 @@ class LectureServiceTests {
 		          e.printStackTrace();
 		       }
 	}
+	
+	@Test
+	void testAddLectures3() throws ParseException {
+		String fileName = "../../test-files/Schedule.csv";
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		Room room = new Room(1, "testName", 100);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		List<Professor> proflist=new ArrayList<>();
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(room);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		proflist.add(professor1);
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room);
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+
+		try {
+		     
+			when(courseRepository.findByCode(anyObject())).thenReturn(course1);
+			when(roomRepository.findByName(anyObject())).thenReturn(null);
+			when(roomRepository.findAll()).thenReturn(rooms);
+			when(professorRepository.findAll()).thenReturn(proflist);
+			when(roomRepository.save(anyObject())).thenReturn(null);
+			when(lectureRepository.findAll()).thenReturn(lectures);
+			when(lectureRepository.save(anyObject())).thenReturn(null);
+			lectureServiceImpl.addLectures(fileName);
+		        
+
+		} catch (Exception e) {
+		          System.out.println(e.getMessage());
+		          e.printStackTrace();
+		       }
+		}
 	
 	@Test
 	void testGetFirstDate1() {
