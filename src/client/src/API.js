@@ -281,7 +281,37 @@ async function teacherRemoteLecture(lectureId){
     }
 }
 
+async function downloadReportCsv(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
+
+async function downloadReportPdf(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
 
 
-const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
+
+const API={loginStudent, loginTeacher, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures, downloadReportCsv, downloadReportPdf}
 export default API;
