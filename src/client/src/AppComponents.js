@@ -136,6 +136,11 @@ function AppNavbar(props){
                 <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">
                     <li className="nav-item pr-1">
+                        <Link to="/managerportal/tracingreport">
+                        <button className="btn btn-success text-dark font-weight-bold" >Generate Report</button>
+                        </Link>
+                    </li>
+                    <li className="nav-item pr-1">
                         <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     
                     </ul>
