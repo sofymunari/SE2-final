@@ -20,15 +20,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.StudentDto;
+import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.impl.StudentServiceImpl;
+import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.service.BookingService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 class StudentServiceTests {
-
+	
+	private BookingService bookingService;
+	
 	@Autowired
 	private StudentRepository studentRepository;	
 
@@ -37,9 +43,12 @@ class StudentServiceTests {
 	private StudentServiceImpl studentServiceImpl;
 	
 	
+	
+	
+	
 	@BeforeEach
 	public void setUp() throws Exception {
-
+		bookingService = mock(BookingService.class);
 		studentRepository = mock(StudentRepository.class);
 		javaMailSender = mock( JavaMailSender.class);
 		studentServiceImpl = new StudentServiceImpl(studentRepository, javaMailSender);
@@ -150,6 +159,37 @@ class StudentServiceTests {
 	   catch(Exception e){
 	      fail("Should not have thrown any exception");
 	   }
+	}
+	
+	@Test
+	void testGetContacetedStudents() throws ParseException {
+		List<StudentDto> myList = new ArrayList<>();
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("02/01/0101");//da passare alla funzione
+		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse("03/01/0101");
+		Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		CourseDto course1 = new CourseDto(1, "testName", "testDescription");
+		List<CourseDto> courses = new ArrayList<>();
+		List<BookingDto> bookings = new ArrayList<>();
+		List<BookingDto> bookings1 = new ArrayList<>();
+		List<BookingDto> bookings2 = new ArrayList<>();
+		List<LectureDto> lectures = new ArrayList<>();
+		LectureDto lecture = new LectureDto(1,2,course1,null,false,date1,120,"testDescription",null);
+		LectureDto lecture1 = new LectureDto(2,2,course1,null,false,date2,120,"testDescription",null);
+		StudentDto testStud = new StudentDto(2,"testName","testSurname","testAddress","test@email.com","testPassword",date,courses,"testMatricola");
+		myList.add(testStud);
+		BookingDto booking = new BookingDto(1,testStud,lecture,BookingInfo.BOOKED);
+		BookingDto booking1 = new BookingDto(1,testStud,lecture1,BookingInfo.BOOKED);
+		bookings.add(booking);
+		bookings.add(booking1);
+		bookings1.add(booking);
+		bookings2.add(booking1);
+		courses.add(course1);
+		StudentDto covidStudent = new StudentDto(1,"testName","testSurname","testAddress","test@email.com","testPassword",date,courses,"testMatricola");
+		
+		when(bookingService.getListBooking(anyObject())).thenReturn(bookings);
+		when(bookingService.getBookingsByLecture(anyObject())).thenReturn(bookings1).thenReturn(bookings2);
+		assertEquals(studentServiceImpl.getContactedStudents(covidStudent, date).get(0).getUserId(),testStud.getUserId());
+		
 	}
 
 }
