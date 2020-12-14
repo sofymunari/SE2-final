@@ -2,6 +2,7 @@ package com.polito.bookingsystem.service.impl;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -66,5 +67,11 @@ public class CourseServiceImpl implements CourseService{
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}		
+	}
+	
+	@Override
+	public List<Course> getCourses(){
+		return courseRepository.findAll();
+		
 	}
 }

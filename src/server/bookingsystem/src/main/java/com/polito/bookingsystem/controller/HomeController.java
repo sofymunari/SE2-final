@@ -25,6 +25,7 @@ import com.polito.bookingsystem.dto.ManagerDto;
 import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
+import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.CourseService;
 import com.polito.bookingsystem.service.FileStorageService;
@@ -213,6 +214,11 @@ public class HomeController {
         return lectureService.getListAllLectures();
 	}
 	
+	@GetMapping(value = "listcourses")
+	public List<Course> getCourses(){
+		return courseService.getCourses();
+	}
+	
 	@DeleteMapping(value="professor/deletelecture/{lectureId}")
 	public Boolean deleteLecture(@PathVariable Integer lectureId) {
         return lectureService.deleteLecture(lectureId);
@@ -229,6 +235,7 @@ public class HomeController {
 	public OfficerDto getOfficerInfo(@PathVariable String email) {
 		return officerService.getOfficer(email);
 	}
+	
 	
 
 	@PostMapping(value = "/uploadStudents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

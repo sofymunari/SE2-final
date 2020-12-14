@@ -131,7 +131,9 @@ async function uploadEnrollmentFile(file){
         }
         throw "error";
     }
-}async function uploadCoursesFile(file){
+}
+
+async function uploadCoursesFile(file){
     let url = BASE_URL+"uploadCourses"
     const response = await fetch(url, {
         method: "POST",
@@ -146,6 +148,41 @@ async function uploadEnrollmentFile(file){
     }
 }
 
+async function sendCourses(courses){
+    let url = BASE_URL+"sendCourses"
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({courses:courses})
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function sendCourse(course){
+    let url = BASE_URL+"sendCourse"
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({course:course})
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
 
 
 async function getStudentLectures(username){
@@ -161,6 +198,19 @@ async function getStudentLectures(username){
         })
     }else{
         throw lects_json;
+    }
+}
+
+async function getCourses(){
+    const url = BASE_URL + "listcourses";
+    const response = await fetch(url);
+    const courses_json = await response.json();
+    if(response.ok){
+        return courses_json.map((c) => {
+            return{courseId:c.courseId, courseName: c.name, courseCode: c.code, courseYear: c.year, courseSemester: c.semester}
+        })
+    }else{
+        throw courses_json;
     }
 }
 
@@ -387,5 +437,5 @@ async function teacherRemoteLecture(lectureId){
 const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
            getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
            teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
-           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,}
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile, getCourses, sendCourse, sendCourses}
 export default API;

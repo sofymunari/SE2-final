@@ -151,10 +151,20 @@ function AppNavbar(props){
                 </div>  
                 </nav>
             </Route> 
-            <Route exact path="/supportOfficerportal">
+            <Route path="/supportOfficerportal">
                 <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
                 <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">
+                    <Link to="/supportOfficerportal">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" >UPLOAD FILE</button>
+                    </li>
+                    </Link>
+                    <Link to="/supportOfficerportal/updatelectures">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" >UPDATE LECTURES</button>
+                    </li>
+                    </Link>
                     <li className="nav-item pr-1">
                         <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     
