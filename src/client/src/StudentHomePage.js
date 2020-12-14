@@ -63,7 +63,7 @@ function Aside (props){
     return (
             <div className="container-fluid">
             <h3>Student:</h3>
-            <h4>{props.student.matricola}</h4>
+            <h4 id="matricola">{props.student.matricola}</h4>
             <h4>{props.student.name} {props.student.surname}</h4>
             <h4>{props.student.address}</h4>
             </div>
