@@ -36,8 +36,10 @@ class SupportOfficerHomePage extends React.Component {
 
     addFile = (event, name) => {
         event.preventDefault();
-        if (event.target.files[0] == null)
-            return
+        if (event.target.files[0] == null){
+            this.setState({selectedFile: null})
+            return;
+        }
 
         console.log(event.target.files[0].type);
         if (this.checkMimeType(event)) {
@@ -137,7 +139,7 @@ class SupportOfficerHomePage extends React.Component {
                             File successfully uploaded!
                         </Alert>
                     } */}
-                    <div class="form-group">
+                    <div className="form-group">
                         <ToastContainer />
                     </div>
                     <div className="col-10 p-0" id="main">
@@ -152,7 +154,7 @@ class SupportOfficerHomePage extends React.Component {
                                         <form encType="multipart/form-data">
                                             <input type="file" name="studentsfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 {
                                                     this.state.studentsPressed ?
                                                         <h6>Uploading</h6>
@@ -173,7 +175,7 @@ class SupportOfficerHomePage extends React.Component {
                                         <form encType="multipart/form-data">
                                             <input type="file" name="teachersfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 {
                                                     this.state.teachersPressed ?
                                                         <h6>Uploading</h6>
@@ -194,7 +196,7 @@ class SupportOfficerHomePage extends React.Component {
                                         <form encType="multipart/form-data">
                                             <input type="file" name="coursesfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 {
                                                     this.state.coursesPressed ?
                                                         <h6>Uploading</h6>
@@ -215,7 +217,7 @@ class SupportOfficerHomePage extends React.Component {
                                         <form encType="multipart/form-data">
                                             <input type="file" name="enrollmentfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 {
                                                     this.state.enrollmentPressed ?
                                                         <h6>Uploading</h6>
@@ -236,7 +238,7 @@ class SupportOfficerHomePage extends React.Component {
                                         <form encType="multipart/form-data">
                                             <input type="file" name="lecturesfile" onChange={(event) => this.addFile(event, event.target.name)} />
                                             <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 {
                                                     this.state.lecturesPressed ?
                                                         <h6>Uploading</h6>
