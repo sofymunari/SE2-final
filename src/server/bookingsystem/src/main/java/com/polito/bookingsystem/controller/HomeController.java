@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.controller;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -318,4 +321,17 @@ public class HomeController {
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
+	
+    @RequestMapping(value = "/update/course/toremote", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	  public void courseToRemote(@RequestBody HashMap<String, String> course) {
+		courseService.setCourseToRemote(course.get("course"));
+	  }
+	
+    @RequestMapping(value = "/update/courses/toremote", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
+//		courseService.setCourseToRemote(courseName);
+		for (String courseName : courses.get("courses")) {
+			courseService.setCourseToRemote(courseName);
+		}
+	  } 
 }
