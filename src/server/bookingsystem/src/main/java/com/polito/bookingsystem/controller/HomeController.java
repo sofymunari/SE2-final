@@ -322,12 +322,12 @@ public class HomeController {
                 file.getContentType(), file.getSize());
     }
 	
-    @RequestMapping(value = "/update/course/toremote", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sendCourse", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	  public void courseToRemote(@RequestBody HashMap<String, String> course) {
 		courseService.setCourseToRemote(course.get("course"));
 	  }
 	
-    @RequestMapping(value = "/update/courses/toremote", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sendCourses", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
 //		courseService.setCourseToRemote(courseName);
 		for (String courseName : courses.get("courses")) {
