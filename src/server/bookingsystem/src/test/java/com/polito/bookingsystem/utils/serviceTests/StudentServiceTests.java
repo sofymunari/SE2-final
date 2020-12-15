@@ -174,7 +174,7 @@ class StudentServiceTests {
 		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse("03/01/0101");
 		Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("02/01/0101");
 		Date date0 = new SimpleDateFormat("dd/MM/yyyy").parse("02/01/0100");
-		CourseDto course1 = new CourseDto(1, "testName", "testDescription");
+		CourseDto course1 = new CourseDto(1, "testName", "testDescription",1,1);
 		List<CourseDto> courses = new ArrayList<>();
 		List<BookingDto> bookings = new ArrayList<>();
 		List<BookingDto> bookings1 = new ArrayList<>();

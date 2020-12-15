@@ -29,6 +29,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+	private BookingService bookingService;
 	@Autowired
 	JavaMailSender javaMailSender;
 
@@ -86,7 +87,6 @@ public class StudentServiceImpl implements StudentService {
 
 
 	@Override
-<<<<<<< HEAD
 	public List<StudentDto> getContactedStudents(StudentDto studentDto, Date date) {
 		List<StudentDto> contactedStudents = new ArrayList<StudentDto>();
 		if(studentDto != null) {			
@@ -115,7 +115,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 		return contactedStudents;
 	}	
-=======
+
 	public void addStudents(String fileName)  {
 		try {
 			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
@@ -181,6 +181,6 @@ public class StudentServiceImpl implements StudentService {
 			System.err.println(e.getMessage());
 		}
 	}
->>>>>>> test3
+
     
 }
