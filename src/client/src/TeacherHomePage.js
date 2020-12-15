@@ -275,16 +275,7 @@ class StudentBookingList extends React.Component {
 
     render() {
         return <>
-            {
-                this.state.attendencesSet &&
-                <Alert transition={null} className='col-6 mt-2 mx-auto'
-                    onClose={() => this.setState({ attendencesSet: false })}
-                    variant='success'
-                    dismissible>
-                    Attendences set!
-        </Alert>
-
-            }
+            
             <h1>Student list for course {this.props.students[0].course.name}, lesson number {this.props.students[0].lectureNumber}</h1>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
