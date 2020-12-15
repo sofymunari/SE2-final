@@ -178,7 +178,10 @@ class SupportOfficerHomePage extends React.Component {
 
     render() {
         if (this.state.error) {
-            return <h1>Connections problems</h1>
+            return <>
+            <h1>Connections problems</h1>
+            <a href="/"> HOME </a>
+            </>
         }
         if (!this.state.supportOfficer) {
             return <h1>LOADING</h1>
@@ -309,7 +312,7 @@ class SupportOfficerHomePage extends React.Component {
                         <Route exact path="/supportOfficerportal/updatelectures">
                             <div className="col-10 p-0 " id="main">
                                 <>
-                                    <h3>Which lectures do you want to update?</h3>
+                                    <h3>Which lectures do you want to move remotely?</h3>
                                     <Form onSubmit={(event) => this.sendCourses(event, "first")}>
                                         <div className="form-group">
                                             <Button variant="primary" type="submit">
