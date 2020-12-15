@@ -32,6 +32,8 @@ import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.BookingRepository;
+import com.polito.bookingsystem.repository.RoomRepository;
+import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
@@ -52,6 +54,10 @@ class BookingServiceTest {
 	@Autowired
 	private BookingRepository bookingRepository;
 	@Autowired
+	private CourseRepository courseRepository;
+	@Autowired
+	private RoomRepository roomRepository;
+	@Autowired
 	private ProfessorRepository professorRepository;
 	
 	
@@ -68,11 +74,12 @@ class BookingServiceTest {
 		studentService = mock(StudentService.class);
 		bookingRepository = mock(BookingRepository.class);
 		studentRepository = mock(StudentRepository.class);
+		courseRepository = mock(CourseRepository.class);
+		roomRepository = mock(RoomRepository.class);
 		lectureRepository = mock(LectureRepository.class);
-		studentService = mock(StudentService.class);
+		
 		
 		notificationProfessorService = mock(NotificationProfessorService.class);
-		
 		bookingServiceImpl = new BookingServiceImpl(bookingRepository, lectureRepository, studentRepository, studentService, notificationProfessorService);
 	}
 	
@@ -84,9 +91,9 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "c",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -97,7 +104,7 @@ class BookingServiceTest {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -131,9 +138,9 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "c",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -144,7 +151,7 @@ class BookingServiceTest {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2, "d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -178,9 +185,9 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A", 1,1 );
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -191,7 +198,7 @@ class BookingServiceTest {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -226,9 +233,9 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -239,7 +246,7 @@ class BookingServiceTest {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -276,9 +283,9 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
-		Course course3 = new Course(3, "testName3", "testDescription3");
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -289,7 +296,7 @@ class BookingServiceTest {
 		courses2.add(course3);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses2,"d0");
 
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		Lecture lecture2 = new Lecture(2, 10, course2, professor1, true, date, 90, "testDetails", room1);
@@ -345,12 +352,12 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		BookingInfo bookingInfo = BookingInfo.WAITING;
 		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
@@ -386,11 +393,11 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room1);
 		
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
@@ -405,11 +412,11 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails", room1);
 		
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
@@ -425,11 +432,11 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails", room1);
 		
 		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture1);
@@ -446,7 +453,7 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 3);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
@@ -454,7 +461,7 @@ class BookingServiceTest {
 		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
 		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
 		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails", room1);
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		Booking booking1 = new Booking(1, student1, lecture1, bookingInfo);
@@ -485,7 +492,7 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 4);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
@@ -493,7 +500,7 @@ class BookingServiceTest {
 		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
 		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
 		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
 		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
@@ -546,7 +553,7 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 4);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
@@ -554,7 +561,7 @@ class BookingServiceTest {
 		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
 		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
 		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
 		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
@@ -588,14 +595,14 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 4);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		
 		Student student1 = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", date, courses1, "testMatricola1");
 		Student student2 = new Student(2, "testName2", "testSurname2", "testAddress2", "test2@email.com", "testPassword2", date, courses1, "testMatricola2");
 		Student student3 = new Student(3, "testName3", "testSurname3", "testAddress3", "test3@email.com", "testPassword3", date, courses1, "testMatricola3");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture1 = new Lecture(1, 10, course1, professor1, false, date, 90, "testDetails1", room1);
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
 		BookingInfo bookingDeleted = BookingInfo.CANCELED_BY_STUD;
@@ -608,10 +615,10 @@ class BookingServiceTest {
 		bookings.add(booking2);
 		bookings.add(booking3);
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1 );
 		List<CourseDto> coursesDto1 = new ArrayList<>();
 		coursesDto1.add(courseDto1);
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto1);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto1, "d0");
 		RoomDto roomDto1 = new RoomDto(1, "testName", 4);
 
 		LectureDto lectureDto1 = new LectureDto(1, 10, courseDto1, professorDto1, false, date, 90, "testDetails1", roomDto1);
@@ -628,12 +635,12 @@ class BookingServiceTest {
 		Room room1 = new Room(1, "testName", 4);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
+		Course course1 = new Course(1, "testName1", "A",1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 
 		Student student4 = new Student(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, courses1, "testMatricola4");
-		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d0");
 		Lecture lecture2 = new Lecture(2, 10, course1, professor1, false, date, 90, "testDetails2", room1);
 		BookingInfo bookingDeleted = BookingInfo.CANCELED_BY_STUD;
 		Booking booking4 = new Booking(4, student4, lecture2, bookingDeleted);
@@ -642,10 +649,10 @@ class BookingServiceTest {
 		bookings.add(booking4);
 		
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A",1,1);
 		List<CourseDto> coursesDto1 = new ArrayList<>();
 		coursesDto1.add(courseDto1);
-		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto1);
+		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto1,"d0");
 		RoomDto roomDto1 = new RoomDto(1, "testName", 4);
 
 		LectureDto lectureDto1 = new LectureDto(2, 10, courseDto1, professorDto1, false, date, 90, "testDetails2", roomDto1);
@@ -661,12 +668,12 @@ class BookingServiceTest {
 			RoomDto roomDto = new RoomDto(1, "testName", 4);
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 			
-			CourseDto courseDto = new CourseDto(1, "testName1", "testDescription1");
+			CourseDto courseDto = new CourseDto(1, "testName1", "A",1,1);
 			List<CourseDto> coursesDto = new ArrayList<>();
 			coursesDto.add(courseDto);
 
 			StudentDto studentDto = new StudentDto(4, "testName4", "testSurname4", "testAddress4", "test4@email.com", "testPassword4", date, coursesDto, "testMatricola4");
-			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto);
+			ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",coursesDto,"d0");
 			LectureDto lectureDto = new LectureDto(2, 10, courseDto, professorDto, false, date, 90, "testDetails2", roomDto);
 			BookingInfo bookingDeleted = BookingInfo.CANCELED_BY_STUD;
 			BookingDto bookingDto = new BookingDto(4, studentDto, lectureDto, bookingDeleted);

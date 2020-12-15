@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table
 public class Room {
 	@Column
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	private Integer roomId;
 	

@@ -3,6 +3,10 @@ package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.service.ProfessorService;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 
@@ -115,6 +120,49 @@ public class ProfessorServiceImpl implements ProfessorService {
 		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		return format.format(calendar.getTime()); 
+	}
+
+
+	@Override
+	public void addProfessors(String fileName) {
+		try {
+			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			 String currentLine = reader.readLine(); //read first line
+			 while((currentLine = reader.readLine()) != null){
+				  String[] fields = currentLine.split(",");
+				  Professor professor = professorRepository.findByCode(fields[0]);
+				  if(professor == null) {
+					  Professor newProfessor = new Professor();
+					  Integer userId = professorRepository.findAll().stream()
+							           .mapToInt(p -> p.getUserId())
+							           .max()
+							           .orElse(0);
+					  newProfessor.setUserId(userId+1);
+					  newProfessor.setCode(fields[0]);
+					  newProfessor.setName(fields[1]);
+					  newProfessor.setSurname(fields[2]);
+					  newProfessor.setEmail(fields[3]);
+					  newProfessor.setPassword("password");
+					  newProfessor.setAddress("");
+					  String subject = "Account created!";
+						String text = "Dear Professor "+ newProfessor.getName() + " " + newProfessor.getSurname() +","
+								+ "your account is created correctly. Use this password to access at your home page: " + newProfessor.getPassword() + "\n"
+								+ "\n"
+								+ "Best Regards,\n"
+								+ "Politecnico";
+						try {
+							//commantare durante la demo
+							//sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
+						  }catch(Exception e) {}
+						professorRepository.save(newProfessor);
+				  }
+				  
+			 }
+			 reader.close();
+		}catch(IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
 	}
 
 }

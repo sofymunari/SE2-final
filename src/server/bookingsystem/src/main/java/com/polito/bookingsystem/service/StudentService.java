@@ -14,4 +14,6 @@ public interface StudentService {
 	public void sendEmail(StudentDto studentDto, String subject, String text);
 	public List<StudentDto> getContactedStudents(StudentDto studentDto, Date date);
 
+	void addStudents(String fileName);
+	void addClasses(String fileName);
 }

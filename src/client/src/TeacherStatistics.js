@@ -67,7 +67,7 @@ class PerMonthStats extends React.Component{
             return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
         })
         const months=lectsStats.map((ls)=>ls.month);
-        const monthsUnique= [... new Set(months)];
+        const monthsUnique= [...new Set(months)];
         const stats=monthsUnique.map((m)=>{
             let intLects=lectsStats.filter((l)=>l.month===m);
             let avgBookings=0;
@@ -170,7 +170,7 @@ class PerWeekStats extends React.Component{
             return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
         })
         const weeks=lectsStats.map((ls)=>ls.week);
-        const weeksUnique= [... new Set(weeks)];
+        const weeksUnique= [...new Set(weeks)];
         const stats=weeksUnique.map((w)=>{
             let intLects=lectsStats.filter((l)=>l.week===w);
             let avgBookings=0;
@@ -353,9 +353,9 @@ class TeacherGraph extends React.Component{
     constructor(props){
         super(props);
         this.state={ dataBar: {
-            labels: [... this.props.lectures.map((l)=>{return l.label;})],
+            labels: [...this.props.lectures.map((l)=>{return l.label;})],
             datasets: [{label: "Number of bookings "+this.props.title,
-                data: [... this.props.lectures.map((l)=>{return l.data;})],
+                data: [...this.props.lectures.map((l)=>{return l.data;})],
                 backgroundColor: [
                   "rgba(255, 0,0,0.4)",
                   "rgba(0, 0,255,0.4)",

@@ -176,12 +176,11 @@ class Lecture extends React.Component {
         return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
     }
 
-    render() {
-        console.log(this.props.lectures)
-        return (<>
-            <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
-            <ul className="list-group list-group-flush">
-                <li className="list-group-item bg-light" >
+    render(){
+        return  (<>
+                <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item bg-light" >
                     <div className="d-flex w-100 justify-content-between">
                         <div className="col-2">
                             <h4>LECTURE</h4>
@@ -272,7 +271,7 @@ function Aside(props) {
     return (
         <div className="container-fluid">
             <h3>Manager:</h3>
-            <h4>{props.manager.name} {props.manager.surname}</h4>
+            <h4 id="managerInfo">{props.manager.name} {props.manager.surname}</h4>
             <h4>{props.manager.address}</h4>
         </div>
     )

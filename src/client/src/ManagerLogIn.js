@@ -47,12 +47,12 @@ class ManagerLogIn extends React.Component {
                 </div>                
                 <div className="form-group">
                     <div>
-                        <button type="submit" className="btn btn-lg btn-primary border-0 bg-success text-dark" onClick = {() => this.handleSubmit()}>LOGIN</button>
+                        <button type="submit" id="submit_button" className="btn btn-lg btn-primary border-0 bg-success text-dark" onClick = {() => this.handleSubmit()}>LOGIN</button>
                     </div>
                 </div>
                 </form>
                 </div>
-                {this.props.loginError?<h2><span className="badge badge-secondary bg-danger">wrong username or password</span></h2>:null}
+                {this.props.loginError?<h2><span className="badge badge-secondary bg-danger" id="wrongAuthentication">wrong username or password</span></h2>:null}
                 </div>
                 </div>
                 ); 

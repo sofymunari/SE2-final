@@ -1,7 +1,7 @@
 import React from 'react';
 import API from './API.js';
 import StudentBooking from './StudentBooking';
-import {Route,Switch,Link} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 import AppComponents from './AppComponents';
 
 class StudentHomePage extends React.Component {
@@ -63,7 +63,7 @@ function Aside (props){
     return (
             <div className="container-fluid">
             <h3>Student:</h3>
-            <h4>{props.student.matricola}</h4>
+            <h4 id="matricola">{props.student.matricola}</h4>
             <h4>{props.student.name} {props.student.surname}</h4>
             <h4>{props.student.address}</h4>
             </div>

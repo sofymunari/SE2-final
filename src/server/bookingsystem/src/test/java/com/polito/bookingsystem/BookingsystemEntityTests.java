@@ -22,7 +22,7 @@ import java.util.List;
 class BookingsystemEntityTests {
 	
 	public Course createCourseTestSuite() {
-		return new Course(11, "testCourse", "This is a test course");
+		return new Course(11, "testCourse", "A", 1, 1);
 	}
 	
 	public User createUserTestSuite(){
@@ -41,7 +41,7 @@ class BookingsystemEntityTests {
 		Course c = createCourseTestSuite();
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		return new Professor(11, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		return new Professor(11, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 	}
 	
 	public Room createRoomTestSuite () {
@@ -131,17 +131,17 @@ class BookingsystemEntityTests {
 	void testGetCourseDescription() {
 		Course c = null;
 		c = createCourseTestSuite();
-		assertEquals("course description is wrong", c.getDescriptions(), "This is a test course");
+		assertEquals("course code is wrong", c.getCode(), "A");
 	}
 	
 	@Test
 	void testSetCourseDescription() {
-		String description = "testDescription";
+		String code = "A";
 		Course c = null;
 		c = createCourseTestSuite();
-		c.setDescriptions(description);
-		assertNotNull("course description is null", c.getDescriptions());
-		assertEquals("course description is wrong", c.getDescriptions(), description);
+		c.setCode(code);
+		assertNotNull("course code is null", c.getCode());
+		assertEquals("course code is wrong", c.getCode(), code);
 	}
 	
 	
@@ -289,7 +289,7 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testSetStudentCourses() throws ParseException {
-		Course c = new Course(0, "courseNew", "This is a new course");
+		Course c = new Course(0, "courseNew", "A", 1, 1);
 		Student s = null;
 		s = createStudentTestSuite();
 		List<Course> courses = new ArrayList<>();
@@ -316,7 +316,7 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testSetProfessorCourses() {
-		Course c = new Course(0, "courseNew", "This is a new course");
+		Course c = new Course(0, "courseNew", "A", 1, 1);
 		Professor p = null;
 		p = createProfessorTestSuite();
 		List<Course> courses = new ArrayList<>();
@@ -456,10 +456,10 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testSetNotificationProfessor() throws ParseException {
-		Course c = new Course(0, "testCoursenew", "This is a new test course");
+		Course c = new Course(0, "testCoursenew", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		Professor professor = new Professor(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", courses);
+		Professor professor = new Professor(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", courses, "d0");
 		NotificationProfessor notification = null;
 		notification = createNotificationProfessorTestSuite();
 		notification.setProfessor(professor);
@@ -482,7 +482,7 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testSetNotificationStudent() throws ParseException {
-		Course c = new Course(0, "testCoursenew", "This is a new test course");
+		Course c = new Course(0, "testCoursenew", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Date d =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
@@ -545,7 +545,7 @@ class BookingsystemEntityTests {
 	@Test
 	void testSetLectureCourse() throws ParseException {
 		Lecture lecture = null;
-		Course course = new Course(0, "testNamenew", "this is a new test description");
+		Course course = new Course(0, "testNamenew", "A", 1, 1);
 		lecture = createLectureTestSuite();
 		lecture.setCourse(course);
 		assertNotNull("lecture course is wrong", lecture.getCourse());
@@ -562,10 +562,10 @@ class BookingsystemEntityTests {
 	
 	@Test
 	void testSetLectureProfessor() throws ParseException {
-		Course course = new Course(12, "testNamenew", "this is a new test description");
+		Course course = new Course(12, "testNamenew", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(course);
-		Professor professor =  new Professor(12, "testNamenew","testSurnamenew", "testAddressnew", "testEmailnew","testPasswordnew", courses);
+		Professor professor =  new Professor(12, "testNamenew","testSurnamenew", "testAddressnew", "testEmailnew","testPasswordnew", courses, "d0");
 		Lecture lecture = null;
 		lecture = createLectureTestSuite();
 		lecture.setProfessor(professor);
@@ -739,7 +739,7 @@ class BookingsystemEntityTests {
 	@Test
 	void testSetBookingtStudent() throws ParseException {
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0202");
-		Course c = new Course(0, "courseNew", "This is a new course");
+		Course c = new Course(0, "courseNew", "A", 1,1 );
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Student student = new Student(0, "testNamenew", "testSurnamenew", "testAddressnew", "testEmailnew", "testPasswordnew", date, courses, "testMatricolanew");
