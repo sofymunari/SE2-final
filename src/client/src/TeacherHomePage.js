@@ -5,7 +5,7 @@ import TeacherStatistics from './TeacherStatistics';
 import API from './API.js';
 import { Route, Switch, Link } from 'react-router-dom';
 import AppComponents from './AppComponents';
-import Alert from 'react-bootstrap/Alert'
+import {Row, Alert, Col} from 'react-bootstrap'
 
 class TeacherHomePage extends React.Component {
     constructor(props) {
@@ -273,7 +273,7 @@ class StudentBookingList extends React.Component {
         </Alert>
 
             }
-            <h1>STUDENT LIST FOR COURSE {this.props.students[0].course.name} LESSON NUMBER {this.props.students[0].lectureNumber}</h1>
+            <h1>Student list for course {this.props.students[0].course.name}, lesson number {this.props.students[0].lectureNumber}</h1>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
                     <div className="d-flex w-100 justify-content-between">
@@ -296,8 +296,14 @@ class StudentBookingList extends React.Component {
                 </li>
                 {this.props.students.map(this.showStudent)}
             </ul>
+            <Row >
+            <Col className="col-4">
+            </Col>
+            <Col className="col-3 d-flex justify-content-between ">
             <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
             <button type="button" className="btn btn-success" onClick={(ev) => this.sendAttendences()} > SEND ATTENDENCES</button>
+            </Col>
+            </Row>
         </>
     }
 }
