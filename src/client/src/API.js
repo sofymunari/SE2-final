@@ -335,13 +335,8 @@ async function getTeacherBookings(username){
         return lects_json.map((l)=>{
             console.log(l)
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
-<<<<<<< HEAD
-            course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
-            lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname, studentId:l.userId}
-=======
             course:{courseId:l.course.courseId,name:l.course.name,code:l.course.code},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
->>>>>>> test3
         })
     }else{
         throw lects_json;
