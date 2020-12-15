@@ -60,7 +60,7 @@ class ManagerHomePage extends React.Component {
             </Route>
             <Route path="/managerportal/file/tracereport/student/:student/:date" render={({ match }) => {
                 return (
-                    <a href={`http://localhost:8080/managerportal/file/tracereport/student/${match.params.student}/${match.params.date}`}>GO TO FILES</a>
+                    <a href={`http://localhost:8080/managerportal/file/tracereport/student/${match.params.student}/${match.params.date}`}> <h2>GO TO REPORTS</h2></a>
                     //<DownloadFile manager={this.state.manager} student={match.params.student} date={match.params.date} />
                 )
             }} />
@@ -108,7 +108,7 @@ class TracingReport extends React.Component {
                     <div className="col-2 bg-success" id="sticky-sidebar">
                         <Aside manager={this.props.manager} />
                     </div>
-                    <div className="col-6 p-0 justify-content-between" id="main">
+                    <div className="col-10 p-0 justify-content-around" id="main">
                         <h3>Select the student who tested positive and the date in which it happened</h3>
                         <Form onSubmit={(event) => this.generateReport(event)}>
                             <Form.Group controlId="formBasicEmail">
@@ -121,104 +121,6 @@ class TracingReport extends React.Component {
                             </Form.Group>
                             <Button variant="primary" type="submit"> Generate Report</Button>
                         </Form>
-                    </div>
-                </div>
-            </div>
-        </>;
-
-
-    }
-}
-
-class DownloadFile extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { loading: false, }
-    }
-
-    handleSubmitCsv = (event) => {
-        this.setState({
-            error: null,
-            loading: true,
-        }, () => {
-            API.downloadReportCsv(this.props.student, this.props.date)
-                .then(() => {
-                    this.setState({ loading: false });
-                })
-                .catch((error) => {
-                    this.setState({ error: error, loading: false });
-                })
-        });
-
-        event.preventDefault();
-    }
-
-    handleSubmitPdf = (event) => {
-        this.setState({
-            error: null,
-            loading: true,
-        }, () => {
-            API.downloadReportPdf(this.props.student, this.props.date)
-                .then(() => {
-                    this.setState({ loading: false });
-                })
-                .catch((error) => {
-                    this.setState({ error: error, loading: false });
-                })
-        });
-
-        event.preventDefault();
-    }
-
-
-    render() {
-        return <>
-            {
-                this.state.error ?
-                    <Alert transition={null} className='col-6 mt-4 mx-auto'
-                        onClose={() => this.setState({ error: null })}
-                        variant='danger'
-                        dismissible>
-                        ERROR
-                    </Alert>
-                    :
-                    null
-            }
-
-            <AppComponents.AppNavbar logOut={this.props.logOut} />
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-2 bg-success" id="sticky-sidebar">
-                        <Aside manager={this.props.manager} />
-                    </div>
-                    <div className="col-10" id="main">
-                        <>
-                            <h3> Download the report in the format you prefer</h3>
-
-                            <form onSubmit={this.handleSubmitPdf}>
-                                <div className="form-group">
-                                    <button disabled={this.state.loading} className="btn btn-primary">
-                                        {(this.state.loading) ?
-                                            'Downloading...'
-                                            :
-                                            'Download pdf'
-                                        }
-                                    </button>
-                                </div>
-                            </form>
-
-                            <form onSubmit={this.handleSubmitCsv}>
-                                <div className="form-group">
-                                    <button disabled={this.state.loading} className="btn btn-primary">
-                                        {(this.state.loading) ?
-                                            'Downloading...'
-                                            :
-                                            'Download .csv'
-                                        }
-                                    </button>
-                                </div>
-                            </form>
-                        </>
                     </div>
                 </div>
             </div>
@@ -376,5 +278,104 @@ function Aside(props) {
     )
 
 }
+
+//class DownloadFile extends React.Component {
+    //     constructor(props) {
+    //         super(props);
+    //         this.state = { loading: false, }
+    //     }
+    
+    //     handleSubmitCsv = (event) => {
+    //         this.setState({
+    //             error: null,
+    //             loading: true,
+    //         }, () => {
+    //             API.downloadReportCsv(this.props.student, this.props.date)
+    //                 .then(() => {
+    //                     this.setState({ loading: false });
+    //                 })
+    //                 .catch((error) => {
+    //                     this.setState({ error: error, loading: false });
+    //                 })
+    //         });
+    
+    //         event.preventDefault();
+    //     }
+    
+    //     handleSubmitPdf = (event) => {
+    //         this.setState({
+    //             error: null,
+    //             loading: true,
+    //         }, () => {
+    //             API.downloadReportPdf(this.props.student, this.props.date)
+    //                 .then(() => {
+    //                     this.setState({ loading: false });
+    //                 })
+    //                 .catch((error) => {
+    //                     this.setState({ error: error, loading: false });
+    //                 })
+    //         });
+    
+    //         event.preventDefault();
+    //     }
+    
+    
+    //     render() {
+    //         return <>
+    //             {
+    //                 this.state.error ?
+    //                     <Alert transition={null} className='col-6 mt-4 mx-auto'
+    //                         onClose={() => this.setState({ error: null })}
+    //                         variant='danger'
+    //                         dismissible>
+    //                         ERROR
+    //                     </Alert>
+    //                     :
+    //                     null
+    //             }
+    
+    //             <AppComponents.AppNavbar logOut={this.props.logOut} />
+    //             <div className="container-fluid">
+    //                 <div className="row">
+    //                     <div className="col-2 bg-success" id="sticky-sidebar">
+    //                         <Aside manager={this.props.manager} />
+    //                     </div>
+    //                     <div className="col-10" id="main">
+    //                         <>
+    //                             <h3> Download the report in the format you prefer</h3>
+    
+    //                             <form onSubmit={this.handleSubmitPdf}>
+    //                                 <div className="form-group">
+    //                                     <button disabled={this.state.loading} className="btn btn-primary">
+    //                                         {(this.state.loading) ?
+    //                                             'Downloading...'
+    //                                             :
+    //                                             'Download pdf'
+    //                                         }
+    //                                     </button>
+    //                                 </div>
+    //                             </form>
+    
+    //                             <form onSubmit={this.handleSubmitCsv}>
+    //                                 <div className="form-group">
+    //                                     <button disabled={this.state.loading} className="btn btn-primary">
+    //                                         {(this.state.loading) ?
+    //                                             'Downloading...'
+    //                                             :
+    //                                             'Download .csv'
+    //                                         }
+    //                                     </button>
+    //                                 </div>
+    //                             </form>
+    //                         </>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </>;
+    
+    
+    //     }
+    // }
+    
 
 export default ManagerHomePage;
