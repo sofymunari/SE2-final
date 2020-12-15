@@ -132,7 +132,7 @@ async function getStudentBookings(username){
             decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
-            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
+            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
     }else{
         throw response;
     }

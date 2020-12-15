@@ -81,6 +81,7 @@ function BookingItem(props){
     today.setHours(0,0,0,0);
     let expired = false;
     if(dateSet.getTime() < today.getTime()) expired = true;
+    console.log(props.booking);
     return  <li className="list-group-item" id = {props.booking.bookingId}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">
