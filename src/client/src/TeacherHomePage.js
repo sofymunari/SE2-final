@@ -89,6 +89,22 @@ class TeacherHomePage extends React.Component {
         this.setState({ students: null, modifylect: null });
     }
 
+    sendAttendences = (studentsChecked,lectureId) => {
+        
+            API.setAttendences(studentsChecked,lectureId)
+                .then(() => {
+                    API.getTeacherBookings(this.props.teacher).then((bookings)=>{
+                        const students = bookings.filter(b => b.lectureId === lectureId);
+                        this.setState({ students: students, lectureId: lectureId,bookings:bookings });
+                        
+                    })
+                    
+                })
+                .catch((error) => this.setState({ error: error }));
+        
+
+    }
+
     render() {
         if (this.state.errorTeacher || this.state.errorLectures) {
             return <h2>we are sorry but an error just occurred</h2>
@@ -108,7 +124,7 @@ class TeacherHomePage extends React.Component {
                             {this.state.modifylect ?
                                 <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect} /> :
                                 this.state.students ?
-                                    <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId} /> :
+                                    <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId} sendAttendences={this.sendAttendences} /> :
                                     <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                         </div>
                     </div>
@@ -247,11 +263,7 @@ class StudentBookingList extends React.Component {
 
     sendAttendences = () => {
         if (this.state.studentsChecked.length > 0) {
-            API.setAttendences(this.state.studentsChecked, this.props.lectureId)
-                .then(() => {
-                    this.setState({ attendencesSet: true, studentsChecked: [] });
-                })
-                .catch((error) => this.setState({ error: error }));
+            this.props.sendAttendences(this.state.studentsChecked, this.props.lectureId);
         }
 
     }
@@ -284,7 +296,7 @@ class StudentBookingList extends React.Component {
                             <h3>STUDENT SURNAME</h3>
                         </div>
                         <div className="col-2">
-                            <h3>STUDENT EMAIL</h3>
+                            <h3>STUDENT CODE</h3>
                         </div>
                         <div className="col-2">
                             <h3>BOOKING STATUS</h3>
@@ -309,7 +321,8 @@ class StudentBookingList extends React.Component {
 }
 
 function StudentItem(props) {
-
+    let matricola = props.student.studentEmail.split('@')[0];
+    
     return (
         <li className="list-group-item" id={props.student.lectureId}>
             <div className="d-flex w-100 justify-content-between">
@@ -320,7 +333,7 @@ function StudentItem(props) {
                     <h4>{props.student.studentSurname}</h4>
                 </div>
                 <div className="col-2">
-                    <h4>{props.student.studentEmail}</h4>
+                    <h4>{matricola}</h4>
                 </div>
                 <div className="col-2">
                     <h4>{props.student.bookingInfo}</h4>
