@@ -153,7 +153,7 @@ function Aside(props) {
     return (
         <div className="container-fluid">
             <h1>teacher info:</h1>
-            <h2>{props.teacher.name} {props.teacher.surname}</h2>
+            <h2 id="professorInfo">{props.teacher.name} {props.teacher.surname}</h2>
             <h3>{props.teacher.address}</h3>
         </div>
     )

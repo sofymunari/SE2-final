@@ -9,4 +9,5 @@ public interface LectureService {
 	LectureDto getLectureById(Integer id);
 	void save(LectureDto lectureDto);
 	List<LectureDto> getListAllLectures();
+	void addLectures(String fileName);
 }

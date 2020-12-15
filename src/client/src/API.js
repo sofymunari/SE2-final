@@ -57,6 +57,96 @@ async function loginManager(username,password){
     }
 }
 
+async function loginSupportOfficer(username, password){
+    let url = BASE_URL + "supportOfficerlogin"
+    const response = await fetch(url, {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username:username,password:password})
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadStudentsFile(file){
+    let url = BASE_URL+"uploadStudents"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadProfessorsFile(file){
+    let url = BASE_URL+"uploadProfessors"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+async function uploadEnrollmentFile(file){
+    let url = BASE_URL+"uploadEnrollments"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}async function uploadLecturesFile(file){
+    let url = BASE_URL+"uploadLectures"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}async function uploadCoursesFile(file){
+    let url = BASE_URL+"uploadCourses"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
+
 
 async function getStudentLectures(username){
     const url= BASE_URL+"studentlectures/"+username;
@@ -65,7 +155,7 @@ async function getStudentLectures(username){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,deleted:l.deleted,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},
             professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
             email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
         })
@@ -97,6 +187,17 @@ async function getManagerInfo(username){
         throw managInfo;
     }
 }
+
+async function getSupportOfficerInfo(username){
+    let url=BASE_URL+"officerinfo/"+username;
+    const response= await fetch(url);
+    const officerInfo=await response.json();
+    if(response.ok){
+    return {userId:officerInfo.userId,name:officerInfo.name, surname:officerInfo.surname,
+        address:officerInfo.address,username:officerInfo.email}
+    }else{
+        throw officerInfo;
+    }}
 
 async function addBooking(id,username){
     let url=BASE_URL+"addbooking"
@@ -151,10 +252,10 @@ async function getStudentBookings(username){
             numberOfLesson:b.lectureDto.numberOfLesson,remotly:b.lectureDto.remotly,
             date:b.lectureDto.date,programDetails:b.lectureDto.programDetails,duration:b.lectureDto.duration},
             courseDto:{courseId:b.lectureDto.courseDto.courseId,name:b.lectureDto.courseDto.name,
-            decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
+            code:b.lectureDto.courseDto.code},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
-            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
+            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
     }else{
         throw response;
     }
@@ -170,7 +271,7 @@ async function getBookings(){
             numberOfLesson:b.lectureDto.numberOfLesson,remotly:b.lectureDto.remotly,
             date:b.lectureDto.date,programDetails:b.lectureDto.programDetails,duration:b.lectureDto.duration},
             courseDto:{courseId:b.lectureDto.courseDto.courseId,name:b.lectureDto.courseDto.name,
-            decsriptions:b.lectureDto.courseDto.descriptions},professorDto:{userId:b.lectureDto.professorDto.userId,
+            code:b.lectureDto.courseDto.code},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
             name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
@@ -186,7 +287,7 @@ async function getLectures(){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,deleted:l.deleted,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},
             professorDto:{userId:l.professorDto.userId,name:l.professorDto.name,surname:l.professorDto.surname,address:l.professorDto.address,
             email:l.professorDto.email},remotly:l.remotly,date:l.date,programDetails:l.programDetails,duration:l.duration,roomDto:{roomId:l.roomDto.roomId,name:l.roomDto.name,numberOfSeat:l.roomDto.numberOfSeat}, bookedSeats: l.bookedSeats}
         })
@@ -234,8 +335,13 @@ async function getTeacherBookings(username){
         return lects_json.map((l)=>{
             console.log(l)
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
+<<<<<<< HEAD
             course:{courseId:l.course.courseId,name:l.course.name,descriptions:l.course.descriptions},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname, studentId:l.userId}
+=======
+            course:{courseId:l.course.courseId,name:l.course.name,code:l.course.code},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
+            lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
+>>>>>>> test3
         })
     }else{
         throw lects_json;
@@ -249,7 +355,7 @@ async function getTeacherLectures(username){
     if(response.ok){
         return lects_json.map((l)=>{
             return {lectureId:l.lectureId,numberOfLesson:l.numberOfLesson,
-            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,descriptions:l.courseDto.descriptions},roomDto:{name:l.roomDto.name},
+            courseDto:{courseId:l.courseDto.courseId,name:l.courseDto.name,code:l.courseDto.code},roomDto:{name:l.roomDto.name},
             date:l.date,remotly:l.remotly,programDetails:l.programDetails,duration:l.duration,bookedSeats:l.bookedSeats,deleted:l.deleted}
         })
     }else{
@@ -263,7 +369,7 @@ async function getTeacherNotifications(username){
     const notifications_json= await response.json();
     if(response.ok){
         return notifications_json.map((n)=>{
-            return {notificationId:n.notificationId,description:n.description,date:n.date,status:n.status,link:n.link}
+            return {notificationId:n.notificationId,code:n.code,date:n.date,status:n.status,link:n.link}
         })
     }else{
         throw notifications_json;
@@ -304,7 +410,40 @@ async function teacherRemoteLecture(lectureId){
     }
 }
 
+async function downloadReportCsv(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
+
+async function downloadReportPdf(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
 
 
-const API={loginStudent, loginTeacher, setAttendences, getStudentLectures, getStudentInfo, addBooking,getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,teacherDeleteLecture,getManagerInfo,loginManager,getBookings,teacherRemoteLecture,getLectures}
+
+const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
+           getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
+           teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences, downloadReportPdf}
 export default API;
