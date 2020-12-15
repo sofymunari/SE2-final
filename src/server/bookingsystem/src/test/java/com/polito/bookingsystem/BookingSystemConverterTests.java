@@ -107,7 +107,7 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToStudentDto2() throws ParseException {
-		Course c = new Course(11, "testCourse", "This is a test course");
+		Course c = new Course(11, "testCourse", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -139,7 +139,7 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToStudent2() throws ParseException {
-		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto c = new CourseDto(11, "testCourse", "A", 1, 1);
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -232,10 +232,10 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToProfessorDto2()  {
-		Course c = new Course(11, "testCourse", "This is a test course");
+		Course c = new Course(11, "testCourse", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		ProfessorDto professorDto = null;
 		
 		professorDto = ProfessorConverter.toDto(professor);
@@ -262,11 +262,11 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToProfessor2() {
-		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto c = new CourseDto(11, "testCourse", "A", 1, 1);
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(c);
 		Professor professor = null;
-		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		
 		professor = ProfessorConverter.toEntity(professorDto);
 		
@@ -420,10 +420,10 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToNotificationProfessorDto2() throws ParseException {
-		Course c = new Course(11, "testCourse", "This is a test course");
+		Course c = new Course(11, "testCourse", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		NotificationProfessor notificationProfessor = new NotificationProfessor(1, "testDescription", date, professor, false, "link");
 		NotificationProfessorDto notificationProfessorDto = null;
@@ -451,11 +451,11 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToNotificationProfessor2() throws ParseException {
-		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto c = new CourseDto(11, "testCourse", "A", 1, 1);
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(c);
 
-		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		NotificationProfessor notificationProfessor = null;
 		NotificationProfessorDto notificationProfessorDto = new NotificationProfessorDto(1, "testDescription", date, professorDto, false,"link");
@@ -490,7 +490,7 @@ class BookingSystemConverterTests {
 	@Test
 	void testToNotificationStudentDto2() throws ParseException {
 		Date date =  new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
-		Course c = new Course(11, "testCourse", "This is a test course");
+		Course c = new Course(11, "testCourse", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(c);
 		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
@@ -522,7 +522,7 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToNotificationStudent2() throws ParseException {
-		CourseDto c = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto c = new CourseDto(11, "testCourse", "A", 1, 1);
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(c);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -619,11 +619,11 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToLectureDto2() throws ParseException {
-		Course course = new Course(11, "testCourse", "This is a test course");
+		Course course = new Course(11, "testCourse", "A", 1, 1);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		List<Course> courses = new ArrayList<>();
 		courses.add(course);
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		Room room = new Room(1, "testName", 100);
 		
 		Lecture lecture = new Lecture(1, 10, course, professor, true, date, 90, "testDetails", room);
@@ -655,11 +655,11 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToLecture2() throws ParseException {
-		CourseDto courseDto = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto courseDto = new CourseDto(11, "testCourse", "A", 1, 1);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(courseDto);
-		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		RoomDto roomDto = new RoomDto(1, "testName", 100);
 		
 		LectureDto lectureDto = new LectureDto(1, 10, courseDto, professorDto, true, date, 90, "testDetails", roomDto);
@@ -752,14 +752,16 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToCourseDto2() {
-		Course course = new Course(1, "testName", "testDescription");
+		Course course = new Course(1, "testName", "A", 1, 1);
 		CourseDto courseDto = null;
 		
 		courseDto = CourseConverter.toDto(course);
 		
 		assertEquals(course.getCourseId(), courseDto.getCourseId());
 		assertEquals(course.getName(), courseDto.getName());
-		assertEquals(course.getDescriptions(), courseDto.getDescriptions());
+		assertEquals(course.getCode(), courseDto.getCode());
+		assertEquals(course.getYear(), courseDto.getYear());
+		assertEquals(course.getSemester(), courseDto.getSemester());
 	}
 	
 	@Test
@@ -776,13 +778,15 @@ class BookingSystemConverterTests {
 	@Test
 	void testToCourse2() {
 		Course course = null;
-		CourseDto courseDto = new CourseDto(1, "testName", "testDescription");
+		CourseDto courseDto = new CourseDto(1, "testName", "A", 1, 1);
 		
 		course = CourseConverter.toEntity(courseDto);
 		
 		assertEquals(course.getCourseId(), courseDto.getCourseId());
 		assertEquals(course.getName(), courseDto.getName());
-		assertEquals(course.getDescriptions(), courseDto.getDescriptions());
+		assertEquals(course.getCode(), courseDto.getCode());
+		assertEquals(course.getYear(), courseDto.getYear());
+		assertEquals(course.getSemester(), courseDto.getSemester());
 
 	}
 	
@@ -806,13 +810,13 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToBookingDto2() throws ParseException {
-		Course course = new Course(11, "testCourse", "This is a test course");
+		Course course = new Course(11, "testCourse", "A", 1, 1);
 		List<Course> courses = new ArrayList<>();
 		courses.add(course);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		Student student = new Student(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
-		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		Professor professor = new Professor(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		Room room = new Room(1, "testName", 100); 
 		Lecture lecture = new Lecture(1, 10, course, professor, true, date, 90, "testDetails", room);
 		
@@ -841,13 +845,13 @@ class BookingSystemConverterTests {
 	
 	@Test
 	void testToBooking2() throws ParseException {
-		CourseDto courseDto = new CourseDto(11, "testCourse", "This is a test course");
+		CourseDto courseDto = new CourseDto(11, "testCourse", "A", 1, 1);
 		List<CourseDto> courses = new ArrayList<>();
 		courses.add(courseDto);
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		StudentDto studentDto = new StudentDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", date, courses, "testMatricola");
 		BookingInfo bookingInfo = BookingInfo.BOOKED;
-		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses);
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "testEmail", "testPassword", courses, "d0");
 		RoomDto roomDto = new RoomDto(1, "testName", 100); 
 		LectureDto lectureDto = new LectureDto(1, 10, courseDto, professorDto, true, date, 90, "testDetails", roomDto);
 		

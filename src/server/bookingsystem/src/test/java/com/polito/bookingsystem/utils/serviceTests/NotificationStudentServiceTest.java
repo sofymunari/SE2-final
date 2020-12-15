@@ -56,8 +56,8 @@ class NotificationStudentServiceTest {
 		//passing null studentDto
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2","B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
@@ -77,16 +77,16 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 				
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1","A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -107,8 +107,8 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -138,16 +138,16 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -174,16 +174,16 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1","A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 	
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -218,16 +218,16 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);
 		
 		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses1, "testMatricola");
 		
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -251,8 +251,8 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 	
-		CourseDto courseDto1 = new CourseDto(1, "testName1", "testDescription1");
-		CourseDto courseDto2= new CourseDto(2, "testName2", "testDescription2");
+		CourseDto courseDto1 = new CourseDto(1, "testName1", "A", 1,1);
+		CourseDto courseDto2= new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses2 = new ArrayList<>();
 		courses2.add(courseDto1);
 		courses2.add(courseDto2);
@@ -289,8 +289,8 @@ class NotificationStudentServiceTest {
 		
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
 		
-		Course course1 = new Course(1, "testName1", "testDescription1");
-		Course course2 = new Course(2, "testName2", "testDescription2");
+		Course course1 = new Course(1, "testName1", "A", 1,1);
+		Course course2 = new Course(2, "testName2", "B", 1,1);
 		List<Course> courses1 = new ArrayList<>();
 		courses1.add(course1);
 		courses1.add(course2);

@@ -5,6 +5,5 @@ import com.polito.bookingsystem.entity.Course;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course,Integer>{
-   
-  
+   Course findByCode(String code);
 }

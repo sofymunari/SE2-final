@@ -3,18 +3,20 @@ import './App.css';
 import StudentLogIn from './StudentLogIn';
 import TeacherLogIn from './TeacherLogIn';
 import ManagerLogIn from './ManagerLogIn';
+import SupportOfficerLogIn from './SupportOfficerLogIn';
 import StudentHomePage from './StudentHomePage';
 import TeacherHomePage from './TeacherHomePage';
 import AppComponents from './AppComponents';
 import ManagerHomePage from './ManagerHomePage';
-import { Switch,Route,Link,Redirect } from 'react-router-dom';
+import SupportOfficerHomePage from'./SupportOfficerHomePage';
+import { Switch,Route,Redirect } from 'react-router-dom';
 import API from './API';
  
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state={student:null, teacher:null, loginError:null,manager:null};
+    this.state={student:null, teacher:null, loginError:null, manager:null, supportOfficer:null};
   }
 
   loginStudent=(username,password)=>{
@@ -23,25 +25,41 @@ class App extends React.Component {
       .catch((error)=>{this.setState({loginError:error})});
     
   }
+
   loginTeacher=(username,password)=>{
     API.loginTeacher(username,password).then((usr)=>{
       this.setState({teacher:usr,loginError:null})})
       .catch((error)=>{this.setState({loginError:error})});
   }
+
   loginManager=(username,password)=>{
     API.loginManager(username,password).then((usr)=>{
       this.setState({manager:usr,loginError:null})})
       .catch((error)=>{this.setState({loginError:error})});
   }
+
+  loginSupportOfficer = (username,password)=>{
+    API.loginSupportOfficer(username, password).then((usr) =>{
+      this.setState({supportOfficer: usr, loginError: null})})
+      .catch((error) => {this.setState({loginError: error})});
+  }
+
   logOutStudent=()=>{
     this.setState({student:null});
   }
+
   logOutTeacher=()=>{
     this.setState({teacher:null});
   }
+
   logOutManager=()=>{
     this.setState({manager:null});
   }
+
+  logoutSupportOfficer = ()=>{
+    this.setState({supportOfficer: null});
+  }
+
   render(){ 
    return (
       <div className="App">
@@ -68,6 +86,12 @@ class App extends React.Component {
           <ManagerLogIn loginManager={this.loginManager} loginError={this.state.loginError}/>
           }
         </Route>
+        <Route exact path="/supportOfficerlogin">
+          {this.state.supportOfficer? 
+          <Redirect to="/supportOfficerportal" />:
+          <SupportOfficerLogIn loginSupportOfficer={this.loginSupportOfficer} loginError={this.state.loginError}/>
+          }
+        </Route>
         <Route path="/studentportal">
           {this.state.student?
           <StudentHomePage student={this.state.student}  logOut={this.logOutStudent}/>:
@@ -83,6 +107,12 @@ class App extends React.Component {
         <Route path="/managerportal">
           {this.state.manager?
           <ManagerHomePage manager={this.state.manager}  logOut={this.logOutManager}/>:
+          <Redirect to="/"/>
+          }
+        </Route>
+        <Route path="/supportOfficerportal">
+          {this.state.supportOfficer?
+          <SupportOfficerHomePage supportOfficer={this.state.supportOfficer}  logOut={this.logoutSupportOfficer}/>:
           <Redirect to="/"/>
           }
         </Route>
