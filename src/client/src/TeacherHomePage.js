@@ -5,7 +5,9 @@ import TeacherStatistics from './TeacherStatistics';
 import API from './API.js';
 import { Route, Switch, Link } from 'react-router-dom';
 import AppComponents from './AppComponents';
-import {Row, Alert, Col} from 'react-bootstrap'
+import { Row, Alert, Col } from 'react-bootstrap'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class TeacherHomePage extends React.Component {
     constructor(props) {
@@ -89,19 +91,22 @@ class TeacherHomePage extends React.Component {
         this.setState({ students: null, modifylect: null });
     }
 
-    sendAttendences = (studentsChecked,lectureId) => {
-        
-            API.setAttendences(studentsChecked,lectureId)
-                .then(() => {
-                    API.getTeacherBookings(this.props.teacher).then((bookings)=>{
-                        const students = bookings.filter(b => b.lectureId === lectureId);
-                        this.setState({ students: students, lectureId: lectureId,bookings:bookings });
-                        
-                    })
-                    
+    sendAttendences = (studentsChecked, lectureId) => {
+
+        API.setAttendences(studentsChecked, lectureId)
+            .then(() => {
+                API.getTeacherBookings(this.props.teacher).then((bookings) => {
+                    const students = bookings.filter(b => b.lectureId === lectureId);
+                    this.setState({ students: students, lectureId: lectureId, bookings: bookings });
+                    toast.success('upload success');
                 })
-                .catch((error) => this.setState({ error: error }));
-        
+
+            })
+            .catch((error) => {
+                this.setState({ error: error });
+                toast.error('upload fail');
+            });
+
 
     }
 
@@ -114,6 +119,9 @@ class TeacherHomePage extends React.Component {
         }
         return <Switch >
             <Route exact path="/teacherportal">
+                <div className="form-group">
+                    <ToastContainer />
+                </div>
                 <AppComponents.AppNavbar logOut={this.props.logOut} />
                 <div className="container-fluid">
                     <div className="row">
@@ -275,7 +283,6 @@ class StudentBookingList extends React.Component {
 
     render() {
         return <>
-            
             <h1>Student list for course {this.props.students[0].course.name}, lesson number {this.props.students[0].lectureNumber}</h1>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
@@ -300,12 +307,12 @@ class StudentBookingList extends React.Component {
                 {this.props.students.map(this.showStudent)}
             </ul>
             <Row >
-            <Col className="col-4">
-            </Col>
-            <Col className="col-3 d-flex justify-content-between ">
-            <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
-            <button type="button" className="btn btn-success" onClick={(ev) => this.sendAttendences()} > SEND ATTENDENCES</button>
-            </Col>
+                <Col className="col-4">
+                </Col>
+                <Col className="col-3 d-flex justify-content-between ">
+                    <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
+                    <button type="button" className="btn btn-success" onClick={(ev) => this.sendAttendences()} > SEND ATTENDENCES</button>
+                </Col>
             </Row>
         </>
     }
@@ -313,7 +320,7 @@ class StudentBookingList extends React.Component {
 
 function StudentItem(props) {
     let matricola = props.student.studentEmail.split('@')[0];
-    
+
     return (
         <li className="list-group-item" id={props.student.lectureId}>
             <div className="d-flex w-100 justify-content-between">
@@ -332,7 +339,7 @@ function StudentItem(props) {
                 {
                     props.student.bookingInfo === "ATTENDED" ?
                         <div className="col-2">
-                            <input name="presente" type="checkbox" disabled checked/>
+                            <input name="presente" type="checkbox" disabled checked />
                         </div>
                         :
                         <div className="col-2">
