@@ -105,5 +105,20 @@ class CourseServiceTest {
 			fail("Shouldn't come here");
 		}
 	}
+	
+	@Test
+	void testGetCourses1() {
+		when(courseRepository.findAll()).thenReturn(null);
+		assertNull(courseServiceImpl.getCourses());
+	}
+	
+	@Test
+	void testGetCourses2() {
+		List<Course> courses = new ArrayList<>();
+		Course course1 = new Course(1, "testName1", "A",1,1);
+		courses.add(course1);
+		when(courseRepository.findAll()).thenReturn(courses);
+		assertEquals("expect same length", courseServiceImpl.getCourses().size(),courses.size());
+	}
 
 }
