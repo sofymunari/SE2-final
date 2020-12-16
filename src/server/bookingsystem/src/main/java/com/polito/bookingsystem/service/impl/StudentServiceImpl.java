@@ -1,5 +1,4 @@
 package com.polito.bookingsystem.service.impl;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,18 +6,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
-import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Student;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
@@ -88,7 +82,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<StudentDto> getContactedStudents(StudentDto studentDto, Date date) {
-		List<StudentDto> contactedStudents = new ArrayList<StudentDto>();
+		List<StudentDto> contactedStudents = new ArrayList<>();
 		if(studentDto != null) {			
 			List<BookingDto> bookingDtos =  bookingService.getListBooking(studentDto.getEmail());
 			for (BookingDto bookingDto : bookingDtos) {
@@ -117,19 +111,18 @@ public class StudentServiceImpl implements StudentService {
 	}	
 
 	public void addStudents(String fileName)  {
-		try {
-			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
-				  //System.out.println(currentLine);
 				  String[] fields = currentLine.split(",");
 				  Student student = studentRepository.findByMatricola(fields[0]);
 				  if(student == null) {
 					  Student newStudent = new Student();
 					  Integer userId = studentRepository.findAll().stream()
-					           .mapToInt(p -> p.getUserId())
+					           .mapToInt(Student::getUserId)
 					           .max()
 					           .orElse(0);
+					  
 			          newStudent.setUserId(userId+1);
 					  newStudent.setMatricola(fields[0]);
 					  newStudent.setName(fields[1]);
@@ -163,8 +156,7 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Override
 	public void addClasses(String fileName) {
-		try {
-			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
@@ -173,7 +165,6 @@ public class StudentServiceImpl implements StudentService {
 				  if(student != null && course != null) {
 					  student.getCourses().add(course);
 					  studentRepository.save(student);
-					  //System.out.println(studentRepository.count());
 				  }
 			 }
 			 reader.close();

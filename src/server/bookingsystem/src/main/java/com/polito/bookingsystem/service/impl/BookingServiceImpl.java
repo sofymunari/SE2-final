@@ -96,12 +96,11 @@ public class BookingServiceImpl implements BookingService{
 		Booking booking = new Booking();
 		booking.setBookingId((id+1));
 		booking.setStudent(student);
-		System.out.print(numBookingLecture + " " + numSeatAvaiable);
 		if(numBookingLecture < numSeatAvaiable) {
 			lecture.setBookedSeats(numBookingLecture + 1);
 			lecture.setBookedSeats(numBookingLecture + 1);
 			booking.setBookingInfo(BookingInfo.BOOKED);
-			text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
+			text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
 			studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
 		}
 		else {
@@ -131,12 +130,12 @@ public class BookingServiceImpl implements BookingService{
 			.filter(b->b.getLecture().getLectureId().equals(lecture.getLectureId()) && b.getBookingInfo() == BookingInfo.WAITING)
 			.collect(Collectors.toList());
 			
-			if(listBookingLectureWaiting.size() > 0) {
+			if(!listBookingLectureWaiting.isEmpty()) {
 				Booking bookingWaiting = listBookingLectureWaiting.get(0);
 				bookingWaiting.setBookingInfo(BookingInfo.BOOKED);
 				bookingRepository.save(bookingWaiting);
 				Student student = bookingWaiting.getStudent();
-				String text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" is confirmed. Now you are removed to waiting list and add in booking list.\n\nBest Regards,\nPolito";
+				String text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" is confirmed. Now you are removed to waiting list and add in booking list.\n\nBest Regards,\nPolito";
 				studentService.sendEmail(StudentConverter.toDto(student), "Booking confermation (Removed to waiting list)", text);
 			}else {
 				lecture.setBookedSeats(lecture.getBookedSeats() - 1);
@@ -186,9 +185,8 @@ public class BookingServiceImpl implements BookingService{
 		
 		if(student == null || lecture == null) return null;
 		
-		BookingDto bookingDto = BookingConverter.toDto(bookingRepository.findByLectureAndStudent(lecture, student));
-		
-		return bookingDto;
+		return  BookingConverter.toDto(bookingRepository.findByLectureAndStudent(lecture, student));
+
 	}
 
 }
