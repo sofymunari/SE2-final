@@ -11,7 +11,7 @@ test('StudentLoginTest', async t => {
       .typeText('#form_description','s0000@studenti.polito.it')
       .typeText('#form_project','password')
       .click('#submit_button')
-      .expect(Selector('#matricola').innerText).eql('s0000');
+      .expect(Selector('#matricola').innerText).eql('0000');
 
 });
 
