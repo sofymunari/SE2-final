@@ -339,6 +339,7 @@ public class HomeController {
     @RequestMapping(value = "/sendCourses", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
 //		courseService.setCourseToRemote(courseName);
+    	
 		for (String courseName : courses.get("courses")) {
 			courseService.setCourseToRemote(courseName);
 		}

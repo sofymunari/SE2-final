@@ -20,6 +20,7 @@ import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.service.CourseService;
 import com.polito.bookingsystem.service.LectureService;
 

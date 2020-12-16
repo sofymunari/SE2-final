@@ -158,6 +158,7 @@ async function sendCourses(courses){
         body: JSON.stringify({courses:courses})
     })
     const restext = await response.text();
+    
     if(response.ok){
         if(restext){
             return restext;
@@ -383,7 +384,7 @@ async function getTeacherBookings(username){
     const lects_json= await response.json();
     if(response.ok){
         return lects_json.map((l)=>{
-            console.log(l)
+            
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
             course:{courseId:l.course.courseId,name:l.course.name,code:l.course.code},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
