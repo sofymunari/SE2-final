@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.service.StudentService;
 
@@ -16,7 +16,7 @@ public class FileController {
 	@Autowired
 	StudentService studentService;
 
-    @RequestMapping("/managerportal/file/tracereport/student/{email}/{dateString}")
+    @GetMapping("/managerportal/file/tracereport/student/{email}/{dateString}")
     public String welcome(Map<String, Object> model, @PathVariable String email, @PathVariable String dateString) throws ParseException {
     	SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = sdformat.parse(dateString);
