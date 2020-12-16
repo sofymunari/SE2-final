@@ -248,9 +248,7 @@ public class LectureServiceImpl implements LectureService {
 																  List<Course> courseProf = p.getCourses().stream()
 																		  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
 																		  .collect(Collectors.toList());
-																  if(courseProf.isEmpty())
-																	  return false;
-																  return true;
+																  return !courseProf.isEmpty();
 												               })
 								                       .collect(Collectors.toList());
 						  
@@ -292,12 +290,13 @@ public class LectureServiceImpl implements LectureService {
 									  lectureRepository.save(newLecture);
 								      calendar.add(Calendar.DATE, 7);
 								 }
-						    }catch(ParseException e) {}
+						    }catch(ParseException e) {
+						    	System.err.println(e.getMessage());
+						    }
 					    }
 				    }
 			    }
 			 }
-			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
