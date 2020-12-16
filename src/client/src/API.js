@@ -158,13 +158,9 @@ async function sendCourses(courses){
         body: JSON.stringify({courses:courses})
     })
     const restext = await response.text();
-    
-    if(response.ok){
-        if(restext){
+    if(response.ok)
             return restext;
-        }
         throw "error";
-    }
 }
 
 async function sendCourse(course){

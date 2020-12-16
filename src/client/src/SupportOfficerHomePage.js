@@ -136,8 +136,9 @@ class SupportOfficerHomePage extends React.Component {
         }
         //        let vet = this.state.courses.map((c) => c.courseName.toLowerCase());
         if (string === "first") {
-            let first = this.state.courses.filter((c) => c.courseYear === 1);
+            let first = this.state.courses.filter((c) => c.courseYear === 1).map((c) => c.courseName);
             if (first.length > 0) {
+                console.log(first)
                 API.sendCourses(first)
                     .then(() => {
                         toast.success('update success');
@@ -150,7 +151,7 @@ class SupportOfficerHomePage extends React.Component {
                 toast.error('No course to update');
             }
         } else if (string === "second") {
-            let second = this.state.courses.filter((c) => c.courseYear === 2);
+            let second = this.state.courses.filter((c) => c.courseYear === 2).map((c) => c.courseName);
             if (second.length > 0) {
                 API.sendCourses(second)
                     .then(() => {
@@ -164,7 +165,7 @@ class SupportOfficerHomePage extends React.Component {
                 toast.error('No course to update');
             }
         } else if (string === "third") {
-            let third = this.state.courses.filter((c) => c.courseYear === 3);
+            let third = this.state.courses.filter((c) => c.courseYear === 3).map((c) => c.courseName);
             if (third.length > 0) {
                 API.sendCourses(third)
                     .then(() => {
