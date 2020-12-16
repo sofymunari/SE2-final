@@ -42,11 +42,12 @@ public class CourseServiceImpl implements CourseService{
 	private LectureRepository lectureRepository;
 	
     @Autowired
-    public CourseServiceImpl(ProfessorRepository professorRepository, CourseRepository courseRepository, LectureRepository lectureRepository)
+    public CourseServiceImpl(ProfessorRepository professorRepository, CourseRepository courseRepository, LectureRepository lectureRepository,LectureService lectureService)
     {
     	this.professorRepository = professorRepository;
     	this.courseRepository = courseRepository;
     	this.lectureRepository = lectureRepository;
+    	this.lectureService = lectureService;
 
     }
     

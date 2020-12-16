@@ -88,6 +88,8 @@ class BookingSystemConverterTests {
 		assertTrue( "Expected the wite toString result for user", userString.compareTo("UserDto [userId=1, name=testName, surname=testSurname, address=testAddress, email=testEmail, password=testPassword]") == 0);		
 	}
 	
+	
+	
 	/*
 	 * 
 	 STUDENT_CONVERTER
@@ -470,6 +472,16 @@ class BookingSystemConverterTests {
 	
 	}
 	
+	@Test
+	void testToNotificationProfessor3()  {
+		List<NotificationProfessor> notificationProfessorList= null;
+		List<NotificationProfessorDto> notificationProfessorDtoList = new ArrayList<>();
+		assertEquals(NotificationProfessorConverter.toDto(notificationProfessorList),notificationProfessorDtoList);
+		
+		
+	}
+	
+	
 	/*
 	 * 
 	 NOTIFICATION_CONVERTER
@@ -539,6 +551,14 @@ class BookingSystemConverterTests {
 		assertEquals(notificationStudent.getLink(), notificationStudentDto.getLink());
 		assertEquals(notificationStudent.getStatus(), notificationStudentDto.getStatus());	
 	}
+	@Test
+	void testToNotificationStudent3()  {
+		List<NotificationStudent> notificationStudentList = null;
+		List<NotificationStudentDto> notificationStudentDtoList = new ArrayList<>();
+		assertEquals(NotificationStudentConverter.toDto(notificationStudentList),notificationStudentDtoList);
+		
+	}
+	
 
 	
 	/*
@@ -867,6 +887,14 @@ class BookingSystemConverterTests {
 		assertEquals(booking.getBookingInfo(), bookingDto.getBookingInfo());
 
 	}
+	@Test
+	void testBooking3() {
+		List<Booking> bookings = null;
+		List<BookingDto> bookingDto = new ArrayList<>();
+		assertEquals(BookingConverter.toDto(bookings),bookingDto);
+	}
+	
+	
 
 	
 
