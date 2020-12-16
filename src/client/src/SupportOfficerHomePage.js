@@ -130,7 +130,7 @@ class SupportOfficerHomePage extends React.Component {
 
     sendCourses = (event, string) => {
         event.preventDefault();
-        if (this.state.selectedCourse == null) {
+        if (string == null) {
             toast.error('update fail, no course selected');
             return;
         }
