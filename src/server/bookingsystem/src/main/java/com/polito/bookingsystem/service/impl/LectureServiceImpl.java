@@ -26,9 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,7 +98,7 @@ public class LectureServiceImpl implements LectureService {
 		
 		
 		//Sort the lecture by date
-		studentLectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
+		studentLectures.sort(Comparator.comparing(LectureDto::getDate));
 		
 		return studentLectures;
 	}
@@ -119,7 +117,7 @@ public class LectureServiceImpl implements LectureService {
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
 		
 		//Sort the lecture by date
-		lectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
+		lectures.sort(Comparator.comparing(Lecture::getDate));
 		
 		for(Lecture lecture : lectures) 
 			lecturesDto.add(LectureConverter.toDto(lecture));
@@ -191,7 +189,7 @@ public class LectureServiceImpl implements LectureService {
         List<LectureDto> allLecturesDto = new ArrayList<>();
         
         //Sort the lecture by date
-        allLectures.sort(Comparator.comparing(lecture -> lecture.getDate()));
+        allLectures.sort(Comparator.comparing(Lecture::getDate));
         
         for(Lecture lecture:allLectures) {
         	allLecturesDto.add(LectureConverter.toDto(lecture));
@@ -202,15 +200,13 @@ public class LectureServiceImpl implements LectureService {
 
 	@Override
 	public void addLectures(String fileName){
-		try {
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 			 Calendar startSemester = Calendar.getInstance();
 			 startSemester.set(2020, 8, 28);
 			 Calendar endSemester = Calendar.getInstance();
 			 endSemester.set(2021, 0, 17);
 			 Calendar calendar = Calendar.getInstance();
 			
-			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
-			 
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
@@ -252,13 +248,13 @@ public class LectureServiceImpl implements LectureService {
 																  List<Course> courseProf = p.getCourses().stream()
 																		  .filter(c -> c.getCode().compareTo(fields[0]) == 0)
 																		  .collect(Collectors.toList());
-																  if(courseProf.size() == 0)
+																  if(courseProf.isEmpty())
 																	  return false;
 																  return true;
 												               })
 								                       .collect(Collectors.toList());
 						  
-						  if(professors.size() > 0) {
+						  if(!professors.isEmpty()) {
 							  Professor professor = professors.get(0);
 							  String[] timestamp = fields[4].split("-");
 							  String[] timeS = timestamp[0].split(":");
@@ -271,13 +267,13 @@ public class LectureServiceImpl implements LectureService {
 								  calendar.set(Calendar.MINUTE, Integer.parseInt(timeS[1]));
 								  while(calendar.before(endSemester)){
 									  Integer lectureId = lectureRepository.findAll().stream()
-	                                               .mapToInt(l -> l.getLectureId())
+	                                               .mapToInt(Lecture::getLectureId)
 	                                               .max()
 								                   .orElse(0);
 									  
 									  Integer numberOfLesson = lectureRepository.findAll().stream()
 											                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
-											                   .mapToInt(l -> l.getNumberOfLesson())
+											                   .mapToInt(Lecture::getNumberOfLesson)
 											                   .max()
 											                   .orElse(0);
 									  
@@ -296,7 +292,7 @@ public class LectureServiceImpl implements LectureService {
 									  lectureRepository.save(newLecture);
 								      calendar.add(Calendar.DATE, 7);
 								 }
-						    }catch(ParseException e) {continue;}
+						    }catch(ParseException e) {}
 					    }
 				    }
 			    }
@@ -304,7 +300,6 @@ public class LectureServiceImpl implements LectureService {
 			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
-			
 		}
 		
 	}
