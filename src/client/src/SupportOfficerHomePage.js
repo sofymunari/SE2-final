@@ -13,7 +13,7 @@ class SupportOfficerHomePage extends React.Component {
             supportOfficer: null, lecturesfile: false, coursesfile: false, studentsfile: false,
             teachersfile: false, enrollmentfile: false, selectedFile: null, loaded: false, lecturesPressed: false,
             coursesPressed: false, studentsPressed: false, teachersPressed: false, enrollmentPressed: false,
-            selectedCourse: null, courses: []
+            selectedCourse: '', courses: []
         }
     }
 
@@ -129,58 +129,69 @@ class SupportOfficerHomePage extends React.Component {
     sendCourses = (event, string) => {
         event.preventDefault();
         if (this.state.selectedCourse == null) {
-            toast.error('update fail, no course selected of invalid type');
+            toast.error('update fail, no course selected');
             return;
         }
-        let vet = this.state.courses.map((c) => c.courseName.toLowerCase());
+        //        let vet = this.state.courses.map((c) => c.courseName.toLowerCase());
         if (string === "first") {
             let first = this.state.courses.filter((c) => c.courseYear === 1);
-            API.sendCourses(first)
-            .then(() =>{
-                toast.success('update success');
-            })
-            .catch((error) => {
-                this.setState({ error: error});
-                toast.error('update fail');
-            });
+            if (first.length > 0) {
+                API.sendCourses(first)
+                    .then(() => {
+                        toast.success('update success');
+                    })
+                    .catch((error) => {
+                        toast.error('update fail');
+                        //  this.setState({ error: error});
+                    });
+            } else{
+                toast.error('No course to update');
+            }
         } else if (string === "second") {
             let second = this.state.courses.filter((c) => c.courseYear === 2);
-            API.sendCourses(second)
-            .then(() =>{
-                toast.success('update success');
-            })
-            .catch((error) => {
-                this.setState({ error: error});
-                toast.error('update fail');
-            });
-
+            if (second.length > 0) {
+                API.sendCourses(second)
+                    .then(() => {
+                        toast.success('update success');
+                    })
+                    .catch((error) => {
+                        // this.setState({ error: error});
+                        toast.error('update fail');
+                    });
+            }else{
+                toast.error('No course to update');
+            }
         } else if (string === "third") {
             let third = this.state.courses.filter((c) => c.courseYear === 3);
-            API.sendCourses(third)
-            .then(() =>{
-                toast.success('update success');
-            })
-            .catch((error) => {
-                this.setState({ error: error});
-                toast.error('update fail');
-            });
+            if (third.length > 0) {
+                API.sendCourses(third)
+                    .then(() => {
+                        toast.success('update success');
+                    })
+                    .catch((error) => {
+                        //  this.setState({ error: error});
+                        toast.error('update fail');
+                    });
+            } else{
+                toast.error('No course to update');
+            }
         } else {
             API.sendCourse(string)
-            .then(() =>{
-                toast.success('update success');
-            })
-            .catch((error) => {
-                this.setState({ error: error});
-                toast.error('update fail');
-            });
+                .then(() => {
+                    toast.success('update success');
+                })
+                .catch((error) => {
+                    // this.setState({ error: error});
+                    toast.error('update fail');
+                });
         }
     }
 
     render() {
         if (this.state.error) {
             return <>
-            <h1>Connections problems</h1>
-            <a href="/"> HOME </a>
+                <h1>Connections problems</h1>
+                <a href="/"> HOME </a>
             </>
         }
         if (!this.state.supportOfficer) {
@@ -339,10 +350,10 @@ class SupportOfficerHomePage extends React.Component {
                                         <Form.Row className="align-items-center">
                                             <Col className="my-1 ">
                                                 <Form.Control as="select" name="selectedCourse" placeholder="Course name" value={this.state.selectedCourse} onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} >
-                                            {
-                                                this.state.courses.map((c) => <option key={c.courseName}> {c.courseName} </option>)
-                                            }
-                                            </Form.Control>
+                                                    {
+                                                        this.state.courses.map((c) => <option key={c.courseName}> {c.courseName} </option>)
+                                                    }
+                                                </Form.Control>
                                             </Col>
                                             <Col xs="auto" className="my-1">
                                                 <Button type="submit">Submit</Button>
