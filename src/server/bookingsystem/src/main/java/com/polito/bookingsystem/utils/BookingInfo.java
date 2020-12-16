@@ -5,5 +5,6 @@ public enum BookingInfo{
     CANCELED_BY_PROF,
     CANCELED_BY_STUD,
     WAITING,
-    MOVED_AS_REMOTLY
+    MOVED_AS_REMOTLY,
+    ATTENDED
 }

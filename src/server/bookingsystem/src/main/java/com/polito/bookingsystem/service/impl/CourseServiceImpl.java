@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.polito.bookingsystem.converter.CourseConverter;
@@ -19,9 +18,7 @@ import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
-import com.polito.bookingsystem.repository.BookingRepository;
 import com.polito.bookingsystem.repository.CourseRepository;
-import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.service.CourseService;
 import com.polito.bookingsystem.service.LectureService;
@@ -54,8 +51,7 @@ public class CourseServiceImpl implements CourseService{
     
 	@Override
 	public void addCourses(String fileName) {
-		try {
-			 BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
 				  String[] fields = currentLine.split(",");
@@ -64,7 +60,7 @@ public class CourseServiceImpl implements CourseService{
 				  if(course == null) {
 					  Course newCourse = new Course();
 					  Integer courseId = courseRepository.findAll().stream()
-					           .mapToInt(p -> p.getCourseId())
+					           .mapToInt(Course::getCourseId)
 					           .max()
 					           .orElse(0);
 			          newCourse.setCourseId(courseId+1);
@@ -84,7 +80,7 @@ public class CourseServiceImpl implements CourseService{
 			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
-		}		
+		} 
 	}
 	
 	@Override

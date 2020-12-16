@@ -59,17 +59,17 @@ function AppNavbar(props){
                     <ul className="navbar-nav text-right">
                         <li className="nav-item pr-1">
                         <Link to="/studentlogin">
-                        <button className="btn btn-success text-dark font-weight-bold mr-4" >Student</button>
+                        <button className="btn btn-success text-dark font-weight-bold mr-4" id="studentlogin" >Student</button>
                         </Link>
                         </li>
                         <li className="nav-item pr-1">
                         <Link to="/teacherlogin">
-                        <button className="btn btn-success text-dark font-weight-bold mr-4" >Teacher</button>
+                        <button className="btn btn-success text-dark font-weight-bold mr-4" id="teacherlogin" >Teacher</button>
                         </Link>
                         </li>
                         <li className="nav-item pr-1">
                         <Link to="/managerlogin">
-                        <button className="btn btn-success text-dark font-weight-bold" >Manager</button>
+                        <button className="btn btn-success text-dark font-weight-bold" id="managerlogin" >Manager</button>
                         </Link>
                         </li>    
                         <li className="nav-item pr-1">
@@ -87,7 +87,7 @@ function AppNavbar(props){
                     <ul className="navbar-nav text-right">
                     <li className="nav-item pr-1">
                         <Link to="/studentportal/bookings">
-                        <button className="btn btn-lg btn-success text-dark font-weight-bold" >Bookings</button>
+                        <button className="btn btn-lg btn-success text-dark font-weight-bold" id="show_bookings" >Bookings</button>
                         </Link>
                     </li>
                     
@@ -144,6 +144,11 @@ function AppNavbar(props){
                 <nav className="navbar navbar-expand-sm bg-success navbar-dark mb-3 justify-content-center">
                 <div className="collapse navbar-collapse flex-grow-0 " id="collapsibleNavbar">
                     <ul className="navbar-nav text-right">
+                    <li className="nav-item pr-1">
+                        <Link to="/managerportal/tracingreport">
+                        <button className="btn btn-success text-dark font-weight-bold" >Generate Report</button>
+                        </Link>
+                    </li>
                     <li className="nav-item pr-1">
                         <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     

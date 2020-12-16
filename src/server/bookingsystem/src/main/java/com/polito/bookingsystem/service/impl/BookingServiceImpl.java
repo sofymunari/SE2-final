@@ -92,25 +92,26 @@ public class BookingServiceImpl implements BookingService{
 				.max()
 				.orElse(0);
 		
+		String text = "";
 		Booking booking = new Booking();
 		booking.setBookingId((id+1));
 		booking.setStudent(student);
 		if(numBookingLecture < numSeatAvaiable) {
 			lecture.setBookedSeats(numBookingLecture + 1);
+			lecture.setBookedSeats(numBookingLecture + 1);
 			booking.setBookingInfo(BookingInfo.BOOKED);
+			text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
+			studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
 		}
 		else {
 			lecture.setBookedSeats(numSeatAvaiable);
 			booking.setBookingInfo(BookingInfo.WAITING);
+			text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been in waiting list. You recieve email if some seats will free.\n\nBest Regards,\nPolito";
+			studentService.sendEmail(StudentConverter.toDto(student), "Waiting confermation", text);
 		}
 		booking.setLecture(lecture);
 		lectureRepository.save(lecture);
 		bookingRepository.save(booking);
-		
-		
-		String text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
-		studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
-		
 		return BookingConverter.toDto(booking);		             
 	}
 
@@ -120,11 +121,30 @@ public class BookingServiceImpl implements BookingService{
 		if(booking == null) {
 			return false;
 		}
-		booking.setBookingInfo(BookingInfo.CANCELED_BY_STUD);
 		Lecture lecture = booking.getLecture();
-		lecture.setBookedSeats(lecture.getBookedSeats() -1);
-		booking.setLecture(lecture);
-		lectureRepository.save(lecture);
+		
+		if(booking.getBookingInfo() == BookingInfo.BOOKED){
+			booking.setBookingInfo(BookingInfo.CANCELED_BY_STUD);
+			
+			List<Booking> listBookingLectureWaiting = bookingRepository.findAll().stream()
+			.filter(b->b.getLecture().getLectureId().equals(lecture.getLectureId()) && b.getBookingInfo() == BookingInfo.WAITING)
+			.collect(Collectors.toList());
+			
+			if(!listBookingLectureWaiting.isEmpty()) {
+				Booking bookingWaiting = listBookingLectureWaiting.get(0);
+				bookingWaiting.setBookingInfo(BookingInfo.BOOKED);
+				bookingRepository.save(bookingWaiting);
+				Student student = bookingWaiting.getStudent();
+				String text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" is confirmed. Now you are removed to waiting list and add in booking list.\n\nBest Regards,\nPolito";
+				studentService.sendEmail(StudentConverter.toDto(student), "Booking confermation (Removed to waiting list)", text);
+			}else {
+				lecture.setBookedSeats(lecture.getBookedSeats() - 1);
+				booking.setLecture(lecture);
+				lectureRepository.save(lecture);
+			}
+		}else if(booking.getBookingInfo() == BookingInfo.WAITING){
+			booking.setBookingInfo(BookingInfo.CANCELED_BY_STUD);
+		}
 		bookingRepository.save(booking);
 		return true;
 	}
@@ -156,6 +176,17 @@ public class BookingServiceImpl implements BookingService{
 	public void save(BookingDto bookingDto) {
 		if(bookingDto != null)
 			bookingRepository.save(BookingConverter.toEntity(bookingDto));
+	}
+
+	@Override
+	public BookingDto getByLectureAndStudent(Integer lectureId, String email) {
+		Student student = studentRepository.findByEmail(email);
+		Lecture lecture = lectureRepository.findByLectureId(lectureId);
+		
+		if(student == null || lecture == null) return null;
+		
+		return  BookingConverter.toDto(bookingRepository.findByLectureAndStudent(lecture, student));
+
 	}
 
 }

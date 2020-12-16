@@ -2,10 +2,8 @@ package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.OfficerConverter;
 import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.entity.Officer;
-import com.polito.bookingsystem.repository.ManagerRepository;
 import com.polito.bookingsystem.repository.OfficerRepository;
 import com.polito.bookingsystem.service.OfficerService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

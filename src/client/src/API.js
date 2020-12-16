@@ -270,6 +270,28 @@ async function addBooking(id,username){
     })
 }
 
+async function setAttendences(idList, lectureId){
+    let url = BASE_URL+ "lecture/"+ lectureId+"/attendance"
+
+    return new Promise((resolve,reject) =>{
+        fetch(url, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({studentIds: idList})
+        }).then((response)=>{
+            if(response.ok){
+                if(!response.json()){
+                    reject("error:setting attendences")
+                }
+                resolve();
+            }
+            reject("connection error");
+        }).catch((err)=>reject(err));
+    })
+}
+
 
 async function getStudentBookings(username){
     let url=BASE_URL+"studentbookings/"+username;
@@ -283,7 +305,7 @@ async function getStudentBookings(username){
             code:b.lectureDto.courseDto.code},professorDto:{userId:b.lectureDto.professorDto.userId,
             name:b.lectureDto.professorDto.name,surname:b.lectureDto.professorDto.surname,
             address:b.lectureDto.professorDto.address},roomDto:{roomId:b.lectureDto.roomDto.roomId,
-            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat}}});
+            name:b.lectureDto.roomDto.name,numberOfSeat:b.lectureDto.roomDto.numberOfSeat},bookingInfo:b.bookingInfo}});
     }else{
         throw response;
     }
@@ -361,6 +383,7 @@ async function getTeacherBookings(username){
     const lects_json= await response.json();
     if(response.ok){
         return lects_json.map((l)=>{
+            console.log(l)
             return {lectureId:l.lectureId,lectureNumber:l.lectureNumber,
             course:{courseId:l.course.courseId,name:l.course.name,code:l.course.code},bookingId:l.bookingId,bookingInfo:l.bookingInfo,studentName:l.studentName,
             lectureDate:l.lectureDate,studentEmail:l.studentEmail,studentSurname:l.studentSurname}
@@ -432,10 +455,40 @@ async function teacherRemoteLecture(lectureId){
     }
 }
 
+async function downloadReportCsv(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
+
+async function downloadReportPdf(email, date){
+    const url = BASE_URL + "managerportal/file/tracereport/studet/" + email + "/" + date; 
+    const response = await fetch(url);
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            if(restext==='true'){
+                return true;
+            } 
+            return false;
+        }
+        throw "error";
+    }
+}
+
 
 
 const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
            getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
            teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
-           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile, getCourses, sendCourse, sendCourses}
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences, downloadReportPdf, getCourses, sendCourse, sendCourses}
 export default API;
