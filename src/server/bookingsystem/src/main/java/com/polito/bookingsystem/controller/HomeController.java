@@ -340,8 +340,8 @@ public class HomeController {
 	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
 //		courseService.setCourseToRemote(courseName);
     	
-		for (String courseName : courses.get("courses")) {
-			courseService.setCourseToRemote(courseName);
+		for (String courseCode : courses.get("courses")) {
+			courseService.setCourseToRemote(courseCode);
 		}
 	  } 
 }

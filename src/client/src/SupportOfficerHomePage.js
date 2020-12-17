@@ -136,7 +136,7 @@ class SupportOfficerHomePage extends React.Component {
         }
         //        let vet = this.state.courses.map((c) => c.courseName.toLowerCase());
         if (string === "first") {
-            let first = this.state.courses.filter((c) => c.courseYear === 1).map((c) => c.courseName);
+            let first = this.state.courses.filter((c) => c.courseYear === 1).map((c) => c.courseCode);
             if (first.length > 0) {
                 console.log(first)
                 API.sendCourses(first)
@@ -151,7 +151,7 @@ class SupportOfficerHomePage extends React.Component {
                 toast.error('No course to update');
             }
         } else if (string === "second") {
-            let second = this.state.courses.filter((c) => c.courseYear === 2).map((c) => c.courseName);
+            let second = this.state.courses.filter((c) => c.courseYear === 2).map((c) => c.courseCode);
             if (second.length > 0) {
                 API.sendCourses(second)
                     .then(() => {
@@ -165,7 +165,7 @@ class SupportOfficerHomePage extends React.Component {
                 toast.error('No course to update');
             }
         } else if (string === "third") {
-            let third = this.state.courses.filter((c) => c.courseYear === 3).map((c) => c.courseName);
+            let third = this.state.courses.filter((c) => c.courseYear === 3).map((c) => c.courseCode);
             if (third.length > 0) {
                 API.sendCourses(third)
                     .then(() => {
@@ -179,7 +179,9 @@ class SupportOfficerHomePage extends React.Component {
                 toast.error('No course to update');
             }
         } else {
-            API.sendCourse(string)
+            console.log(string)
+            let id = string.split(",")[0];
+            API.sendCourse(id)
                 .then(() => {
                     toast.success('update success');
                 })
@@ -365,7 +367,7 @@ class SupportOfficerHomePage extends React.Component {
                                             <Col className="my-1 ">
                                                 <Form.Control as="select" name="selectedCourse" placeholder="Course name" value={this.state.selectedCourse} onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} >
                                                     {
-                                                        this.state.courses.map((c) => <option key={c.courseName}> {c.courseName} </option>)
+                                                        this.state.courses.map((c) => <option key={c.courseId}> {c.courseCode}, {c.courseName} </option>)
                                                     }
                                                 </Form.Control>
                                             </Col>
