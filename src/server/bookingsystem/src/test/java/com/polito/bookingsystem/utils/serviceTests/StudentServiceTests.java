@@ -126,7 +126,7 @@ class StudentServiceTests {
 		
 		when(studentRepository.findByEmail(anyString())).thenReturn(student);
 
-		assertEquals("Expected test@email.com to be returned, successful login", studentServiceImpl.login("test@email.com", "testPassword"), "test@email.com");
+		assertEquals("Expected test@email.com to be returned, successful login", "test@email.com", studentServiceImpl.login("test@email.com", "testPassword"));
 	}
 	
 	@Test
@@ -139,7 +139,7 @@ class StudentServiceTests {
 	}
 	
 	@Test
-	public void testSendEmail1(){
+	void testSendEmail1(){
 	   try{
 	      studentServiceImpl.sendEmail(null, "test", "test");
 	   }
@@ -149,7 +149,7 @@ class StudentServiceTests {
 	}
 	
 	@Test
-	public void testSendEmail2(){
+	void testSendEmail2(){
 	   try{
 			SimpleMailMessage msg = new SimpleMailMessage();
 

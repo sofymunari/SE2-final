@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { Alert, Button } from 'react-bootstrap';
 import moment from 'moment'
-import { preventContextMenu, preventDefault } from '@fullcalendar/core';
+import { Bar } from "react-chartjs-2";
 
 class ManagerHomePage extends React.Component {
     constructor(props) {
@@ -133,6 +133,7 @@ class TracingReport extends React.Component {
 class Course extends React.Component {
     constructor(props) {
         super(props);
+        this.state={"showList":true};
 
     }
     showItem = (course) => {
@@ -141,12 +142,16 @@ class Course extends React.Component {
 
         return <CourseItem key={course} bookings={bookings} lectures={lectures} showLectures={this.props.showLectures} />
     }
+    showGraph=(value)=>{
+        this.setState({"showList":value});
+    }
+
     render() {
         let courses = this.props.lectures.map(l => l.courseDto.courseId);
 
         let courses_unique = [...new Set(courses)];
-
-        return <ul className="list-group list-group-flush">
+        if(this.state.showList){
+        return (<><ul className="list-group list-group-flush">
             <li className="list-group-item bg-light">
                 <div className="d-flex w-100 justify-content-between">
                     <div className="col-4">
@@ -162,12 +167,32 @@ class Course extends React.Component {
             </li>
             {courses_unique.map(this.showItem)}
         </ul>
+        <button type="button" className="btn btn-success " onClick={(ev) => this.showGraph(false)}>Show Graph</button></>)
+        }else{
+            let courses1 = this.props.lectures.map(l => l.courseDto.name);
+            
+            let courses_unique1 = [ ...new Set(courses1)];
+           
+            let coursesBookings = courses_unique1.map(c=>{return {'label': c,'data':0}});
+            let not_remote_lectures = this.props.lectures.filter((l)=>!l.remotly && !l.deleted);
+            not_remote_lectures.forEach(l=>{
+                coursesBookings = coursesBookings.map(c=>{
+                    if(c.label === l.courseDto.name){
+                        let data = c.data+l.bookedSeats;
+                        return {'label':c.label, 'data':data};
+                    }
+                    return c;
+                });
+            })
+            return <ManagerCourseGraph  coursesBookings = {coursesBookings} showGraph={this.showGraph} title={"Per Course"}/>
+        }    
     }
 }
 
 class Lecture extends React.Component {
     constructor(props) {
         super(props);
+        this.state={"showList":true};
     }
 
     showLecture = (lecture) => {
@@ -175,8 +200,12 @@ class Lecture extends React.Component {
         let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
         return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
     }
+    showGraph=(value)=>{
+        this.setState({"showList":value});
+    }
 
     render(){
+        if(this.state.showList){
         return  (<>
                 <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
                 <ul className="list-group list-group-flush">
@@ -205,7 +234,12 @@ class Lecture extends React.Component {
                 {this.props.lectures.map(this.showLecture)}
             </ul>
             <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
-        </>);
+            <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+        </>)}else{
+            let not_remote_lectures = this.props.lectures.filter((l)=>!l.remotly && !l.deleted);
+            let lects=not_remote_lectures.map((l)=>{return {'label':l.courseDto.name+" "+l.numberOfLesson,'data':l.bookedSeats}})
+            return <ManagerGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture"}/>
+         }    ;
     }
 }
 
@@ -278,103 +312,104 @@ function Aside(props) {
 
 }
 
-//class DownloadFile extends React.Component {
-    //     constructor(props) {
-    //         super(props);
-    //         this.state = { loading: false, }
-    //     }
-    
-    //     handleSubmitCsv = (event) => {
-    //         this.setState({
-    //             error: null,
-    //             loading: true,
-    //         }, () => {
-    //             API.downloadReportCsv(this.props.student, this.props.date)
-    //                 .then(() => {
-    //                     this.setState({ loading: false });
-    //                 })
-    //                 .catch((error) => {
-    //                     this.setState({ error: error, loading: false });
-    //                 })
-    //         });
-    
-    //         event.preventDefault();
-    //     }
-    
-    //     handleSubmitPdf = (event) => {
-    //         this.setState({
-    //             error: null,
-    //             loading: true,
-    //         }, () => {
-    //             API.downloadReportPdf(this.props.student, this.props.date)
-    //                 .then(() => {
-    //                     this.setState({ loading: false });
-    //                 })
-    //                 .catch((error) => {
-    //                     this.setState({ error: error, loading: false });
-    //                 })
-    //         });
-    
-    //         event.preventDefault();
-    //     }
-    
-    
-    //     render() {
-    //         return <>
-    //             {
-    //                 this.state.error ?
-    //                     <Alert transition={null} className='col-6 mt-4 mx-auto'
-    //                         onClose={() => this.setState({ error: null })}
-    //                         variant='danger'
-    //                         dismissible>
-    //                         ERROR
-    //                     </Alert>
-    //                     :
-    //                     null
-    //             }
-    
-    //             <AppComponents.AppNavbar logOut={this.props.logOut} />
-    //             <div className="container-fluid">
-    //                 <div className="row">
-    //                     <div className="col-2 bg-success" id="sticky-sidebar">
-    //                         <Aside manager={this.props.manager} />
-    //                     </div>
-    //                     <div className="col-10" id="main">
-    //                         <>
-    //                             <h3> Download the report in the format you prefer</h3>
-    
-    //                             <form onSubmit={this.handleSubmitPdf}>
-    //                                 <div className="form-group">
-    //                                     <button disabled={this.state.loading} className="btn btn-primary">
-    //                                         {(this.state.loading) ?
-    //                                             'Downloading...'
-    //                                             :
-    //                                             'Download pdf'
-    //                                         }
-    //                                     </button>
-    //                                 </div>
-    //                             </form>
-    
-    //                             <form onSubmit={this.handleSubmitCsv}>
-    //                                 <div className="form-group">
-    //                                     <button disabled={this.state.loading} className="btn btn-primary">
-    //                                         {(this.state.loading) ?
-    //                                             'Downloading...'
-    //                                             :
-    //                                             'Download .csv'
-    //                                         }
-    //                                     </button>
-    //                                 </div>
-    //                             </form>
-    //                         </>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </>;
-    
-    
-    //     }
-    // }
+class ManagerGraph extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={ dataBar: {
+            labels: [...this.props.lectures.map((l)=>{return l.label;})],
+            datasets: [{label: "Number of Attendance "+this.props.title,
+                data: [...this.props.lectures.map((l)=>{return l.data;})],
+                backgroundColor: [
+                  "rgba(255, 0,0,0.4)",
+                  "rgba(0, 0,255,0.4)",
+                  "rgba(60, 179,113,0.4)",
+                  "rgba(106, 90,205,0.4)"
+                ],
+                borderWidth: 2,
+                borderColor: [
+                  "rgba(255, 0, 0, 1)",
+                  "rgba(0, 0,255,1)",
+                  "rgba(60, 179,113,1)",
+                  "rgba(106, 90,205,1)"
+                ]}]},
+          barChartOptions: {scales: {xAxes: [{
+                  barPercentage: 0.5,
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  }}],yAxes: [{
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  },
+                  ticks: {
+                    beginAtZero: true
+                  }}]}}
+                }
+    }
+    render(){
+        return (
+        <div className="container">
+        
+            <h3 className="mt-5">Bookings {this.props.title}</h3>
+            <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
+        
+        <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
+        </div>
+        )
+    }
+}
+
+
+
+class ManagerCourseGraph extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={ 
+            dataBar: {
+            labels: [...this.props.coursesBookings.map((l)=>{return l.label;})],
+            datasets: [{label: "Number of courses "+this.props.title,
+                data: [...this.props.coursesBookings.map((l)=>{return l.data;})],
+                backgroundColor: [
+                  "rgba(255, 0,0,0.4)",
+                  "rgba(0, 0,255,0.4)",
+                  "rgba(60, 179,113,0.4)",
+                  "rgba(106, 90,205,0.4)"
+                ],
+                borderWidth: 2,
+                borderColor: [
+                  "rgba(255, 0, 0, 1)",
+                  "rgba(0, 0,255,1)",
+                  "rgba(60, 179,113,1)",
+                  "rgba(106, 90,205,1)"
+                ]}]},
+          barChartOptions: {scales: {xAxes: [{
+                  barPercentage: 0.5,
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  }}],yAxes: [{
+                  gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)"
+                  },
+                  ticks: {
+                    beginAtZero: true
+                  }}]}}
+            }
+    }
+    render(){
+        return (
+        <div className="container">
+        
+            <h3 className="mt-5">Bookings {this.props.title}</h3>
+            <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
+        
+        <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
+        </div>
+        )
+    }
+}
     
 
 export default ManagerHomePage;

@@ -99,7 +99,7 @@ public class StudentServiceImpl implements StudentService {
 								break;
 							}
 						}
-						if(contains == true) {
+						if(contains) {
 							continue;
 						}
 						contactedStudents.add(bookingDto2.getStudentDto());
@@ -143,11 +143,12 @@ public class StudentServiceImpl implements StudentService {
 					  try {
 						//commantare durante la demo
 						//sendEmail(StudentConverter.toDto(newStudent), subject, text);
-					  }catch(Exception e) {}
+					  }catch(Exception e) {
+						  System.err.println(e.getMessage());
+					  }
 					  studentRepository.save(newStudent);
 				  }
 			 }
-			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
@@ -167,7 +168,6 @@ public class StudentServiceImpl implements StudentService {
 					  studentRepository.save(student);
 				  }
 			 }
-			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}

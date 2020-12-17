@@ -94,7 +94,7 @@ class ProfessorServiceTests {
 		
 		when(professorRepository.findByEmail(anyString())).thenReturn(professor);
 
-		assertEquals("Expected test@email.com to be returned, successful login", professorServiceImpl.login("test@email.com", "testPassword"), "test@email.com");
+		assertEquals("Expected test@email.com to be returned, successful login", "test@email.com", professorServiceImpl.login("test@email.com", "testPassword"));
 	}
 	
 	@Test
@@ -163,7 +163,7 @@ class ProfessorServiceTests {
 	}
 	
 	@Test
-	public void testSendEmail1(){
+	void testSendEmail1(){
 	   try{
 		   professorServiceImpl.sendEmail(null, "test", "test");
 	   }
@@ -173,7 +173,7 @@ class ProfessorServiceTests {
 	}
 	
 	@Test
-	public void testSendEmail2(){
+	void testSendEmail2(){
 	   try{
 			SimpleMailMessage msg = new SimpleMailMessage();
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -193,7 +193,7 @@ class ProfessorServiceTests {
 	
 	
 	@Test
-	public void testNotifyProfessorsAboutNumberOfStudents1() throws ParseException {
+	void testNotifyProfessorsAboutNumberOfStudents1() throws ParseException {
 		
 		Room room1 = new Room(1, "testName", 100);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

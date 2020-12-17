@@ -374,7 +374,7 @@ class LectureServiceTests {
 	
 		
 	@Test
-	public void testsave1(){
+	void testsave1(){
 	   try{
 			RoomDto roomDto = new RoomDto(1, "testName", 4);
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -398,7 +398,7 @@ class LectureServiceTests {
 	}
 	
 	@Test
-	public void testsave2(){
+	void testsave2(){
 	   try{
 		   lectureServiceImpl.save(null);
 	   }
@@ -409,7 +409,7 @@ class LectureServiceTests {
 	
 	
 	@Test
-	public void testGetListAllLectures1() {
+	void testGetListAllLectures1() {
 		
 		when(lectureRepository.findAll()).thenReturn(new ArrayList<>());
 		
@@ -419,7 +419,7 @@ class LectureServiceTests {
 	
 	
 	@Test
-	public void testGetListAllLectures2() throws ParseException {
+	void testGetListAllLectures2() throws ParseException {
 		
 		
 		Room room1 = new Room(1, "testName", 100);

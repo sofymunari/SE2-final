@@ -78,7 +78,6 @@ public class CourseServiceImpl implements CourseService{
 					  }
 				  }
 			 }
-			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		} 
