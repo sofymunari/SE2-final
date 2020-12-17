@@ -67,14 +67,14 @@ class FileStorageServiceTest {
 	              "text/plain", "test data".getBytes());
 		
 		//when(StringUtils.cleanPath(mockMultipartFile.getOriginalFilename())).thenReturn("../");
-		assertEquals("Expected a null value. Invalid file name passed",fileStorageServiceImpl.storeFile(mockMultipartFile),"test.txt");
+		assertEquals("Expected a null value. Invalid file name passed","test.txt",fileStorageServiceImpl.storeFile(mockMultipartFile));
 		
 		
 	}
 	
 	
 	@Test
-	public void testStoreFile3() {
+	void testStoreFile3() {
 	    // given
 		
 		String fileName = null;
@@ -85,13 +85,13 @@ class FileStorageServiceTest {
 		MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file",fileName,
 	              "text/plain", "test data".getBytes());
 		
-			assertEquals("Expected empty string",fileStorageServiceImpl.storeFile(mockMultipartFile),"");
+			assertEquals("Expected empty string","",fileStorageServiceImpl.storeFile(mockMultipartFile));
 			
 	    
 	}
 	
 	@Test
-	public void testStoreFile4() {
+	void testStoreFile4() {
 	    // given
 		
 		String fileName = null;
@@ -102,31 +102,31 @@ class FileStorageServiceTest {
 		MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file",fileName,
 	              "text/plain", "test data".getBytes());
 		
-			assertEquals("Expected empty string",fileStorageServiceImpl.storeFile(mockMultipartFile),"");
+			assertEquals("Expected empty string","",fileStorageServiceImpl.storeFile(mockMultipartFile));
 			
 	    
 	}
 	
 	@Test
-	public void testLoadFileAsResource1() throws Exception {
+	void testLoadFileAsResource1() throws Exception {
 		//exception thrown because of null file
 		String fileName = null;
 		
-		assertEquals("Expected null value", fileStorageServiceImpl.loadFileAsResource(fileName),null);
+		assertEquals("Expected null value", null, fileStorageServiceImpl.loadFileAsResource(fileName));
 		
 	}
 	
 	@Test
-	public void testLoadFileAsResource2() throws Exception {
+	void testLoadFileAsResource2() throws Exception {
 		//file doesn't exist
 		String fileName = "wrongFileTest.txt";
 		
-		assertEquals("Expected null value", fileStorageServiceImpl.loadFileAsResource(fileName),null);
+		assertEquals("Expected null value", null,fileStorageServiceImpl.loadFileAsResource(fileName));
 		
 	}
 	
 	@Test
-	public void testLoadFileAsResource3() throws Exception {
+	void testLoadFileAsResource3() throws Exception {
 		//file name is correct
 		String fileName = "test.txt";
 		

@@ -86,7 +86,7 @@ class ManagerServiceTest {
 
 
 
-		assertEquals("Expected test@email.com to be returned, successful login", managerServiceImpl.login("test@email.com", "testPassword"), "test@email.com");
+		assertEquals("Expected test@email.com to be returned, successful login", "test@email.com", managerServiceImpl.login("test@email.com", "testPassword"));
 	}
 	
 	@Test

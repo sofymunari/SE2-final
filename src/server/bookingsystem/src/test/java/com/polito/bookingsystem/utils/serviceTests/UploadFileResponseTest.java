@@ -34,21 +34,21 @@ class UploadFileResponseTest {
 
 	}*/
 	@ Test
-	public void testGetFileName1() {
+	void testGetFileName1() {
 		String fileName=null;
 		String fileDownloadUri=null;
 		String fileType=null;
 		long size= -1;
 		uploadFileResponse = new UploadFileResponse(fileName,fileDownloadUri,fileType,size);
-		assertEquals("Expected null value", uploadFileResponse.getFileName(),null);
-		assertEquals("Expected null value", uploadFileResponse.getFileDownloadUri(),null);
-		assertEquals("Expected null value", uploadFileResponse.getFileType(),null);
-		assertEquals("Expected null value", uploadFileResponse.getSize(),-1);
+		assertEquals("Expected null value",null, uploadFileResponse.getFileName());
+		assertEquals("Expected null value",null, uploadFileResponse.getFileDownloadUri());
+		assertEquals("Expected null value",null, uploadFileResponse.getFileType());
+		assertEquals("Expected null value",-1, uploadFileResponse.getSize());
 		
 	}
 	
 	@Test
-	public void testGetFileName2() {
+	void testGetFileName2() {
 		String fileName="test.txt";
 		String fileDownloadUri="./test/";
 		String fileType="txt";

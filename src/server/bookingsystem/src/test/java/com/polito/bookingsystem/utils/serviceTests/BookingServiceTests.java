@@ -810,7 +810,7 @@ class BookingServiceTest {
 
 	
 	@Test
-	public void testsave1(){
+	void testsave1(){
 	   try{
 			RoomDto roomDto = new RoomDto(1, "testName", 4);
 			Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
@@ -834,7 +834,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	public void testsave2(){
+	void testsave2(){
 	   try{
 	      bookingServiceImpl.save(null);
 	   }
@@ -844,7 +844,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	public void testgetByLectureAndStudent1()throws ParseException {
+	void testgetByLectureAndStudent1()throws ParseException {
 		//invalid student id
 		Integer lectureId = 1;
 		String studentemail = null;
@@ -862,7 +862,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	public void testgetByLectureAndStudent3() throws ParseException {
+	void testgetByLectureAndStudent3() throws ParseException {
 				
 				Integer lectureId = 1;
 				String studentemail = "test1@email.com";
@@ -885,7 +885,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	public void testgetByLectureAndStudent2() throws ParseException {
+	void testgetByLectureAndStudent2() throws ParseException {
 		//invalid lecture id
 				Integer lectureId = 1;
 				String studentemail = "test1@email.com";

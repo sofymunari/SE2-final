@@ -148,12 +148,13 @@ public class ProfessorServiceImpl implements ProfessorService {
 						try {
 							//commantare durante la demo
 							//sendEmail(ProfessorConverter.toDto(newProfessor), subject, text);
-						  }catch(Exception e) {}
+						  }catch(Exception e) {
+							  System.err.println(e.getMessage());
+						  }
 						professorRepository.save(newProfessor);
 				  }
 				  
 			 }
-			 reader.close();
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}

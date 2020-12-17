@@ -114,7 +114,7 @@ class BookingsystemEntityTests {
 	void testGetCourseName() {
 		Course c = null;
 		c = createCourseTestSuite();
-		assertEquals("course name is wrong", c.getName(), "testCourse");
+		assertEquals("course name is wrong","testCourse", c.getName());
 	}
 	
 	@Test
@@ -131,7 +131,7 @@ class BookingsystemEntityTests {
 	void testGetCourseDescription() {
 		Course c = null;
 		c = createCourseTestSuite();
-		assertEquals("course code is wrong", c.getCode(), "A");
+		assertEquals("course code is wrong", "A", c.getCode());
 	}
 	
 	@Test
@@ -173,7 +173,7 @@ class BookingsystemEntityTests {
 	void testGetUserName() {
 		User c = null;
 		c = createUserTestSuite();
-		assertEquals("user name is wrong",c.getName(), "testName");
+		assertEquals("user name is wrong","testName",c.getName());
 	}
 	
 	@Test
@@ -190,7 +190,7 @@ class BookingsystemEntityTests {
 	void testGetUserSurname() {
 		User u = null;
 		u = createUserTestSuite();
-		assertEquals("user surname is wrong",u.getSurname(), "testSurname");
+		assertEquals("user surname is wrong","testSurname",u.getSurname());
 	}
 	
 	@Test
@@ -207,7 +207,7 @@ class BookingsystemEntityTests {
 	void testGetUserAddress() {
 		User u = null;
 		u = createUserTestSuite();
-		assertEquals("user address is wrong",u.getAddress(), "testAddress");
+		assertEquals("user address is wrong","testAddress",u.getAddress());
 	}
 	
 	@Test
@@ -224,7 +224,7 @@ class BookingsystemEntityTests {
 	void testGetUserEmail() {
 		User u = null;
 		u = createUserTestSuite();
-		assertEquals("user email is wrong",u.getEmail(), "testEmail");
+		assertEquals("user email is wrong","testEmail",u.getEmail());
 	}
 	
 	@Test
@@ -241,7 +241,7 @@ class BookingsystemEntityTests {
 	void testGetUserPassword() {
 		User u = null;
 		u = createUserTestSuite();
-		assertEquals("user's password is wrong", u.getPassword(), "testPassword");
+		assertEquals("user's password is wrong", "testPassword", u.getPassword());
 	}
 	
 	@Test
@@ -283,7 +283,7 @@ class BookingsystemEntityTests {
 	void testGetStudentCourses() throws ParseException {
 		Student s = null;
 		s = createStudentTestSuite();
-		assertEquals("student's course list is wrong",s.getCourses().size(), 1);
+		assertEquals("student's course list is wrong",1, s.getCourses().size());
 
 	}
 	
@@ -310,7 +310,7 @@ class BookingsystemEntityTests {
 	void testGetProfessorCourses(){
 		Professor p = null;
 		p = createProfessorTestSuite();
-		assertEquals("professor's course list is wrong", p.getCourses().size(), 1);
+		assertEquals("professor's course list is wrong", 1, p.getCourses().size());
 
 	}
 	
@@ -354,7 +354,7 @@ class BookingsystemEntityTests {
 	void testGetRoomName() {
 		Room room = null;
 		room = createRoomTestSuite();
-		assertEquals("room name is wrong", room.getName(), "testName");
+		assertEquals("room name is wrong",  "testName", room.getName());
 	}
 	
 	@Test
@@ -410,7 +410,7 @@ class BookingsystemEntityTests {
 	void testGetNotificationDescription() throws ParseException {
 		Notification notification = null;
 		notification = createNotificationTestSuite();
-		assertEquals("notification description is wrong", notification.getDescription(), "this is a test description");
+		assertEquals("notification description is wrong", "this is a test description", notification.getDescription());
 	}
 	
 	@Test
@@ -577,7 +577,7 @@ class BookingsystemEntityTests {
 	void testGetLectureRemotly() throws ParseException {
 		Lecture lecture = null;
 		lecture = createLectureTestSuite();
-		assertEquals("lecture remotly is wrong", lecture.getRemotly(), true);
+		assertEquals("lecture remotly is wrong",true, lecture.getRemotly());
 	}
 	
 	@Test
@@ -585,7 +585,7 @@ class BookingsystemEntityTests {
 		Lecture lecture = null;
 		lecture = createLectureTestSuite();
 		lecture.setRemotly(false);
-		assertEquals("lecture remotly is wrong", lecture.getRemotly(), false);
+		assertEquals("lecture remotly is wrong",false, lecture.getRemotly());
 	}
 	
 	@Test
@@ -630,7 +630,7 @@ class BookingsystemEntityTests {
 	void testGetLectureProgramDetails() throws ParseException {
 		Lecture lecture = null;
 		lecture = createLectureTestSuite();
-		assertEquals("lecture program details are wrong", lecture.getProgramDetails(), "this is a test detail");
+		assertEquals("lecture program details are wrong","this is a test detail", lecture.getProgramDetails());
 	}
 	
 	@Test
