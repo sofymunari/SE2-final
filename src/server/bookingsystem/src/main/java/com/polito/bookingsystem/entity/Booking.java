@@ -15,7 +15,6 @@ import com.polito.bookingsystem.utils.BookingInfo;
 @Table
 public class Booking {
 	@Column
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	private Integer bookingId;
 	
