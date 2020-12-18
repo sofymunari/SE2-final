@@ -320,7 +320,7 @@ class StudentBookingList extends React.Component {
 
 function StudentItem(props) {
     let matricola = props.student.studentEmail.split('@')[0];
-
+    console.log(props.student.bookingInfo);
     return (
         <li className="list-group-item" id={props.student.lectureId}>
             <div className="d-flex w-100 justify-content-between">
@@ -337,14 +337,23 @@ function StudentItem(props) {
                     <h4>{props.student.bookingInfo}</h4>
                 </div>
                 {
+                 
                     props.student.bookingInfo === "ATTENDED" ?
                         <div className="col-2">
                             <input name="presente" type="checkbox" disabled checked />
                         </div>
                         :
-                        <div className="col-2">
-                            <input name="presente" type="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)} />
-                        </div>
+
+                        props.student.bookingInfo !== "BOOKED" ?
+
+                            <div className="col-2">
+                                <input name="presente" type="checkbox" disabled />
+                            </div>
+                            :
+                            <div className="col-2">
+                                <input name="presente" type="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)} />
+                            </div>
+
                 }
             </div>
         </li>

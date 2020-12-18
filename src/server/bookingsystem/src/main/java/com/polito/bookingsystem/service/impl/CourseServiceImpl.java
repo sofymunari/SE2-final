@@ -91,14 +91,14 @@ public class CourseServiceImpl implements CourseService{
 
   
 	@Override
-	public void setCourseToRemote(String courseName) {
+	public void setCourseToRemote(String courseCode) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
-		CourseDto courseDto = CourseConverter.toDto(courseRepository.findByName(courseName));
+		CourseDto courseDto = CourseConverter.toDto(courseRepository.findByCode(courseCode));
 		List<LectureDto> lectureDtos = lectureService.getListAllLectures();
 		if(courseDto != null) {
 			for (LectureDto lectureDto : lectureDtos) { 
-				if(lectureDto.getCourseDto().getName().equals(courseDto.getName())) {
+				if(lectureDto.getCourseDto().getCode().equals(courseDto.getCode())) {
 					if(lectureDto.getRemotly()) {
 						continue;
 					}
