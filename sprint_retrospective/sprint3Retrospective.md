@@ -11,7 +11,7 @@ following sections:
 
 -  7 stories committed -  7 stories done 
 -  28 points committed - 28 points done 
--  72 hours planned - 68.5 hours spent (as a team)
+-  72 hours planned - 71 hours spent (as a team)
 
 **Our Definition of done is:**  
 
@@ -28,19 +28,19 @@ following sections:
 | #0.1	 |   6     |   -    |     18	     |    18     |
 | #0.2	 |   3	   |   -    |	  5	 	 |    5        |
 | #0.3	 |   6     |   -    |     9	 	 |    6.5     |
-| #0.4	 |   3	   |   -    |     6	 	 |    3.25       |
+| #0.4	 |   3	   |   -    |     6	 	 |    3.45       |
 | #0.5	 |   2	   |   -    |     3.5 	 |    3.5       |
 | 12   	 |   6     |   8    |     8.5      |    9.5        |  
 | 13		 |   2	   |   2    |	  3.5      |    3.5        |
 | 14	 |   2	   |   1    |	  1.5	 |    2      |
 | 15 	 |   1 	   |   1    |	  1 	 |    0.5      |
-| 16 	 |   4 	   |   8    |	  7.5 	 |    6.75      |
+| 16 	 |   4 	   |   8    |	  7.5 	 |    8.75      |
 | 17	 	 |   3	   |   5    |	  4.5  	 |    5      |
 | 18	 	 |   3	   |   3    |	  4	 	 |    5        |
 
-- on average ___ spent per task
+- on average 1.7 hours spent per task
 - with a std deviation of ___
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: ___
+- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: 1.014
 
   
 ## QUALITY MEASURES 
@@ -69,25 +69,24 @@ following sections:
 ## ASSESSMENT
 
 - What caused your errors in estimation (if any)?
-	- the major estimation error was made on solving github issues. The team underestimated the time needed to fix the problems, probably this was due to the fact that this was the first time we encountered this type of task.
+	- We didn't estimate well the time to decrese the code smells because we based our estimations on the previous sprints but this time we had less code smells to be fixed.
 
 - What lessons did you learn (both positive and negative) in this sprint?
-	- POSITIVE: we learnt to assign tasks in a better way not just dividing them in equals parts but beasing on each one skills
-	- NEGATIVE: we learnt how to work on git branches and have a common guideline in order to be more aware of the state of each task   
+	- POSITIVE: we learnt that having more scrum meetings is better to improve our efficency and to be more aware about team work.
+	- NEGATIVE: we learnt that automating the E2E testing this late is more time consuming then doing it from the beginning.  
 
 - Which improvement goals set in the previous retrospective were you able to achieve? 
-	- we improved a lot in estimating time. We actually estimated time for the E2E testing.
-	- we managed to finish our tasks a little earlier in order to have some time before the deadline to prepare for demo
-    - we added some documentation about how to work with branches
+	- we followed the documentation that we added about branches and this made our work more organized.
+	- we started to automate the E2E testing.
    
 - Which ones you were not able to achieve? Why?
-	- we were not able to keep our scrum meetings short, even if we managed to have many more
-   
+	- we were not able to complete the automated E2E tests.
+
 - Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
-	- we should follow the documentation we added about branches in order to work better and cleaner and also to be compliant with other team members
-	- we should add automated E2E testing or add dedicated documentation .
+	- we aim to complete the automated E2E testing.
+	- we should finish our tasks a bit earlier like in the previous sprints in order to perform the tests some days before the demo.
 
 - One thing you are proud of as a Team!!
-	- we are proud that we always try to work in a professional environment trough the useage of best practices 
+	- we are proud that we improved in communication between team members that are working on related tasks and we increased the cohesion of the team.
 
 
