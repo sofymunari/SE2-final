@@ -39,7 +39,7 @@ following sections:
 | 18	 	 |   3	   |   3    |	  4	 	 |    5        |
 
 - on average 1.7 hours spent per task
-- with a std deviation of ___
+- with a std deviation of 0.86
 - Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table: 1.014
 
   
