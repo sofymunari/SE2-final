@@ -41,6 +41,7 @@ class ManagerHomePage extends React.Component {
             <Route exact path="/managerportal">
                 <AppComponents.AppNavbar logOut={this.props.logOut} />
                 <div className="container-fluid">
+                    
                     <div className="row">
                         <div className="col-2 bg-success" id="sticky-sidebar">
                             <Aside manager={this.state.manager} />
@@ -137,11 +138,13 @@ class Course extends React.Component {
 
     }
     showItem = (course) => {
+
         let lectures = this.props.lectures.filter(l => l.courseDto.courseId === course);
         let bookings = this.props.bookings.filter(b => b.courseDto.courseId === course);
 
         return <CourseItem key={course} bookings={bookings} lectures={lectures} showLectures={this.props.showLectures} />
     }
+
     showGraph=(value)=>{
         this.setState({"showList":value});
     }
@@ -192,7 +195,7 @@ class Course extends React.Component {
 class Lecture extends React.Component {
     constructor(props) {
         super(props);
-        this.state={"showList":true};
+        this.state={"showList":true, "filterDate":false, date1:"", date2:"", message:""};
     }
 
     showLecture = (lecture) => {
@@ -200,14 +203,58 @@ class Lecture extends React.Component {
         let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
         return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
     }
+
+    
     showGraph=(value)=>{
         this.setState({"showList":value});
+    }
+
+
+    filter=()=>{
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        if(isNaN(d1.getTime()) || isNaN(d2.getTime()))
+          this.setState({"filterDate":false, message:"Undefined Date"});
+        else if(d1.getTime() > d2.getTime()){
+            this.setState({"filterDate":false, message:"Invalid Range Date"});
+        }else{
+            this.setState({"filterDate":true,message:""});
+        }
+    }
+
+    cancel=()=>{
+        this.setState({"filterDate":false, message:"", date1:"", date2:""});
+    }
+
+    filterLecture = (lecture) => {
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        var dateLecture = new Date(lecture.date);
+        if(dateLecture.getTime() >= d1.getTime() && dateLecture.getTime() <= d2.getTime()){
+            let del_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'CANCELED_BY_STUD').length;
+            let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
+            return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
+        }else
+          return null;
     }
 
     render(){
         if(this.state.showList){
         return  (<>
-                <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+                <h1>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h1>
+                <p></p>
+                <h3>Filter Date:</h3>
+                <Form classname="m-0" >
+                    <Form.Group name="f1">
+                        <Form.Control  type="date" name="date1" required value={this.state.date1} onChange={e => this.setState({ date1: e.target.value })}/>
+                        <Form.Control  type="date" name="date2" required value={this.state.date2} onChange={e => this.setState({ date2: e.target.value })}/>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.filter(ev)}>Filter</Button>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.cancel(ev)}>Cancel</Button>
+                        <p></p>
+                        <Form.Label name="msg"><h4><b>{this.state.message}</b></h4></Form.Label>
+                    </Form.Group>
+                </Form>
+                <hr/>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light" >
                     <div className="d-flex w-100 justify-content-between">
@@ -231,7 +278,12 @@ class Lecture extends React.Component {
                         </div>
                     </div>
                 </li>
-                {this.props.lectures.map(this.showLecture)}
+                {
+                  this.state.filterDate ?
+                    this.props.lectures.map(this.filterLecture)
+                     :
+                     this.props.lectures.map(this.showLecture)
+                } 
             </ul>
             <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
             <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
