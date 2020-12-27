@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 import com.polito.bookingsystem.utils.FileStorageProperties;
 
-@SpringBootApplication
+@SpringBootApplication 
 @EnableScheduling
 @EnableConfigurationProperties({
     FileStorageProperties.class
