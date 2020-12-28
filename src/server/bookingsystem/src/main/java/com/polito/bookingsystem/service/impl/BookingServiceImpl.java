@@ -153,6 +153,16 @@ public class BookingServiceImpl implements BookingService{
 	public List<BookingEntry> getBooking(String email) {
 		return bookingRepository.findByProfessor(email);
 	}
+	
+	@Override
+	public Boolean deleteByOfficer(Integer id) {
+		Booking booking = bookingRepository.findByBookingId(id);
+		if(booking == null)
+			return false;
+		booking.setBookingInfo(BookingInfo.CANCELED_BY_OFFICER);
+		bookingRepository.save(booking);
+		return true;
+	}
 
 	@Override
 	public List<BookingDto> getListAllBookings() {

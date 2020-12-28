@@ -6,4 +6,5 @@ import com.polito.bookingsystem.entity.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Integer>{
    Room findByName(String name);
+   Room findByRoomId(Integer roomId);
 }
