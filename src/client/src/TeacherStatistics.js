@@ -39,7 +39,7 @@ function Main(props){
                 <AllLecturesStats lectures={props.passedLectures} bookings={props.bookings}/>:
                 props.choosenTab==='Per Week'?
                 <PerWeekStats lectures={props.passedLectures} bookings={props.bookings}/>:
-                <PerMonthStats lectures={props.passedLectures}/>}
+                <PerMonthStats lectures={props.passedLectures} bookings={props.bookings}/>}
             </div>
 }
 
@@ -64,7 +64,7 @@ class PerMonthStats extends React.Component{
     }
     componentDidMount(){
         const lectsStats=this.props.lectures.map((p)=>{
-            return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+            return {'month':getMonth(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly,'lectureId':p.lectureId}
         })
         const months=lectsStats.map((ls)=>ls.month);
         const monthsUnique= [...new Set(months)];
@@ -73,13 +73,21 @@ class PerMonthStats extends React.Component{
             let avgBookings=0;
             let nDeleted=0;
             let nRemote=0;
+            let avgAttended=0;
+        
             for (let le of intLects){
+                
+                const attended = this.props.bookings.filter(b=>{return b.bookingInfo==='ATTENDED'&&b.lectureId === le.lectureId});
+                avgAttended = avgAttended+attended.length; 
                 avgBookings=avgBookings+le.bookedSeats;
                 le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
                 le.remotly?nRemote=nRemote+1:nRemote=nRemote;
             }
+            
+            avgAttended=Math.ceil(avgAttended/intLects.length);
+            
             avgBookings=Math.ceil(avgBookings/intLects.length);
-            return {'month':m,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+            return {'month':m,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length, 'avgAttended':avgAttended};
         })
         this.setState({'monthStats':stats});
 
@@ -106,11 +114,14 @@ class PerMonthStats extends React.Component{
                                 <div className="col-2">
                                 <h4>TOTAL LESSONS</h4>
                                 </div>
-                                <div className="col-3">
+                                <div className="col-2">
                                 <h4>TOTAL REMOTE LESSONS</h4>
                                 </div>
-                                <div className="col-3">
+                                <div className="col-2">
                                 <h4>TOTAL DELETED LESSONS</h4>
+                                </div>
+                                <div className="col-2">
+                                <h4>AVG ATTENDENCY</h4>
                                 </div>
                                 </div>
                                 </li>
@@ -121,7 +132,11 @@ class PerMonthStats extends React.Component{
                         </>
             }else{
                 let lects = this.state.monthStats.map((s)=>{return {'label': months[s.month], 'data': s.avgBookings }})
-                return <TeacherGraph showGraph={this.showGraph} lectures={lects} title={"Per Month"}/>
+                let lects2 = this.state.monthStats.map((s)=>{return {'label': months[s.month], 'data': s.avgAttended }})
+                return <>
+                        <TeacherGraph showGraph={this.showGraph} lectures={lects} title={"Per Month Bookings"}/>
+                        <TeacherGraph showGraph={this.showGraph} lectures={lects2} title={"Per Month Attendency"}/>
+                    </>
             }
     }
 }
@@ -142,13 +157,16 @@ return  <li className="list-group-item" id = {props.monthStats.month}>
                 <div className="col-2">
                 <h5>{props.monthStats.totalLessons}</h5>
                 </div>
-                <div className="col-3">
+                <div className="col-2">
                 <h5>
                 {props.monthStats.nRemote}
                 </h5>
                 </div>
-                <div className="col-3">
+                <div className="col-2">
                 <h5> {props.monthStats.nDeleted}</h5>
+                </div>
+                <div className="col-2">
+                <h5> {props.monthStats.avgAttended}</h5>
                 </div>
             </div>
         </li>       
@@ -167,23 +185,33 @@ class PerWeekStats extends React.Component{
     
     componentDidMount(){
         const lectsStats=this.props.lectures.map((p)=>{
-            return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly}
+            return {'week':getWeek(p.date),'bookedSeats':p.bookedSeats,'deleted':p.deleted,'remotly':p.remotly,'lectureId':p.lectureId}
         })
         const weeks=lectsStats.map((ls)=>ls.week);
         const weeksUnique= [...new Set(weeks)];
         const stats=weeksUnique.map((w)=>{
             let intLects=lectsStats.filter((l)=>l.week===w);
+            let size = intLects.length;
+            let avgAttended= 0;
             let avgBookings=0;
             let nDeleted=0;
             let nRemote=0;
+            
             for (let le of intLects){
+                const attended = this.props.bookings.filter(b=>{return b.bookingInfo==='ATTENDED'&&b.lectureId === le.lectureId});
+                avgAttended = avgAttended+attended.length; 
                 avgBookings=avgBookings+le.bookedSeats;
                 le.deleted?nDeleted=nDeleted+1:nDeleted=nDeleted;
                 le.remotly?nRemote=nRemote+1:nRemote=nRemote;
             }
-            avgBookings=Math.ceil(avgBookings/intLects.length);
-            return {'week':w,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length};
+            
+           
+            avgBookings=Math.ceil(avgBookings/size);
+            avgAttended=Math.ceil(avgAttended/size);
+            
+            return {'week':w,'avgBookings':avgBookings,'nDeleted':nDeleted,'nRemote':nRemote,'totalLessons': intLects.length,'avgAttended':avgAttended};
         })
+        
         this.setState({'weekStats':stats});
     }
 
@@ -205,11 +233,14 @@ class PerWeekStats extends React.Component{
                     <div className="col-2">
                     <h4>TOTAL LESSONS</h4>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h4>TOTAL REMOTE LESSONS</h4>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h4>TOTAL DELETED LESSONS</h4>
+                    </div>
+                    <div className="col-2">
+                    <h4>AVG ATTENDENCY</h4>
                     </div>
                     </div>
                     </li>
@@ -220,7 +251,11 @@ class PerWeekStats extends React.Component{
             </>
         }else{
             let lectures=this.state.weekStats.map((w)=>{return {'label':"week:"+w.week,'data':w.avgBookings}})
-            return <TeacherGraph lectures={lectures} showGraph={this.showGraph} title={"Per Week"}/>;
+            let lectures1=this.state.weekStats.map((w)=>{return {'label':"week:"+w.week,'data':w.avgAttended}})
+            return  <>
+                    <TeacherGraph lectures={lectures} showGraph={this.showGraph} title={"Per Week Bookings"}/>;
+                    <TeacherGraph lectures={lectures1} showGraph={this.showGraph} title={"Per Week Attendency"}/>;
+                    </>
         }
     }
 }
@@ -238,13 +273,16 @@ function WeekStats(props){
                     <div className="col-2">
                     <h5>{props.weekStats.totalLessons}</h5>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h5>
                     {props.weekStats.nRemote}
                     </h5>
                     </div>
-                    <div className="col-3">
+                    <div className="col-2">
                     <h5> {props.weekStats.nDeleted}</h5>
+                    </div>
+                    <div className="col-2">
+                    <h5> {props.weekStats.avgAttended}</h5>
                     </div>
                 </div>
             </li>       
@@ -262,8 +300,10 @@ class AllLecturesStats extends React.Component {
     }
 
     render(){
-        if(this.state.showList){
+    let attendency = this.props.bookings.filter(b=>b.bookingInfo==='ATTENDED');
+    if(this.state.showList){
     let cancellations = this.props.bookings.filter((b)=>b.bookingInfo==='CANCELLED_BY_STUD');
+    
     return  <>
             <ul className="list-group list-group-flush">
                 <li className="list-group-item bg-light">
@@ -274,14 +314,17 @@ class AllLecturesStats extends React.Component {
                     <div className="col-2">
                     <h4>LECTURE</h4>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                     <h4>DATE</h4>
                     </div>
                     <div className="col-2">
                     <h4>BOOKINGS CANCELLED</h4>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                     <h4>BOOKED SEATS</h4>
+                    </div>
+                    <div className="col-2">
+                    <h4>ATTENDED</h4>
                     </div>
                     <div className="col-1">
                     <h4>DEL</h4>
@@ -292,14 +335,18 @@ class AllLecturesStats extends React.Component {
                     </div>
                     </li>
                 {this.props.lectures.map((l)=>
-                <LectureStats key={l.lectureId} lecture={l} bookingCancelled={cancellations.filter((b)=>b.lectureId===l.lectureId).length}/>)}
+                <LectureStats key={l.lectureId} lecture={l} bookingCancelled={cancellations.filter((b)=>b.lectureId===l.lectureId).length} attendency={attendency.filter((b)=>b.lectureId===l.lectureId).length}/>)}
             </ul>
             <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
             
             </>
         }else{
             let lects=this.props.lectures.map((l)=>{return {'label':l.courseDto.name+" "+l.numberOfLesson,'data':l.bookedSeats}})
-            return <TeacherGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture"}/>
+            let lects1=this.props.lectures.map((l)=>{return {'label':l.courseDto.name+" "+l.numberOfLesson,'data':attendency.filter((b)=>b.lectureId===l.lectureId).length}})
+            return  <>
+                    <TeacherGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture Bookings"}/>
+                    <TeacherGraph lectures={lects1} showGraph={this.showGraph} title={"Per Lecture Attendency"}/>
+                    </>
         }
     }
 }
@@ -314,7 +361,7 @@ function LectureStats(props){
                     <div className="col-2">
                     <h5>{props.lecture.numberOfLesson}</h5>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                     <h5>{date}</h5>
                     </div>
                     <div className="col-2">
@@ -322,8 +369,11 @@ function LectureStats(props){
                     {props.bookingCancelled}
                     </h5>
                     </div>
-                    <div className="col-2">
+                    <div className="col-1">
                     <h5>{props.lecture.bookedSeats}</h5>
+                    </div>
+                    <div className="col-2">
+                    <h5>{props.attendency}</h5>
                     </div>
                     <div className="col-1">
                     <h5>{props.lecture.deleted?'yes':'no'}</h5>
@@ -354,7 +404,7 @@ class TeacherGraph extends React.Component{
         super(props);
         this.state={ dataBar: {
             labels: [...this.props.lectures.map((l)=>{return l.label;})],
-            datasets: [{label: "Number of bookings "+this.props.title,
+            datasets: [{label: this.props.title,
                 data: [...this.props.lectures.map((l)=>{return l.data;})],
                 backgroundColor: [
                   "rgba(255, 0,0,0.4)",
