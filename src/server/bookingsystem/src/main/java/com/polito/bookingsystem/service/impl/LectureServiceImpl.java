@@ -1,9 +1,11 @@
 package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.LectureConverter;
+import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
 import com.polito.bookingsystem.entity.Course;
+import com.polito.bookingsystem.entity.Holiday;
 import com.polito.bookingsystem.entity.Lecture;
 import com.polito.bookingsystem.entity.Professor;
 import com.polito.bookingsystem.entity.Room;
@@ -14,7 +16,9 @@ import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.RoomRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
+import com.polito.bookingsystem.repository.HolidayRepository;
 import com.polito.bookingsystem.service.LectureService;
+import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingInfo;
 import java.io.BufferedReader;
@@ -55,6 +59,12 @@ public class LectureServiceImpl implements LectureService {
 	
 	@Autowired
 	private StudentService studentService;
+	
+	@Autowired
+	private ProfessorService professorService;
+	
+	@Autowired
+	private HolidayRepository holidayRepository;
 	
 	@Autowired
 	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository)
@@ -209,6 +219,7 @@ public class LectureServiceImpl implements LectureService {
 			
 			 String currentLine = reader.readLine(); //read first line
 			 while((currentLine = reader.readLine()) != null){
+				 
 				  String[] fields = currentLine.split(",");
 				  calendar = Calendar.getInstance();
 				  if(calendar.before(startSemester)) {
@@ -333,6 +344,71 @@ public class LectureServiceImpl implements LectureService {
 		   calendar = null;
 	   }
 	   return calendar;
+	}
+
+	//given two dates return true if same day (only day, no time)
+	private boolean dateEquals(Date first, Date second) {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+		return fmt.format(first).equals(fmt.format(second));
+	}
+
+	@Override
+	public void removeHolidays(String fileName) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+
+			List<Lecture> lectures = lectureRepository.findAll();
+			
+			 String currentLine = reader.readLine(); //read first line (header)
+			 while((currentLine = reader.readLine()) != null){
+				 try {
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(currentLine);
+					
+					//saving the new holiday on database
+					Holiday holiday = new Holiday(date);
+					holidayRepository.save(holiday);
+					
+					for(Lecture lecture : lectures) {
+						
+						if(dateEquals(lecture.getDate(), date)) {	
+							
+							//get bookings for the deleted lecture and delete them
+							List<Booking> bookings = bookingRepository.findByLecture(lecture);
+							for(Booking booking : bookings) { 
+								bookingRepository.deleteById(booking.getBookingId());
+								
+								//send email to booked students to inform lecture has been deleted
+								String dateEmail = new SimpleDateFormat("dd/MM/yyyy").format(date);
+								String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse().getName() + " cancellation";
+								String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + " of course " 
+								               + lecture.getCourse().getName() + " in date " + dateEmail 
+										       + " has been cancelled since the university will be closed that day.\nBest regard";
+								studentService.sendEmail(StudentConverter.toDto(booking.getStudent()), subject, text);
+							}
+							
+							lectureRepository.deleteById(lecture.getLectureId()); //delete lecture 
+							
+							//send email to teacher to inform lecture has been deleted
+							String dateEmail = new SimpleDateFormat("dd/MM/yyyy").format(date);
+							String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse().getName() + " cancellation";
+							String text = "Dear professor,\n"+ "The lecture " + lecture.getNumberOfLesson() + " of course " 
+							               + lecture.getCourse().getName() + " in date " + dateEmail 
+									       + " has been cancelled since the university will be closed that day.\nBest regard";
+							professorService.sendEmail(ProfessorConverter.toDto(lecture.getProfessor()), subject, text);
+							
+							
+							
+						} 
+					}
+				 } 
+				 catch (ParseException e) {
+					e.printStackTrace();
+				 }
+		
+			 }
+		}catch(IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
 	}
 	
 }

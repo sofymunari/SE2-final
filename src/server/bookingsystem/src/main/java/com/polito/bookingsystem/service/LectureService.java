@@ -10,4 +10,5 @@ public interface LectureService {
 	void save(LectureDto lectureDto);
 	List<LectureDto> getListAllLectures();
 	void addLectures(String fileName);
+	void removeHolidays(String fileName);
 }

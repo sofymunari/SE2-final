@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table
 public class Holiday {
 	@Column
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Integer holidayId;
 	
@@ -19,6 +19,10 @@ public class Holiday {
 	private Date date;
 
 	public Holiday() {}
+	public Holiday(Date date) {
+		super();
+		this.date = date;
+	}
 	public Holiday(Integer holidayId, Date date) {
 		super();
 		this.holidayId = holidayId;

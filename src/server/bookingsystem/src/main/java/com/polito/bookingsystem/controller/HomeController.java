@@ -344,4 +344,19 @@ public class HomeController {
 			courseService.setCourseToRemote(courseCode);
 		}
 	  } 
+    
+    @PostMapping(value = "/uploadHolidays", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UploadFileResponse uploadHolidays(@RequestParam("file") MultipartFile file) {
+    	String fileName = fileStorageService.storeFile(file);
+    	
+    	lectureService.removeHolidays(PATH_UPLOADS2 + fileName);
+    	
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                 .path(PATH_UPLOADS)
+                 .path(fileName)
+                 .toUriString();
+
+         return new UploadFileResponse(fileName, fileDownloadUri,
+                 file.getContentType(), file.getSize());
+    }
 }
