@@ -40,8 +40,10 @@ import com.polito.bookingsystem.repository.RoomRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.repository.HolidayRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.service.ProfessorService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.CourseServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
@@ -52,6 +54,8 @@ class LectureServiceTests {
 
 	@Autowired
 	private LectureRepository lectureRepository;
+	@Autowired
+	private HolidayRepository holidayRepository;
 	@Autowired
 	private StudentRepository studentRepository;
 	@Autowired
@@ -64,6 +68,7 @@ class LectureServiceTests {
 	private RoomRepository roomRepository;
 	
 	private StudentService studentService;
+	private ProfessorService professorService;
 	
 	private LectureServiceImpl lectureServiceImpl;
 	
@@ -73,14 +78,16 @@ class LectureServiceTests {
 	public void setUp() throws Exception {
 
 		bookingRepository = mock(BookingRepository.class);
+		holidayRepository = mock(HolidayRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		roomRepository = mock(RoomRepository.class);
 		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
+		professorService = mock(ProfessorService.class);
 		professorRepository = mock(ProfessorRepository.class);
 		
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService);
 		
 	}
 	
@@ -569,6 +576,88 @@ class LectureServiceTests {
 		String day = "wrongDay";
 		
 		assertNull("Expected",lectureServiceImpl.getFirstDate(testCalendar, day));
+	}
+	
+	@Test
+	void testRemoveHolidays1() throws ParseException {
+		String fileName = "../../test-files/Holidays.csv";
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		Date date1 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("06-01-2021-12.00.00");
+		Date date2 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("25-12-2020-12.00.00");
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room);
+		Lecture lecture2 = new Lecture(1, 10, course2, professor1, true, date1, 90, "testDetails", room);
+		Lecture lecture3 = new Lecture(1, 10, course3, professor1, true, date2, 90, "testDetails", room);
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+		lectures.add(lecture2);
+		lectures.add(lecture3);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		Student student2 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		BookingInfo bookingInfo = BookingInfo.WAITING;
+		BookingInfo bookingInfo1 = BookingInfo.ATTENDED;
+		Booking booking10 = new Booking(1, student1, lecture2, bookingInfo);
+		Booking booking11 = new Booking(1, student2, lecture2, bookingInfo1);
+		List<Booking> bookings1 = new ArrayList<>();
+		bookings1.add(booking10);
+		bookings1.add(booking11);
+		Booking booking20 = new Booking(1, student1, lecture3, bookingInfo);
+		Booking booking21 = new Booking(1, student2, lecture3, bookingInfo1);
+		List<Booking> bookings2 = new ArrayList<>();
+		bookings2.add(booking20);
+		bookings2.add(booking21);
+		try {
+			when(lectureRepository.findAll()).thenReturn(lectures);
+			when(holidayRepository.save(anyObject())).thenReturn(null);
+			when(bookingRepository.findByLecture(anyObject())).thenReturn(bookings1).thenReturn(bookings2);
+			doNothing().when(bookingRepository).deleteById(anyInt());
+			doNothing().when(lectureRepository).deleteById(anyInt());
+			doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+			doNothing().when(professorService).sendEmail(anyObject(), anyString(), anyString());
+			
+			lectureServiceImpl.removeHolidays(fileName);
+		
+		}catch(Exception e) {
+	          System.out.println(e.getMessage());
+	          e.printStackTrace();
+	       }
+	}
+	
+	
+	@Test
+	void testRemoveHolidays2 () {
+		String fileName = "wrong-file-name";
+		
+		try {
+			
+			lectureServiceImpl.removeHolidays(fileName);
+			
+		}catch(Exception e) {
+			fail("Shouldn't get here");
+		}
+		
+	}
+	
+	@Test
+	void testRemoveHolidays3 () {
+		String fileName = "../../test-files/Holidays-wrong.csv";
+		
+		try {
+			when(lectureRepository.findAll()).thenReturn(null);
+			lectureServiceImpl.removeHolidays(fileName);
+			
+		}catch(Exception e) {
+			fail("Shouldn't get here");
+		}
+		
 	}
 		
 	
