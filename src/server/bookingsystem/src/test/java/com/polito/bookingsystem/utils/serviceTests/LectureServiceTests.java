@@ -45,6 +45,7 @@ import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.CourseServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.utils.Schedule;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -67,6 +68,8 @@ class LectureServiceTests {
 	
 	private LectureServiceImpl lectureServiceImpl;
 	
+	private Schedule scheduleCourses;
+	
 	
 	
 	@BeforeEach
@@ -79,8 +82,12 @@ class LectureServiceTests {
 		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
 		professorRepository = mock(ProfessorRepository.class);
-		
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository);
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Schedule schedule1 = new Schedule(1,"Monday",120,"12:00",room,course1);
+		ArrayList <Schedule> scheduleCourses = new ArrayList<>();
+		scheduleCourses.add(schedule1);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,scheduleCourses);
 		
 	}
 	
@@ -570,8 +577,65 @@ class LectureServiceTests {
 		
 		assertNull("Expected",lectureServiceImpl.getFirstDate(testCalendar, day));
 	}
-		
 	
+	@Test
+	void testModifySchedule1() {
+		//String day="Monday"
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "XY1212",2,2);
+		Course course3 = new Course(3, "testName3", "XY1213",3,3);
+		List<Course> courses = new ArrayList<>();
+		List<Course> courses1 = new ArrayList<>();
+		courses.add(course2);
+		courses.add(course1);
+		courses1.add(course3);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		Professor professor2 = new Professor(2, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d1");
+		List<Professor> professors = new ArrayList<>();
+		professors.add(professor2);
+		professors.add(professor1);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room); //room
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1); //course1
+		when(professorRepository.findAll()).thenReturn(professors); //professor1
+		
+		
+	}
+	
+	
+	
+	@Test
+	void testModifySchedule2() {
+		//room = null
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(null);
+		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+	}
+		
+	@Test
+	void testModifySchedule3() {
+		//course = null
+		Room room = new Room(1, "testName", 100);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
+		when(courseRepository.findByCode(anyObject())).thenReturn(null);
+		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+	}
+	
+	@Test
+	void testModifySchedule4() {
+		//course doesn't belong to any professor
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "XY1212",2,2);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		List<Professor> professors = new ArrayList<>();
+		professors.add(professor1);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
+		when(professorRepository.findAll()).thenReturn(professors);
+		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+	}
 	
 
 	    
