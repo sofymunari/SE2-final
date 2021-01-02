@@ -42,6 +42,7 @@ import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.CourseServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
@@ -65,10 +66,11 @@ class LectureServiceTests {
 	private RoomRepository roomRepository;
 	
 	private StudentService studentService;
+	private BookingService bookingService;
 	
 	private LectureServiceImpl lectureServiceImpl;
 	
-	private Schedule scheduleCourses;
+	private ArrayList<Schedule> scheduleCourses;
 	
 	
 	
@@ -82,12 +84,16 @@ class LectureServiceTests {
 		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
 		professorRepository = mock(ProfessorRepository.class);
+		bookingService = mock(BookingService.class);
 		Room room = new Room(1, "testName", 100);
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
-		Schedule schedule1 = new Schedule(1,"Monday",120,"12:00",room,course1);
-		ArrayList <Schedule> scheduleCourses = new ArrayList<>();
+		Course course2 = new Course(1, "testName1", "XY1212",1,1);
+		Schedule schedule1 = new Schedule(1,"Mon",120,"12:00",room,course1);
+		Schedule schedule2 = new Schedule(2,"Tue",120,"12:00",room,course2);
+		scheduleCourses = new ArrayList<>();
 		scheduleCourses.add(schedule1);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,scheduleCourses);
+		scheduleCourses.add(schedule2);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,scheduleCourses,bookingService);
 		
 	}
 	
@@ -579,9 +585,12 @@ class LectureServiceTests {
 	}
 	
 	@Test
-	void testModifySchedule1() {
+	void testModifySchedule1() throws ParseException  {
 		//String day="Monday"
 		Room room = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1997");
+		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("18-01-2021-12.00.00");
+		Date date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("09-12-2020-12.00.00");
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
 		Course course2 = new Course(2, "testName2", "XY1212",2,2);
 		Course course3 = new Course(3, "testName3", "XY1213",3,3);
@@ -593,12 +602,37 @@ class LectureServiceTests {
 		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
 		Professor professor2 = new Professor(2, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d1");
 		List<Professor> professors = new ArrayList<>();
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date2, 120, "testDetails", room);//lecture passed not on monday
+		Lecture lecture2 = new Lecture(2, 10, course1, professor1, true, date1, 120, "testDetails", room);//lecture future monday 
+		Lecture lecture3 = new Lecture(1, 10, course2, professor1, true, date1, 120, "testDetails", room);//lecture of another course
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+		lectures.add(lecture2);
+		lectures.add(lecture3);
+        BookingInfo bookingInfo = BookingInfo.BOOKED;
+        Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");	
+        Student student2 = new Student(2, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");	
+		Booking booking1 = new Booking(1, student1, lecture2, bookingInfo);	//booking for changing lecture	
+		Booking booking2 = new Booking(2, student2, lecture3, bookingInfo); //booking for not changing lecture
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking1);
+		bookings.add(booking2);
 		professors.add(professor2);
 		professors.add(professor1);
+		List<Student> students = new ArrayList<>();
+		students.add(student1);
+		students.add(student2);
 		when(roomRepository.findByRoomId(anyInt())).thenReturn(room); //room
-		when(courseRepository.findByCode(anyObject())).thenReturn(course1); //course1
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1); //course1 //schedule = Monday 12:00 120 minutes room
 		when(professorRepository.findAll()).thenReturn(professors); //professor1
-		
+		when(lectureRepository.findAll()).thenReturn(lectures); // two lectures of course
+		doNothing().when(lectureRepository).deleteByLectureId(anyInt());
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		when(bookingService.deleteByOfficer(anyInt())).thenReturn(false);
+		when(lectureRepository.save(anyObject())).thenReturn(null);
+		when(studentRepository.findAll()).thenReturn(students);
+		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+		assertTrue("should return true",lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
 		
 	}
 	
@@ -608,7 +642,7 @@ class LectureServiceTests {
 	void testModifySchedule2() {
 		//room = null
 		when(roomRepository.findByRoomId(anyInt())).thenReturn(null);
-		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
 	}
 		
 	@Test
@@ -617,7 +651,7 @@ class LectureServiceTests {
 		Room room = new Room(1, "testName", 100);
 		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
 		when(courseRepository.findByCode(anyObject())).thenReturn(null);
-		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
 	}
 	
 	@Test
@@ -634,7 +668,24 @@ class LectureServiceTests {
 		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
 		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		when(professorRepository.findAll()).thenReturn(professors);
-		assertEquals("expected false",lectureServiceImpl.modifySchedule(anyObject(), anyInt(), anyObject(), anyInt(), anyObject(), anyInt()),false);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
+	}
+	
+	@Test
+	void testGetRooms() {
+		Room room1 = new Room(1, "testName", 100);
+		Room room2 = new Room(2, "testName", 100);
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(room1);
+		rooms.add(room2);
+		when(roomRepository.findAll()).thenReturn(rooms);
+		assertTrue("expected two rooms",lectureServiceImpl.getRooms().size()==2);
+		assertTrue("expected room id 1",lectureServiceImpl.getRooms().get(0).getRoomId()==1);
+	}
+	
+	@Test
+	void getScheduleCourses() {
+		assertTrue(lectureServiceImpl.getScheduleCourses("XY1211").get(0).getId()==1);
 	}
 	
 

@@ -67,7 +67,7 @@ public class LectureServiceImpl implements LectureService {
 	
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,ArrayList<Schedule> scheduleCourses)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,ArrayList<Schedule> scheduleCourses,BookingService bookingService)
 	{
 		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
@@ -77,6 +77,7 @@ public class LectureServiceImpl implements LectureService {
 		this.courseRepository = courseRepository;
 		this.roomRepository= roomRepository;
 		this.scheduleCourses = scheduleCourses;
+		this.bookingService = bookingService;
 	}
 
 
@@ -438,6 +439,8 @@ public class LectureServiceImpl implements LectureService {
 			                                    			c.set(Calendar.MINUTE, 0);
 			                                    			c.set(Calendar.SECOND, 0);
 			                                    			c.set(Calendar.MILLISECOND, 0);
+			                                    			
+			                                    			
 			                                    			if(oldScheduleDays.contains(c))
 			                                    				return true;
 			                                    			return false;

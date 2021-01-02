@@ -902,5 +902,25 @@ class BookingServiceTest {
 				assertNull("Expected null value",bookingServiceImpl.getByLectureAndStudent(lectureId, studentemail));
 	}
 	
+	@Test 
+	void testDeleteByOfficer1() {
+		
+		when(bookingRepository.findByBookingId(anyInt())).thenReturn(null);
+		assertFalse(bookingServiceImpl.deleteByOfficer(1));
+	}
+	
+	@Test
+	void testDeleteByOfficer2() {
+		Student student = new Student(1, "testName1", "testSurname1", "testAddress1", "test1@email.com", "testPassword1", null, null, "testMatricola1");
+		
+		Lecture lecture = new Lecture(1, 10,null, null, false, null, 90, "testDetails", null);
+		
+		Booking booking = new Booking(1, student, lecture, BookingInfo.ATTENDED);
+		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking);
+		when(bookingRepository.save(anyObject())).thenReturn(null);
+		assertTrue(bookingServiceImpl.deleteByOfficer(1));
+		
+	}
+	
 	
 }
