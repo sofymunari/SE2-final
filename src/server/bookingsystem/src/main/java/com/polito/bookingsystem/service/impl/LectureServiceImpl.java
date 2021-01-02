@@ -430,6 +430,7 @@ public class LectureServiceImpl implements LectureService {
 		
 		//delete lecture with old schedule and associated bookings
 		List<Lecture> deletedLecture = lectureRepository.findAll().stream()
+														.filter(l -> l.getCourse().getCode().compareTo(codeCourse)==0)
 			                                            .filter(l ->{
 			                                            	Calendar c = Calendar.getInstance();
 			                                            	c.setTime(l.getDate());
