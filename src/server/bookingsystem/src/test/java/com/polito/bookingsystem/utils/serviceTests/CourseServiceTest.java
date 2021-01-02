@@ -158,7 +158,7 @@ class CourseServiceTest {
 		lectures.add(lectureDto2);
 		lectures.add(lectureDto1);
 		when(lectureService.getListAllLectures()).thenReturn(lectures);
-		when(courseRepository.findByName(anyObject())).thenReturn(course1);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
 	
@@ -191,7 +191,7 @@ class CourseServiceTest {
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/12/2021");
 		Course course1 = new Course(1, "testName", "A", 1,1);
 		CourseDto courseDto1 = new CourseDto(1, "testName", "A", 1,1);
-		CourseDto courseDto2 = new CourseDto(2, "testName2", "A", 1,1);
+		CourseDto courseDto2 = new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses = new ArrayList<>();
 		List<LectureDto> lectures = new ArrayList<>();
 		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");		 
@@ -200,10 +200,12 @@ class CourseServiceTest {
 		lectures.add(lectureDto2);
 		lectures.add(lectureDto1);
 		when(lectureService.getListAllLectures()).thenReturn(lectures);
-		when(courseRepository.findByName(anyObject())).thenReturn(course1);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		when(lectureRepository.save(anyObject())).thenReturn(null);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
+	
+	
 	
 	
 

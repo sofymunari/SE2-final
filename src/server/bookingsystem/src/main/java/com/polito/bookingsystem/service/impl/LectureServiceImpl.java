@@ -67,7 +67,7 @@ public class LectureServiceImpl implements LectureService {
 	private HolidayRepository holidayRepository;
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,HolidayRepository holidayRepository,ProfessorService professorService)
 	{
 		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
@@ -76,6 +76,8 @@ public class LectureServiceImpl implements LectureService {
 		this.professorRepository = professorRepository;
 		this.courseRepository = courseRepository;
 		this.roomRepository= roomRepository;
+		this.holidayRepository=holidayRepository;
+		this.professorService=professorService;
 	}
 
 
@@ -361,7 +363,7 @@ public class LectureServiceImpl implements LectureService {
 			 String currentLine = reader.readLine(); //read first line (header)
 			 while((currentLine = reader.readLine()) != null){
 				 try {
-					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(currentLine);
+					Date date = new SimpleDateFormat("yyyy/MM/dd").parse(currentLine);
 					
 					//saving the new holiday on database
 					Holiday holiday = new Holiday(date);
