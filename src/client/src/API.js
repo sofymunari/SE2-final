@@ -148,6 +148,22 @@ async function uploadCoursesFile(file){
     }
 }
 
+
+async function uploadHolidaysFile(file){
+    let url = BASE_URL+"uploadHolidays"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
 async function sendCourses(courses){
     let url = BASE_URL+"sendCourses"
     const response = await fetch(url, {
@@ -179,7 +195,6 @@ async function sendCourse(course){
 
     throw "error";
 }
-
 
 async function getStudentLectures(username){
     const url= BASE_URL+"studentlectures/"+username;
@@ -486,5 +501,6 @@ async function downloadReportPdf(email, date){
 const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
            getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
            teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
-           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences, downloadReportPdf, getCourses, sendCourse, sendCourses}
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences, downloadReportPdf,
+           getCourses, sendCourse, sendCourses, uploadHolidaysFile}
 export default API;

@@ -11,9 +11,10 @@ class SupportOfficerHomePage extends React.Component {
         super(props);
         this.state = {
             supportOfficer: null, lecturesfile: false, coursesfile: false, studentsfile: false,
-            teachersfile: false, enrollmentfile: false, selectedFile: null, loaded: false, lecturesPressed: false,
+            teachersfile: false, enrollmentfile: false, holidaysfile: false, selectedFile: null,
             coursesPressed: false, studentsPressed: false, teachersPressed: false, enrollmentPressed: false,
-            selectedCourse: '', courses: []
+            selectedCourse: '', courses: [], loaded: false, lecturesPressed: false, holidaysPressed: false, 
+            lectures:[]
         }
     }
 
@@ -23,6 +24,9 @@ class SupportOfficerHomePage extends React.Component {
         }).catch((error) => this.setState({ 'error': error }));
         API.getCourses().then((courses) => {
             this.setState({ courses: courses })
+        }).catch((error) => this.setState({ 'error': error }));
+        API.getLectures().then((lectures) => {
+            this.setState({'lectures': lectures});
         }).catch((error) => this.setState({ 'error': error }));
     }
 
@@ -42,8 +46,8 @@ class SupportOfficerHomePage extends React.Component {
 
     addFile = (event, name) => {
         event.preventDefault();
-        if (event.target.files[0] == null){
-            this.setState({selectedFile: null})
+        if (event.target.files[0] == null) {
+            this.setState({ selectedFile: null })
             return;
         }
 
@@ -54,7 +58,8 @@ class SupportOfficerHomePage extends React.Component {
                 'coursesfile': false,
                 'studentsfile': false,
                 'teachersfile': false,
-                'enrollmentfile': false
+                'enrollmentfile': false,
+                'holidaysfile': false
             });
             this.setState({
                 'selectedFile': event.target.files[0],
@@ -119,6 +124,15 @@ class SupportOfficerHomePage extends React.Component {
                 this.setState({ error: error, teachersPressed: false });
                 toast.error('upload fail');
             });
+        } else if (this.state.holidaysfile) {
+            this.setState({ holidaysPressed: true })
+            API.uploadHolidaysFile(formData).then(() => {
+                this.setState({ holidaysPressed: false, selectedFile: null });
+                toast.success('upload success');
+            }).catch((error) => {
+                this.setState({ error: error, holidaysPressed: false });
+                toast.error('upload fail');
+            });
         }
     }
 
@@ -147,7 +161,7 @@ class SupportOfficerHomePage extends React.Component {
                         toast.error('update fail');
                         //  this.setState({ error: error});
                     });
-            } else{
+            } else {
                 toast.error('No course to update');
             }
         } else if (string === "second") {
@@ -161,7 +175,7 @@ class SupportOfficerHomePage extends React.Component {
                         // this.setState({ error: error});
                         toast.error('update fail');
                     });
-            }else{
+            } else {
                 toast.error('No course to update');
             }
         } else if (string === "third") {
@@ -175,7 +189,7 @@ class SupportOfficerHomePage extends React.Component {
                         //  this.setState({ error: error});
                         toast.error('update fail');
                     });
-            } else{
+            } else {
                 toast.error('No course to update');
             }
         } else {
@@ -186,10 +200,27 @@ class SupportOfficerHomePage extends React.Component {
                     toast.success('update success');
                 })
                 .catch((error) => {
-                    // this.setState({ error: error});
+                    // this.setState({ error: error}); 
                     toast.error('update fail');
                 });
         }
+    }
+
+    showItem = (course) => {
+        return (
+            <li className="list-group-item" >
+                <div className="d-flex w-100 justify-content-between">
+                    <div className="col-2">
+                        <h4>{course.courseName}</h4>
+                    </div>
+                    <div className="col-2">
+                        <Button id={course.courseId} onClick={(ev) =>{}}> Update </Button>
+                    </div>
+                </div>
+            </li>
+
+        )
+
     }
 
     render() {
@@ -222,119 +253,139 @@ class SupportOfficerHomePage extends React.Component {
                         <ToastContainer />
                     </div>
                     <Switch>
-                    <Route exact path="/supportOfficerportal">
-                    <div className="col-10 p-0" id="main">
-                        <h4>Choose what type of file you want to upload (csv only)</h4>
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item bg-light" >
-                                <div className="d-flex w-100 ">
-                                    <div className="col-2">
-                                        <h4>STUDENTS</h4>
-                                    </div>
-                                    <div className="col-2">
-                                        <form encType="multipart/form-data">
-                                            <input type="file" name="studentsfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                            <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div className="form-group">
-                                                {
-                                                    this.state.studentsPressed ?
-                                                        <h6>Uploading</h6>
-                                                        :
-                                                        <> </>
-                                                }
+                        <Route exact path="/supportOfficerportal">
+                            <div className="col-10 p-0" id="main">
+                                <h4>Choose what type of file you want to upload (csv only)</h4>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item bg-light" >
+                                        <div className="d-flex w-100 ">
+                                            <div className="col-2">
+                                                <h4>STUDENTS</h4>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="list-group-item bg-light" >
-                                <div className="d-flex w-100 ">
-                                    <div className="col-2">
-                                        <h4>TEACHERS</h4>
-                                    </div>
-                                    <div className="col-2">
-                                        <form encType="multipart/form-data">
-                                            <input type="file" name="teachersfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                            <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div className="form-group">
-                                                {
-                                                    this.state.teachersPressed ?
-                                                        <h6>Uploading</h6>
-                                                        :
-                                                        <> </>
-                                                }
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="list-group-item bg-light" >
-                                <div className="d-flex w-100 ">
-                                    <div className="col-2">
-                                        <h4>COURSES</h4>
-                                    </div>
-                                    <div className="col-2">
-                                        <form encType="multipart/form-data">
-                                            <input type="file" name="coursesfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                            <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div className="form-group">
-                                                {
-                                                    this.state.coursesPressed ?
-                                                        <h6>Uploading</h6>
-                                                        :
-                                                        <> </>
-                                                }
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="list-group-item bg-light">
-                                <div className="d-flex w-100">
-                                    <div className="col-2">
-                                        <h4>ENROLLMENT</h4>
-                                    </div>
-                                    <div className="col-2">
-                                        <form encType="multipart/form-data">
-                                            <input type="file" name="enrollmentfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                            <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div className="form-group">
-                                                {
-                                                    this.state.enrollmentPressed ?
-                                                        <h6>Uploading</h6>
-                                                        :
-                                                        <> </>
-                                                }
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="list-group-item bg-light">
-                                <div className="d-flex w-100 ">
-                                    <div className="col-2">
-                                        <h4>LECTURES</h4>
-                                    </div>
-                                    <div className="col-2">
-                                        <form encType="multipart/form-data">
-                                            <input type="file" name="lecturesfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                            <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
-                                            <div className="form-group">
-                                                {
-                                                    this.state.lecturesPressed ?
-                                                        <h6>Uploading</h6>
-                                                        :
-                                                        <> </>
-                                                }
-                                            </div>
-                                            
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="studentsfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.studentsPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </li>
-                                    </ul>
-                                    </div>
-                                    
+                                    <li className="list-group-item bg-light" >
+                                        <div className="d-flex w-100 ">
+                                            <div className="col-2">
+                                                <h4>TEACHERS</h4>
+                                            </div>
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="teachersfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.teachersPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item bg-light" >
+                                        <div className="d-flex w-100 ">
+                                            <div className="col-2">
+                                                <h4>COURSES</h4>
+                                            </div>
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="coursesfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.coursesPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item bg-light">
+                                        <div className="d-flex w-100">
+                                            <div className="col-2">
+                                                <h4>ENROLLMENT</h4>
+                                            </div>
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="enrollmentfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.enrollmentPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item bg-light">
+                                        <div className="d-flex w-100 ">
+                                            <div className="col-2">
+                                                <h4>LECTURES</h4>
+                                            </div>
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="lecturesfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.lecturesPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className="list-group-item bg-light">
+                                        <div className="d-flex w-100 ">
+                                            <div className="col-2">
+                                                <h4>HOLIDAYS</h4>
+                                            </div>
+                                            <div className="col-2">
+                                                <form encType="multipart/form-data">
+                                                    <input type="file" name="holidaysfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <div className="form-group">
+                                                        {
+                                                            this.state.holidaysPressed ?
+                                                                <h6>Uploading</h6>
+                                                                :
+                                                                <> </>
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </Route>
                         <Route exact path="/supportOfficerportal/updatelectures">
                             <div className="col-10 p-0 " id="main">
@@ -377,6 +428,24 @@ class SupportOfficerHomePage extends React.Component {
                                         </Form.Row>
                                     </Form>
                                 </>
+                            </div>
+                        </Route>
+                        <Route exact path="/supportOfficerportal/updateSchedule">
+                            <div className="col-10 p-0 " id="main">
+                                <h3>Choose the course you want to update?</h3>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item bg-light">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <div className="col-2">
+                                                <h3>COURSE NAME</h3>
+                                            </div>
+                                            <div className="col-2">
+                                                <h3></h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {this.state.courses.map(this.showItem)}
+                                </ul>
                             </div>
                         </Route>
                     </Switch>
