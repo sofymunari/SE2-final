@@ -395,7 +395,7 @@ function Aside(props) {
 }
 
 function Filter(props){
-    return <button  data-id ={props.name} className=' list-group-item list-group-item-action bg-success font-weight-bold' onClick={(ev) => props.selectFilter(props.name)}>{props.name}</button>;
+    return <button  data-id ={props.name} id={props.name} className=' list-group-item list-group-item-action bg-success font-weight-bold' onClick={(ev) => props.selectFilter(props.name)}>{props.name}</button>;
 }
 
 

@@ -130,7 +130,7 @@ function AppNavbar(props){
                     </li>
                     <Link to="/teacherportal/statistics">
                     <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >STATS</button>
+                        <button className="btn btn-success text-dark font-weight-bold" id="statsButton" >STATS</button>
                     </li>
                     </Link>
                     <li className="nav-item pr-1">
