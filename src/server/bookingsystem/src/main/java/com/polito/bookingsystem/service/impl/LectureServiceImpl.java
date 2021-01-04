@@ -31,10 +31,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class LectureServiceImpl implements LectureService {
 	private static final Long MILLIHOUR = 3600000L;
 	
@@ -270,48 +274,61 @@ public class LectureServiceImpl implements LectureService {
 						  
 						  if(!professors.isEmpty()) {
 							  Professor professor = professors.get(0);
-							  String[] timestamp = fields[4].split("-");
-							  String[] timeS = timestamp[0].split(":");
-							  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
 							  try {
-								  schedule.setTimeStart(timestamp[0]);
-								  Date timeStart = df.parse(timestamp[0]);
-								  Date timeEnd = df.parse(timestamp[1]);
-								  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
-								  schedule.setDuration(duration.intValue());
-								  scheduleCourses.add(schedule);
-								  calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeS[0]));
-								  calendar.set(Calendar.MINUTE, Integer.parseInt(timeS[1]));
-								  while(calendar.before(endSemester)){
-									  Integer lectureId = lectureRepository.findAll().stream()
-	                                               .mapToInt(Lecture::getLectureId)
-	                                               .max()
-								                   .orElse(0);
-									  
-									  Integer numberOfLesson = lectureRepository.findAll().stream()
-											                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
-											                   .mapToInt(Lecture::getNumberOfLesson)
-											                   .max()
-											                   .orElse(0);
-									  
-									  Lecture newLecture = new Lecture();
-									  newLecture.setLectureId(lectureId+1);
-									  newLecture.setNumberOfLesson(numberOfLesson + 1); 
-									  newLecture.setDeleted(false);
-									  newLecture.setDuration(duration.intValue());
-									  newLecture.setCourse(course);
-									  newLecture.setBookedSeats(0);
-									  newLecture.setDate(calendar.getTime());
-									  newLecture.setProfessor(professor);
-									  newLecture.setRemotly(false);
-									  newLecture.setProgramDetails("");
-									  newLecture.setRoom(room);
-									  lectureRepository.save(newLecture);
-								      calendar.add(Calendar.DATE, 7);
-								 }
-						    }catch(ParseException e) {
+								  String[] t = fields[4].split("-");
+								  String[] timestamp = new String[3];
+								  if(t.length == 2) {
+									  timestamp[0] = t[0];
+									  timestamp[1] = t[1];
+								  }else if(t.length == 1){
+									  String[] t2 = fields[4].split(":");
+									  timestamp[0] = t2[0] + ":" + t2[1];
+									  timestamp[1] = t2[2] + ":" + t2[3];
+								  }
+								  String[] timeS = timestamp[0].split(":");
+								  SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+								  try {
+									  schedule.setTimeStart(timestamp[0]);
+									  Date timeStart = df.parse(timestamp[0]);
+									  Date timeEnd = df.parse(timestamp[1]);
+									  Long duration = ( timeEnd.getTime() - timeStart.getTime())/(1000*60);
+									  schedule.setDuration(duration.intValue());
+									  scheduleCourses.add(schedule);
+									  calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeS[0]));
+									  calendar.set(Calendar.MINUTE, Integer.parseInt(timeS[1]));
+									  while(calendar.before(endSemester)){
+										  Integer lectureId = lectureRepository.findAll().stream()
+		                                               .mapToInt(Lecture::getLectureId)
+		                                               .max()
+									                   .orElse(0);
+										  
+										  Integer numberOfLesson = lectureRepository.findAll().stream()
+												                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
+												                   .mapToInt(Lecture::getNumberOfLesson)
+												                   .max()
+												                   .orElse(0);
+										  
+										  Lecture newLecture = new Lecture();
+										  newLecture.setLectureId(lectureId+1);
+										  newLecture.setNumberOfLesson(numberOfLesson + 1); 
+										  newLecture.setDeleted(false);
+										  newLecture.setDuration(duration.intValue());
+										  newLecture.setCourse(course);
+										  newLecture.setBookedSeats(0);
+										  newLecture.setDate(calendar.getTime());
+										  newLecture.setProfessor(professor);
+										  newLecture.setRemotly(false);
+										  newLecture.setProgramDetails("");
+										  newLecture.setRoom(room);
+										  lectureRepository.save(newLecture);
+									      calendar.add(Calendar.DATE, 7);
+									 }
+							    }catch(ParseException e) {
+							    	System.err.println(e.getMessage());
+							    }
+						  }catch(Exception e) {
 						    	System.err.println(e.getMessage());
-						    }
+						  }
 					    }
 			       }
 			    }
@@ -403,8 +420,8 @@ public class LectureServiceImpl implements LectureService {
 			 calendar2 = startSemester;
 		}
 		
-		List<Calendar> oldScheduleDays = new ArrayList<>();
-		List<Calendar> newScheduleDays = new ArrayList<>();
+		List<Date> oldScheduleDays = new ArrayList<>();
+		List<Date> newScheduleDays = new ArrayList<>();
 		
 		calendar = getFirstDate(calendar, scheduleCourse.getDay());
 		calendar2 = getFirstDate(calendar2, day);
@@ -415,9 +432,8 @@ public class LectureServiceImpl implements LectureService {
 		    calendar.set(Calendar.MINUTE, 0);
 		    calendar.set(Calendar.SECOND, 0);
 		    calendar.set(Calendar.MILLISECOND, 0);
-		    oldScheduleDays.add(calendar);
-			calendar.add(Calendar.DATE, 7);
-			
+		    oldScheduleDays.add(calendar.getTime());
+			calendar.add(Calendar.DATE, 7);	
 		}
 		
 		//list of day with new schedule
@@ -426,9 +442,11 @@ public class LectureServiceImpl implements LectureService {
 			calendar2.set(Calendar.MINUTE, 0);
 			calendar2.set(Calendar.SECOND, 0);
 			calendar2.set(Calendar.MILLISECOND, 0);
-			newScheduleDays.add(calendar2);
+			newScheduleDays.add(calendar2.getTime());
 			calendar2.add(Calendar.DATE, 7);
 		}
+		
+	
 		
 		//delete lecture with old schedule and associated bookings
 		List<Lecture> deletedLecture = lectureRepository.findAll().stream()
@@ -440,24 +458,29 @@ public class LectureServiceImpl implements LectureService {
 			                                    			c.set(Calendar.MINUTE, 0);
 			                                    			c.set(Calendar.SECOND, 0);
 			                                    			c.set(Calendar.MILLISECOND, 0);
-			                                    			
-			                                    			
-			                                    			if(oldScheduleDays.contains(c))
-			                                    				return true;
+			                                    			int i=0;
+			                                    			for(i=0; i<oldScheduleDays.size();i++) {
+			                                    				Date ca = oldScheduleDays.get(i);
+			                                    				if(ca.equals(c.getTime()))
+			                                    					return true;
+			                                    			}
 			                                    			return false;
 			                                            })
 			                                            .collect(Collectors.toList());
 		for(Lecture l:deletedLecture) {
-			lectureRepository.deleteByLectureId(l.getLectureId());
 			List<Booking> deletedBooking = bookingRepository.findAll().stream()
 					                       .filter(b -> b.getLecture().getLectureId().equals(l.getLectureId()))
 					                       .collect(Collectors.toList());
 			for(Booking b:deletedBooking) {
-				bookingService.deleteByOfficer(b.getBookingId());
+				bookingService.deleteBookingOfficer(b.getBookingId());
 			}
+			
+			Lecture le = lectureRepository.findByLectureId(l.getLectureId());
+			le.setDeleted(true);
+			lectureRepository.save(le);
 		}
 		//add new lectures according schedule
-		for(Calendar c: newScheduleDays) {
+		for(Date d: newScheduleDays) {
 			  Integer lectureId = lectureRepository.findAll().stream()
 	                .mapToInt(Lecture::getLectureId)
 	                .max()
@@ -478,9 +501,15 @@ public class LectureServiceImpl implements LectureService {
 			  newLecture.setBookedSeats(0);
 			  
 			  String[] time = timeStart.split(":");
-			  c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-  			  c.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-			  newLecture.setDate(c.getTime());
+			  Calendar cc = Calendar.getInstance();
+			  cc.setTime(d);
+			  cc.set(Calendar.HOUR, 0);
+			  cc.set(Calendar.MINUTE, 0);
+			  cc.set(Calendar.SECOND, 0);
+			  cc.set(Calendar.MILLISECOND, 0);
+			  cc.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+  			  cc.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+			  newLecture.setDate(cc.getTime());
 			  
 			  newLecture.setProfessor(professor);
 			  newLecture.setRemotly(false);
@@ -506,7 +535,8 @@ public class LectureServiceImpl implements LectureService {
 					                            + " room: " + room.getName()
 					       +"\n\n\n Also all your booking is cancelled. Remember to booked if you are interested at some lessons of course!";
 			try {
-			  studentService.sendEmail(StudentConverter.toDto(s), subject, text);
+			  //commenta solo durante demo (o con mail preimpostate)
+			  //studentService.sendEmail(StudentConverter.toDto(s), subject, text);
 			}catch(Exception e) {
 				System.out.print(e.getMessage());
 			}
@@ -515,6 +545,7 @@ public class LectureServiceImpl implements LectureService {
 		scheduleCourse.setDay(day);
 		scheduleCourse.setDuration(duration);
 		scheduleCourse.setTimeStart(timeStart);
+		scheduleCourse.setRoom(room);
 		return true;
 	}
 }

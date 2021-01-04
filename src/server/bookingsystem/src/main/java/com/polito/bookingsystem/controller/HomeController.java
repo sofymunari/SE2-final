@@ -350,7 +350,7 @@ public class HomeController {
    //////////////
     @GetMapping(value = "getScheduleCourse/{code}")
 	public List<Schedule> getScheduleCourse(@PathVariable String code) {
-		return lectureService.getScheduleCourses(code);
+    	return lectureService.getScheduleCourses(code);
 	}
     
     @GetMapping(value = "getRooms")
@@ -361,12 +361,11 @@ public class HomeController {
    
     @PostMapping(value = "modifySchedule/{courseCode}/{scheduleId}")
 	public void modifySchedule(@RequestBody Map<String, String> scheduleInfo, @PathVariable String courseCode,  @PathVariable Integer scheduleId) {
-		String day = scheduleInfo.get("day");
+    	String day = scheduleInfo.get("day");
 		String duration = scheduleInfo.get("duration");
 		String timeStart = scheduleInfo.get("timeStart");
 		String roomId = scheduleInfo.get("roomId");
-		String codeCourse = scheduleInfo.get("codeCourse");
-		lectureService.modifySchedule(day, Integer.parseInt(duration), timeStart, Integer.parseInt(roomId), codeCourse, scheduleId);
+		lectureService.modifySchedule(day, Integer.parseInt(duration), timeStart, Integer.parseInt(roomId), courseCode, scheduleId);
 	}
     
     

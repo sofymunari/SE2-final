@@ -510,7 +510,6 @@ async function getRooms(){
 
 async function editSchedule(day, duration, roomId, courseCode, timeStart, scheduleId){
     const url = BASE_URL + "modifySchedule/"+ courseCode + "/" + scheduleId;
-
     return new Promise((resolve,reject) =>{
         fetch(url, {
             method: 'POST',
