@@ -223,6 +223,7 @@ public class LectureServiceImpl implements LectureService {
 			 while((currentLine = reader.readLine()) != null){
 				  Schedule schedule = new Schedule();
 				  schedule.setId(idSchedule);
+				  idSchedule++;
 				  String[] fields = currentLine.split(",");
 				  calendar = Calendar.getInstance();
 				  if(calendar.before(startSemester)) {
