@@ -488,7 +488,7 @@ async function getSchedules(courseId){
         if(response.ok){
             console.log(schedules_json);
         return schedules_json.map((n)=>{
-            return {scheduleId:n.id, day:n.day, duration:n.duration, timeStart:n.timeStart, roomId:n.room.roomId}
+            return {scheduleId:n.id, day:n.day, duration:n.duration, timeStart:n.timeStart, roomId:n.room.roomId, roomName: n.room.name}
         })
     }else{
         throw schedules_json;

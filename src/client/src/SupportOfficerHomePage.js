@@ -685,7 +685,7 @@ function ScheduleList(props) {
                     <h4>{props.schedule.timeStart}</h4>
                 </div>
                 <div className="col-2">
-                    <h4>{props.schedule.roomId}</h4>
+                    <h4>{props.schedule.roomName}</h4>
                 </div>
                 <div className="col-2">
                     <Button onClick={() => props.showModal(props.schedule.scheduleId)}> Edit </Button>
