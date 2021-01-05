@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
+
+import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 
 @Service
@@ -16,4 +18,5 @@ public interface StudentService {
 
 	void addStudents(String fileName);
 	void addClasses(String fileName);
+	public List<ProfessorDto> getContactedProfessors(StudentDto studentDto, Date date);
 }

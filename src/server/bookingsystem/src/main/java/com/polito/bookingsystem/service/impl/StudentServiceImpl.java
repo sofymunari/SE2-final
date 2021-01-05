@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.BookingDto;
+import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Student;
@@ -171,6 +172,31 @@ public class StudentServiceImpl implements StudentService {
 		}catch(IOException e) {
 			System.err.println(e.getMessage());
 		}
+	}
+
+
+	@Override
+	public List<ProfessorDto> getContactedProfessors(StudentDto studentDto, Date date) {
+		List<ProfessorDto> contactedProfessors = new ArrayList<>();
+		if(studentDto != null) {			
+			List<BookingDto> bookingDtos =  bookingService.getListBooking(studentDto.getEmail());
+			for (BookingDto bookingDto : bookingDtos) {
+				if ((bookingDto.getLectureDto().getDate()).compareTo(date) >= 0) {
+					boolean contains = false;
+					for (ProfessorDto contactedProfessor : contactedProfessors) {
+						if(contactedProfessor.getEmail().equals(bookingDto.getLectureDto().getProfessorDto().getEmail())) {
+							contains = true;
+							break;
+						}
+					}
+					if(contains) {
+						continue;
+					}
+					contactedProfessors.add(bookingDto.getLectureDto().getProfessorDto());
+				}
+			}
+		}
+		return contactedProfessors;
 	}
 
     
