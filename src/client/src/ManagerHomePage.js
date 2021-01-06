@@ -64,9 +64,9 @@ class ManagerHomePage extends React.Component {
                     //<DownloadFile manager={this.state.manager} student={match.params.student} date={match.params.date} />
                 )
             }} />
-            <Route path="/managerportal/file/tracereport/teacher/:teacher/:date" render={({ match }) => {
+            <Route path="/managerportal/file/tracereport/professor/:teacher/:date" render={({ match }) => {
                 return (
-                    <a href={`http://localhost:8080/managerportal/file/tracereport/teacher/${match.params.teacher}/${match.params.date}`}> <h2>GO TO REPORTS</h2></a>
+                    <a href={`http://localhost:8080/managerportal/file/tracereport/professor/${match.params.teacher}/${match.params.date}`}> <h2>GO TO REPORTS</h2></a>
                 )
             }} />
         </Switch>;
@@ -107,7 +107,7 @@ class TracingReport extends React.Component {
             {
 
                 this.state.teacher &&
-                <Redirect to={`file/tracereport/teacher/${this.state.email}/${this.state.date}`} />
+                <Redirect to={`file/tracereport/professor/${this.state.email}/${this.state.date}`} />
             }
             {
                 this.state.student &&

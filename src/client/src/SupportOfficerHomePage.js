@@ -51,7 +51,6 @@ class SupportOfficerHomePage extends React.Component {
             return;
         }
 
-        console.log(event.target.files[0].type);
         if (this.checkMimeType(event)) {
             this.setState({
                 'lecturesfile': false,
@@ -127,6 +126,7 @@ class SupportOfficerHomePage extends React.Component {
         } else if (this.state.holidaysfile) {
             this.setState({ holidaysPressed: true })
             API.uploadHolidaysFile(formData).then(() => {
+                console.log('Beneee')
                 this.setState({ holidaysPressed: false, selectedFile: null });
                 toast.success('upload success');
             }).catch((error) => {
@@ -366,7 +366,7 @@ class SupportOfficerHomePage extends React.Component {
                                     <li className="list-group-item bg-light">
                                         <div className="d-flex w-100 ">
                                             <div className="col-2">
-                                                <h4>HOLIDAYS</h4>
+                                                <h4>HOLIDAYS (yyyy-mm-dd) </h4>
                                             </div>
                                             <div className="col-2">
                                                 <form encType="multipart/form-data">
