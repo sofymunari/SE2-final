@@ -589,7 +589,7 @@ class LectureServiceTests {
 		//String day="Monday"
 		Room room = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1997");
-		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("18-01-2021-12.00.00");
+		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("11-01-2021-12.00.00");
 		Date date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("09-12-2020-12.00.00");
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
 		Course course2 = new Course(2, "testName2", "XY1212",2,2);
@@ -626,9 +626,9 @@ class LectureServiceTests {
 		when(courseRepository.findByCode(anyObject())).thenReturn(course1); //course1 //schedule = Monday 12:00 120 minutes room
 		when(professorRepository.findAll()).thenReturn(professors); //professor1
 		when(lectureRepository.findAll()).thenReturn(lectures); // two lectures of course
-		doNothing().when(lectureRepository).deleteByLectureId(anyInt());
+		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture2);
 		when(bookingRepository.findAll()).thenReturn(bookings);
-		when(bookingService.deleteByOfficer(anyInt())).thenReturn(false);
+		when(bookingService.deleteBookingOfficer(anyInt())).thenReturn(false);
 		when(lectureRepository.save(anyObject())).thenReturn(null);
 		when(studentRepository.findAll()).thenReturn(students);
 		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());

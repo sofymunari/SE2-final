@@ -906,7 +906,7 @@ class BookingServiceTest {
 	void testDeleteByOfficer1() {
 		
 		when(bookingRepository.findByBookingId(anyInt())).thenReturn(null);
-		assertFalse(bookingServiceImpl.deleteByOfficer(1));
+		assertFalse(bookingServiceImpl.deleteBookingOfficer(1));
 	}
 	
 	@Test
@@ -918,7 +918,7 @@ class BookingServiceTest {
 		Booking booking = new Booking(1, student, lecture, BookingInfo.ATTENDED);
 		when(bookingRepository.findByBookingId(anyInt())).thenReturn(booking);
 		when(bookingRepository.save(anyObject())).thenReturn(null);
-		assertTrue(bookingServiceImpl.deleteByOfficer(1));
+		assertTrue(bookingServiceImpl.deleteBookingOfficer(1));
 		
 	}
 	
