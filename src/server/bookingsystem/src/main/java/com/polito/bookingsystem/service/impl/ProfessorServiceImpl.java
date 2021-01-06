@@ -45,12 +45,13 @@ public class ProfessorServiceImpl implements ProfessorService {
 	
 	
     @Autowired
-    public ProfessorServiceImpl(ProfessorRepository professorRepository, JavaMailSender javaMailSender, LectureRepository lectureRepository, BookingRepository bookingRepository)
+    public ProfessorServiceImpl(ProfessorRepository professorRepository, JavaMailSender javaMailSender, LectureRepository lectureRepository, BookingRepository bookingRepository,BookingService bookingService)
     {
     	this.professorRepository = professorRepository;
     	this.javaMailSender = javaMailSender;
     	this.bookingRepository = bookingRepository;
     	this.lectureRepository = lectureRepository;
+    	this.bookingService = bookingService;
     }
     
     
