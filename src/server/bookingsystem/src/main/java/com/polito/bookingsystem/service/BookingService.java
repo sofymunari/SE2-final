@@ -13,6 +13,6 @@ public interface BookingService {
 	List<BookingDto> getBookingsByLecture(LectureDto lectureDto);
 	void save(BookingDto bookingDto);
 	BookingDto getByLectureAndStudent(Integer lectureId, String email);
-    Boolean deleteByOfficer(Integer id);
+    Boolean deleteBookingOfficer(Integer id);
 }
 

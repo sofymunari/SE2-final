@@ -170,6 +170,11 @@ function AppNavbar(props){
                         <button className="btn btn-success text-dark font-weight-bold" >UPDATE LECTURES</button>
                     </li>
                     </Link>
+                    <Link to="/supportOfficerportal/updateSchedule">
+                    <li className="nav-item pr-1">
+                        <button className="btn btn-success text-dark font-weight-bold" >UPDATE SCHEDULE</button>
+                    </li>
+                    </Link>
                     <li className="nav-item pr-1">
                         <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     

@@ -155,7 +155,7 @@ public class BookingServiceImpl implements BookingService{
 	}
 	
 	@Override
-	public Boolean deleteByOfficer(Integer id) {
+	public Boolean deleteBookingOfficer(Integer id) {
 		Booking booking = bookingRepository.findByBookingId(id);
 		if(booking == null)
 			return false;
