@@ -294,7 +294,7 @@ class Lecture extends React.Component {
                             <h4>ATTENDANCE</h4>
                         </div>
                         <div className="col-2">
-                            <h4>WAITING</h4>
+                            <h4>WAITING </h4>
                         </div>
                     </div>
                 </li>
