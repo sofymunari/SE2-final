@@ -133,7 +133,7 @@ class TeacherHomePage extends React.Component {
                                 <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect} /> :
                                 this.state.students ?
                                     <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId} sendAttendences={this.sendAttendences} /> :
-                                    <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
+                                    <MainPage lectures={this.state.allLectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                         </div>
                     </div>
                 </div>
@@ -208,6 +208,12 @@ class MainPage extends React.Component {
 function LectureItem(props) {
     /*extracting date (format dd/mm/yyyy) and time of lecture from props*/
     let date = new Date(props.lecture.date).toLocaleString().slice(0, -3);
+    const now = new Date();
+    let expired = false;
+    const lectDate = new Date(props.lecture.date);
+    if (lectDate < now) {
+        expired = true;
+    }
 
     return (
         <li className="list-group-item" id={props.lecture.lectureId}>
@@ -236,10 +242,11 @@ function LectureItem(props) {
 
                 </div>
                 <div className="col-1">
+                    {expired? "-":
                     <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-pencil-square" fill="green" xmlns="http://www.w3.org/2000/svg" onClick={(ev) => props.modifyLecture(props.lecture.lectureId)}>
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                         <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                    </svg>
+                    </svg>}
                 </div>
 
             </div>
