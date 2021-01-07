@@ -41,6 +41,7 @@ class ManagerHomePage extends React.Component {
             <Route exact path="/managerportal">
                 <AppComponents.AppNavbar logOut={this.props.logOut} />
                 <div className="container-fluid">
+                    
                     <div className="row">
                         <div className="col-2 bg-success" id="sticky-sidebar">
                             <Aside manager={this.state.manager} />
@@ -157,6 +158,7 @@ class Course extends React.Component {
 
     }
     showItem = (course) => {
+
         let lectures = this.props.lectures.filter(l => l.courseDto.courseId === course);
         let bookings = this.props.bookings.filter(b => b.courseDto.courseId === course);
 
@@ -212,7 +214,7 @@ class Course extends React.Component {
 class Lecture extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { "showList": true };
+        this.state={"showList":true, "filterDate":false, date1:"", date2:"", message:""};
     }
 
     showLecture = (lecture) => {
@@ -220,47 +222,96 @@ class Lecture extends React.Component {
         let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
         return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
     }
-    showGraph = (value) => {
-        this.setState({ "showList": value });
+
+    
+    showGraph=(value)=>{
+        this.setState({"showList":value});
     }
 
-    render() {
-        if (this.state.showList) {
-            return (<>
-                <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+
+    filter=()=>{
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        if(isNaN(d1.getTime()) || isNaN(d2.getTime()))
+          this.setState({"filterDate":false, message:"Undefined Date"});
+        else if(d1.getTime() > d2.getTime()){
+            this.setState({"filterDate":false, message:"Invalid Range Date"});
+        }else{
+            this.setState({"filterDate":true,message:""});
+        }
+    }
+
+    cancel=()=>{
+        this.setState({"filterDate":false, message:"", date1:"", date2:""});
+    }
+
+    filterLecture = (lecture) => {
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        var dateLecture = new Date(lecture.date);
+        if(dateLecture.getTime() >= d1.getTime() && dateLecture.getTime() <= d2.getTime()){
+            let del_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'CANCELED_BY_STUD').length;
+            let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
+            return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
+        }else
+          return null;
+    }
+
+    render(){
+        if(this.state.showList){
+        return  (<>
+               <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+                <h1>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h1>
+                <p></p>
+                <h3>Filter Date:</h3>
+                <Form classname="m-0" >
+                    <Form.Group name="f1">
+                        <Form.Control  type="date" name="date1" required value={this.state.date1} onChange={e => this.setState({ date1: e.target.value })}/>
+                        <Form.Control  type="date" name="date2" required value={this.state.date2} onChange={e => this.setState({ date2: e.target.value })}/>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.filter(ev)}>Filter</Button>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.cancel(ev)}>Cancel</Button>
+                        <p></p>
+                        <Form.Label name="msg"><h4><b>{this.state.message}</b></h4></Form.Label>
+                    </Form.Group>
+                </Form>
+                <hr/>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light" >
-                        <div className="d-flex w-100 justify-content-between">
-                            <div className="col-2">
-                                <h4>LECTURE</h4>
-                            </div>
-                            <div className="col-2">
-                                <h4>DATE</h4>
-                            </div>
-                            <div className="col-2">
-                                <h4>LECTURE DELETED or REMOTE</h4>
-                            </div>
-                            <div className="col-2">
-                                <h4>DELETED</h4>
-                            </div>
-                            <div className="col-2">
-                                <h4>ATTENDANCE</h4>
-                            </div>
-                            <div className="col-2">
-                                <h4>WAITING</h4>
-                            </div>
+                    <div className="d-flex w-100 justify-content-between">
+                        <div className="col-2">
+                            <h4>LECTURE</h4>
                         </div>
-                    </li>
-                    {this.props.lectures.map(this.showLecture)}
-                </ul>
-                <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
-                <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
-            </>)
-        } else {
-            let not_remote_lectures = this.props.lectures.filter((l) => !l.remotly && !l.deleted);
-            let lects = not_remote_lectures.map((l) => { return { 'label': l.courseDto.name + " " + l.numberOfLesson, 'data': l.bookedSeats } })
-            return <ManagerGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture"} />
-        };
+                        <div className="col-2">
+                            <h4>DATE</h4>
+                        </div>
+                        <div className="col-2">
+                            <h4>LECTURE DELETED or REMOTE</h4>
+                        </div>
+                        <div className="col-2">
+                            <h4>DELETED</h4>
+                        </div>
+                        <div className="col-2">
+                            <h4>ATTENDANCE</h4>
+                        </div>
+                        <div className="col-2">
+                            <h4>WAITING</h4>
+                        </div>
+                    </div>
+                </li>
+                {
+                  this.state.filterDate ?
+                    this.props.lectures.map(this.filterLecture)
+                     :
+                     this.props.lectures.map(this.showLecture)
+                } 
+            </ul>
+            <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
+            <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
+        </>)}else{
+            let not_remote_lectures = this.props.lectures.filter((l)=>!l.remotly && !l.deleted);
+            let lects=not_remote_lectures.map((l)=>{return {'label':l.courseDto.name+" "+l.numberOfLesson,'data':l.bookedSeats}})
+            return <ManagerGraph lectures={lects} showGraph={this.showGraph} title={"Per Lecture"}/>
+         }    ;
     }
 }
 
