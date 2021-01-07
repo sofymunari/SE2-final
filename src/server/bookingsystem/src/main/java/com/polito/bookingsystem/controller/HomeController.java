@@ -29,6 +29,7 @@ import com.polito.bookingsystem.dto.OfficerDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.entity.Course;
+import com.polito.bookingsystem.entity.Room;
 import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.CourseService;
 import com.polito.bookingsystem.service.FileStorageService;
@@ -42,6 +43,7 @@ import com.polito.bookingsystem.service.RoomService;
 import com.polito.bookingsystem.service.StudentService;
 import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.utils.Schedule;
 import com.polito.bookingsystem.utils.UploadFileResponse;
 
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge= 3000)
@@ -345,6 +347,7 @@ public class HomeController {
 		}
 	  } 
     
+
     @PostMapping(value = "/uploadHolidays", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResponse uploadHolidays(@RequestParam("file") MultipartFile file) {
     	String fileName = fileStorageService.storeFile(file);
@@ -359,4 +362,26 @@ public class HomeController {
          return new UploadFileResponse(fileName, fileDownloadUri,
                  file.getContentType(), file.getSize());
     }
+
+    
+    @GetMapping(value = "getScheduleCourse/{code}")
+	public List<Schedule> getScheduleCourse(@PathVariable String code) {
+    	return lectureService.getScheduleCourses(code);
+	}
+    
+    @GetMapping(value = "getRooms")
+	public List<Room> getRooms() {
+		return lectureService.getRooms();
+	}
+    
+   
+    @PostMapping(value = "modifySchedule/{courseCode}/{scheduleId}")
+	public void modifySchedule(@RequestBody Map<String, String> scheduleInfo, @PathVariable String courseCode,  @PathVariable Integer scheduleId) {
+    	String day = scheduleInfo.get("day");
+		String duration = scheduleInfo.get("duration");
+		String timeStart = scheduleInfo.get("timeStart");
+		String roomId = scheduleInfo.get("roomId");
+		lectureService.modifySchedule(day, Integer.parseInt(duration), timeStart, Integer.parseInt(roomId), courseCode, scheduleId);
+	}
+
 }
