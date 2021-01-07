@@ -130,7 +130,7 @@ class CourseServiceTest {
 	@Test
 	void testSetCourseToRemote1() {
 		String courseName = "notexists";
-		when(courseRepository.findByName(anyObject())).thenReturn(null);
+		when(courseRepository.findByCode(anyObject())).thenReturn(null);
 		when(lectureService.getListAllLectures()).thenReturn(null);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
@@ -158,7 +158,7 @@ class CourseServiceTest {
 		lectures.add(lectureDto2);
 		lectures.add(lectureDto1);
 		when(lectureService.getListAllLectures()).thenReturn(lectures);
-		when(courseRepository.findByName(anyObject())).thenReturn(course1);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
 	
@@ -179,7 +179,7 @@ class CourseServiceTest {
 		lectures.add(lectureDto2);
 		lectures.add(lectureDto1);
 		when(lectureService.getListAllLectures()).thenReturn(lectures);
-		when(courseRepository.findByName(anyObject())).thenReturn(course1);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
 	
@@ -200,7 +200,7 @@ class CourseServiceTest {
 		lectures.add(lectureDto2);
 		lectures.add(lectureDto1);
 		when(lectureService.getListAllLectures()).thenReturn(lectures);
-		when(courseRepository.findByName(anyObject())).thenReturn(course1);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
 		when(lectureRepository.save(anyObject())).thenReturn(null);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
