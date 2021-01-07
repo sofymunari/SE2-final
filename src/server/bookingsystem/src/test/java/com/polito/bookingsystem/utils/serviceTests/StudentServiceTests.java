@@ -21,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.polito.bookingsystem.dto.CourseDto;
 import com.polito.bookingsystem.dto.StudentDto;
 import com.polito.bookingsystem.dto.LectureDto;
+import com.polito.bookingsystem.dto.ProfessorDto;
+import com.polito.bookingsystem.dto.RoomDto;
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.entity.Course;
 import com.polito.bookingsystem.entity.Professor;
@@ -298,6 +300,51 @@ class StudentServiceTests {
 			fail("Shouldn't come here");
 		}
 	}
+	
+	@Test
+	void testGetContactedProfessors() throws ParseException{
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");//input date
+		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse("02/01/0100");
+		CourseDto course1 = new CourseDto(1, "testName", "A", 1,1);
+		CourseDto course2 = new CourseDto(2, "testName", "B", 1,1);
+		List<CourseDto> courses = new ArrayList<>();
+		//student courses
+		courses.add(course1);
+		courses.add(course2);
+		//2 professors one for each course
+		List<CourseDto> coursesProf1 = new ArrayList<>();
+		List<CourseDto> coursesProf2 = new ArrayList<>();
+		coursesProf1.add(course1);
+		coursesProf2.add(course2);
+		ProfessorDto professorDto = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", coursesProf1, "d0"); //input professor
+		ProfessorDto professorDto1 = new ProfessorDto(2, "testName", "testSurname", "testAddress", "test@email1.com", "testPassword", coursesProf2, "d1");
+		StudentDto student1 = new StudentDto(1, "testName", "testSurname", "testAddress", "test@email1.com", "testPassword", date, courses, "testMatricola1"); //input student
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
+		RoomDto room = new RoomDto(1, "testName", 100);
+		LectureDto lecture1 = new LectureDto(1, 10, course1, professorDto, true, date, 90, "testDetails", room);
+		LectureDto lecture2 = new LectureDto(2, 10, course2, professorDto1, true, date, 90, "testDetails", room);
+		LectureDto lecture3 = new LectureDto(2, 10, course2, professorDto1, true, date1, 90, "testDetails", room);//wrong day
+		BookingDto booking1 = new BookingDto(1, student1, lecture1, bookingInfo);
+		BookingDto booking2 = new BookingDto(2, student1, lecture2, bookingInfo);
+		BookingDto booking4 = new BookingDto(2, student1, lecture2, bookingInfo);//same professor
+		BookingDto booking3 = new BookingDto(2, student1, lecture3, bookingInfo);//wrong day
+		List<BookingDto> bookings = new ArrayList<>();
+		bookings.add(booking1);
+		bookings.add(booking2);
+		bookings.add(booking3);
+		bookings.add(booking4);
+		when(bookingService.getListBooking(anyObject())).thenReturn(bookings);
+		assertEquals("expected two professors",studentServiceImpl.getContactedProfessors(student1, date).size(),2);
+		
+	}
+	
+	@Test
+	void testGetContactedProfessors2 () throws ParseException {
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0101");
+		List<ProfessorDto> contactedProfessors = new ArrayList<>();
+		assertEquals("Expected empty list",studentServiceImpl.getContactedProfessors(null, date),contactedProfessors);
+	}
+	
 	
 
 }

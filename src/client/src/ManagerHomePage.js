@@ -41,6 +41,7 @@ class ManagerHomePage extends React.Component {
             <Route exact path="/managerportal">
                 <AppComponents.AppNavbar logOut={this.props.logOut} />
                 <div className="container-fluid">
+                    
                     <div className="row">
                         <div className="col-2 bg-success" id="sticky-sidebar">
                             <Aside manager={this.state.manager} />
@@ -64,6 +65,11 @@ class ManagerHomePage extends React.Component {
                     //<DownloadFile manager={this.state.manager} student={match.params.student} date={match.params.date} />
                 )
             }} />
+            <Route path="/managerportal/file/tracereport/professor/:teacher/:date" render={({ match }) => {
+                return (
+                    <a href={`http://localhost:8080/managerportal/file/tracereport/professor/${match.params.teacher}/${match.params.date}`}> <h2>GO TO REPORTS</h2></a>
+                )
+            }} />
         </Switch>;
     }
 }
@@ -71,7 +77,7 @@ class ManagerHomePage extends React.Component {
 class TracingReport extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { student: '', date: '', report: false, show: false }
+        this.state = { student: false, teacher: false , email: '', date: '', show: false }
     }
 
     onChangeHandler = (name, value) => {
@@ -80,18 +86,33 @@ class TracingReport extends React.Component {
 
     generateReport = (event) => {
         event.preventDefault();
-        console.log()
-        API.getStudentInfo(this.state.student)
-            .then((s) => {
-                this.setState({ report: true });
-            }).catch((error) => this.setState({ error: error, show: true }));
+        console.log();
+
+        let flag = this.state.email.split('@');
+        console.log(flag[1])
+        if (flag[1].startsWith('studenti')) {
+            API.getStudentInfo(this.state.email)
+                .then((s) => {
+                    this.setState({teacher: false, student: true });
+                }).catch((error) => this.setState({ error: error, show: true }));
+        } else {
+            API.getTeacherInfo(this.state.email)
+                .then((s) => {
+                    this.setState({teacher: true, student: false });
+                }).catch((error) => this.setState({ error: error, show: true }));
+        }
     }
 
     render() {
         return <>
             {
-                this.state.report &&
-                <Redirect to={`file/tracereport/student/${this.state.student}/${this.state.date}`} />
+
+                this.state.teacher &&
+                <Redirect to={`file/tracereport/professor/${this.state.email}/${this.state.date}`} />
+            }
+            {
+                this.state.student &&
+                <Redirect to={`file/tracereport/student/${this.state.email}/${this.state.date}`} />
             }
             {
                 this.state.show &&
@@ -109,11 +130,11 @@ class TracingReport extends React.Component {
                         <Aside manager={this.props.manager} />
                     </div>
                     <div className="col-10 p-0 justify-content-around" id="main">
-                        <h3>Select the student who tested positive and the date in which it happened</h3>
+                        <h3>Insert the email of the person who tested positive and the date in which it happened</h3>
                         <Form onSubmit={(event) => this.generateReport(event)}>
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Student email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" name="student" value={this.state.student} required onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} />
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" name="email" value={this.state.email} required onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} />
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Test date</Form.Label>
@@ -133,66 +154,67 @@ class TracingReport extends React.Component {
 class Course extends React.Component {
     constructor(props) {
         super(props);
-        this.state={"showList":true};
+        this.state = { "showList": true };
 
     }
     showItem = (course) => {
+
         let lectures = this.props.lectures.filter(l => l.courseDto.courseId === course);
         let bookings = this.props.bookings.filter(b => b.courseDto.courseId === course);
 
         return <CourseItem key={course} bookings={bookings} lectures={lectures} showLectures={this.props.showLectures} />
     }
-    showGraph=(value)=>{
-        this.setState({"showList":value});
+    showGraph = (value) => {
+        this.setState({ "showList": value });
     }
 
     render() {
         let courses = this.props.lectures.map(l => l.courseDto.courseId);
 
         let courses_unique = [...new Set(courses)];
-        if(this.state.showList){
-        return (<><ul className="list-group list-group-flush">
-            <li className="list-group-item bg-light">
-                <div className="d-flex w-100 justify-content-between">
-                    <div className="col-4">
-                        <h4>COURSE</h4>
+        if (this.state.showList) {
+            return (<><ul className="list-group list-group-flush">
+                <li className="list-group-item bg-light">
+                    <div className="d-flex w-100 justify-content-between">
+                        <div className="col-4">
+                            <h4>COURSE</h4>
+                        </div>
+                        <div className="col-4">
+                            <h4>PROFESSOR</h4>
+                        </div>
+                        <div className="col-2">
+                            <h4>SEE DETAILS</h4>
+                        </div>
                     </div>
-                    <div className="col-4">
-                        <h4>PROFESSOR</h4>
-                    </div>
-                    <div className="col-2">
-                        <h4>SEE DETAILS</h4>
-                    </div>
-                </div>
-            </li>
-            {courses_unique.map(this.showItem)}
-        </ul>
-        <button type="button" className="btn btn-success " onClick={(ev) => this.showGraph(false)}>Show Graph</button></>)
-        }else{
+                </li>
+                {courses_unique.map(this.showItem)}
+            </ul>
+                <button type="button" className="btn btn-success " onClick={(ev) => this.showGraph(false)}>Show Graph</button></>)
+        } else {
             let courses1 = this.props.lectures.map(l => l.courseDto.name);
-            
-            let courses_unique1 = [ ...new Set(courses1)];
-           
-            let coursesBookings = courses_unique1.map(c=>{return {'label': c,'data':0}});
-            let not_remote_lectures = this.props.lectures.filter((l)=>!l.remotly && !l.deleted);
-            not_remote_lectures.forEach(l=>{
-                coursesBookings = coursesBookings.map(c=>{
-                    if(c.label === l.courseDto.name){
-                        let data = c.data+l.bookedSeats;
-                        return {'label':c.label, 'data':data};
+
+            let courses_unique1 = [...new Set(courses1)];
+
+            let coursesBookings = courses_unique1.map(c => { return { 'label': c, 'data': 0 } });
+            let not_remote_lectures = this.props.lectures.filter((l) => !l.remotly && !l.deleted);
+            not_remote_lectures.forEach(l => {
+                coursesBookings = coursesBookings.map(c => {
+                    if (c.label === l.courseDto.name) {
+                        let data = c.data + l.bookedSeats;
+                        return { 'label': c.label, 'data': data };
                     }
                     return c;
                 });
             })
-            return <ManagerCourseGraph  coursesBookings = {coursesBookings} showGraph={this.showGraph} title={"Per Course"}/>
-        }    
+            return <ManagerCourseGraph coursesBookings={coursesBookings} showGraph={this.showGraph} title={"Per Course"} />
+        }
     }
 }
 
 class Lecture extends React.Component {
     constructor(props) {
         super(props);
-        this.state={"showList":true};
+        this.state={"showList":true, "filterDate":false, date1:"", date2:"", message:""};
     }
 
     showLecture = (lecture) => {
@@ -200,14 +222,59 @@ class Lecture extends React.Component {
         let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
         return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
     }
+
+    
     showGraph=(value)=>{
         this.setState({"showList":value});
+    }
+
+
+    filter=()=>{
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        if(isNaN(d1.getTime()) || isNaN(d2.getTime()))
+          this.setState({"filterDate":false, message:"Undefined Date"});
+        else if(d1.getTime() > d2.getTime()){
+            this.setState({"filterDate":false, message:"Invalid Range Date"});
+        }else{
+            this.setState({"filterDate":true,message:""});
+        }
+    }
+
+    cancel=()=>{
+        this.setState({"filterDate":false, message:"", date1:"", date2:""});
+    }
+
+    filterLecture = (lecture) => {
+        var d1 = new Date(this.state.date1);
+        var d2 = new Date(this.state.date2);
+        var dateLecture = new Date(lecture.date);
+        if(dateLecture.getTime() >= d1.getTime() && dateLecture.getTime() <= d2.getTime()){
+            let del_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'CANCELED_BY_STUD').length;
+            let waiting_bookings = this.props.bookings.filter(b => b.lectureDto.id === lecture.lectureId && b.bookingInfo === 'WAITING').length;
+            return <LectureItem key={lecture.lectureId} lecture={lecture} del_bookings={del_bookings} waiting_bookings={waiting_bookings} />
+        }else
+          return null;
     }
 
     render(){
         if(this.state.showList){
         return  (<>
-                <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+               <h2>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h2>
+                <h1>LECTURES FOR COURSE: {this.props.lectures[0].courseDto.name}</h1>
+                <p></p>
+                <h3>Filter Date:</h3>
+                <Form classname="m-0" >
+                    <Form.Group name="f1">
+                        <Form.Control  type="date" name="date1" required value={this.state.date1} onChange={e => this.setState({ date1: e.target.value })}/>
+                        <Form.Control  type="date" name="date2" required value={this.state.date2} onChange={e => this.setState({ date2: e.target.value })}/>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.filter(ev)}>Filter</Button>
+                        <Button type="button" className="btn btn-success" onClick={(ev) => this.cancel(ev)}>Cancel</Button>
+                        <p></p>
+                        <Form.Label name="msg"><h4><b>{this.state.message}</b></h4></Form.Label>
+                    </Form.Group>
+                </Form>
+                <hr/>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item bg-light" >
                     <div className="d-flex w-100 justify-content-between">
@@ -227,11 +294,16 @@ class Lecture extends React.Component {
                             <h4>ATTENDANCE</h4>
                         </div>
                         <div className="col-2">
-                            <h4>WAITING</h4>
+                            <h4>WAITING </h4>
                         </div>
                     </div>
                 </li>
-                {this.props.lectures.map(this.showLecture)}
+                {
+                  this.state.filterDate ?
+                    this.props.lectures.map(this.filterLecture)
+                     :
+                     this.props.lectures.map(this.showLecture)
+                } 
             </ul>
             <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
             <button type="button" className="btn btn-success" onClick={(ev) => this.showGraph(false)}>Show Graph</button>
@@ -312,104 +384,123 @@ function Aside(props) {
 
 }
 
-class ManagerGraph extends React.Component{
-    constructor(props){
+class ManagerGraph extends React.Component {
+    constructor(props) {
         super(props);
-        this.state={ dataBar: {
-            labels: [...this.props.lectures.map((l)=>{return l.label;})],
-            datasets: [{label: "Number of Attendance "+this.props.title,
-                data: [...this.props.lectures.map((l)=>{return l.data;})],
-                backgroundColor: [
-                  "rgba(255, 0,0,0.4)",
-                  "rgba(0, 0,255,0.4)",
-                  "rgba(60, 179,113,0.4)",
-                  "rgba(106, 90,205,0.4)"
-                ],
-                borderWidth: 2,
-                borderColor: [
-                  "rgba(255, 0, 0, 1)",
-                  "rgba(0, 0,255,1)",
-                  "rgba(60, 179,113,1)",
-                  "rgba(106, 90,205,1)"
-                ]}]},
-          barChartOptions: {scales: {xAxes: [{
-                  barPercentage: 0.5,
-                  gridLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                  }}],yAxes: [{
-                  gridLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                  },
-                  ticks: {
-                    beginAtZero: true
-                  }}]}}
-                }
-    }
-    render(){
-        return (
-        <div className="container">
-        
-            <h3 className="mt-5">Bookings {this.props.title}</h3>
-            <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
-        
-        <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
-        </div>
-        )
-    }
-}
-
-
-
-class ManagerCourseGraph extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={ 
+        this.state = {
             dataBar: {
-            labels: [...this.props.coursesBookings.map((l)=>{return l.label;})],
-            datasets: [{label: "Number of courses "+this.props.title,
-                data: [...this.props.coursesBookings.map((l)=>{return l.data;})],
-                backgroundColor: [
-                  "rgba(255, 0,0,0.4)",
-                  "rgba(0, 0,255,0.4)",
-                  "rgba(60, 179,113,0.4)",
-                  "rgba(106, 90,205,0.4)"
-                ],
-                borderWidth: 2,
-                borderColor: [
-                  "rgba(255, 0, 0, 1)",
-                  "rgba(0, 0,255,1)",
-                  "rgba(60, 179,113,1)",
-                  "rgba(106, 90,205,1)"
-                ]}]},
-          barChartOptions: {scales: {xAxes: [{
-                  barPercentage: 0.5,
-                  gridLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                  }}],yAxes: [{
-                  gridLines: {
-                    display: true,
-                    color: "rgba(0, 0, 0, 0.1)"
-                  },
-                  ticks: {
-                    beginAtZero: true
-                  }}]}}
+                labels: [...this.props.lectures.map((l) => { return l.label; })],
+                datasets: [{
+                    label: "Number of Attendance " + this.props.title,
+                    data: [...this.props.lectures.map((l) => { return l.data; })],
+                    backgroundColor: [
+                        "rgba(255, 0,0,0.4)",
+                        "rgba(0, 0,255,0.4)",
+                        "rgba(60, 179,113,0.4)",
+                        "rgba(106, 90,205,0.4)"
+                    ],
+                    borderWidth: 2,
+                    borderColor: [
+                        "rgba(255, 0, 0, 1)",
+                        "rgba(0, 0,255,1)",
+                        "rgba(60, 179,113,1)",
+                        "rgba(106, 90,205,1)"
+                    ]
+                }]
+            },
+            barChartOptions: {
+                scales: {
+                    xAxes: [{
+                        barPercentage: 0.5,
+                        gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }], yAxes: [{
+                        gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
+        }
     }
-    render(){
+    render() {
         return (
-        <div className="container">
-        
-            <h3 className="mt-5">Bookings {this.props.title}</h3>
-            <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
-        
-        <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
-        </div>
+            <div className="container">
+
+                <h3 className="mt-5">Bookings {this.props.title}</h3>
+                <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
+
+                <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
+            </div>
         )
     }
 }
-    
+
+
+
+class ManagerCourseGraph extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataBar: {
+                labels: [...this.props.coursesBookings.map((l) => { return l.label; })],
+                datasets: [{
+                    label: "Number of courses " + this.props.title,
+                    data: [...this.props.coursesBookings.map((l) => { return l.data; })],
+                    backgroundColor: [
+                        "rgba(255, 0,0,0.4)",
+                        "rgba(0, 0,255,0.4)",
+                        "rgba(60, 179,113,0.4)",
+                        "rgba(106, 90,205,0.4)"
+                    ],
+                    borderWidth: 2,
+                    borderColor: [
+                        "rgba(255, 0, 0, 1)",
+                        "rgba(0, 0,255,1)",
+                        "rgba(60, 179,113,1)",
+                        "rgba(106, 90,205,1)"
+                    ]
+                }]
+            },
+            barChartOptions: {
+                scales: {
+                    xAxes: [{
+                        barPercentage: 0.5,
+                        gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }], yAxes: [{
+                        gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        }
+    }
+    render() {
+        return (
+            <div className="container">
+
+                <h3 className="mt-5">Bookings {this.props.title}</h3>
+                <Bar data={this.state.dataBar} options={this.state.barChartOptions} />
+
+                <button type="button" className="btn btn-success" onClick={(ev) => this.props.showGraph(true)}>Show List</button>
+            </div>
+        )
+    }
+}
+
 
 export default ManagerHomePage;

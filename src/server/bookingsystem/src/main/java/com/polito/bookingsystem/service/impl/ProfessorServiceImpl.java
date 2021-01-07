@@ -1,6 +1,9 @@
 package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.ProfessorConverter;
+import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.ProfessorDto;
+import com.polito.bookingsystem.dto.StudentDto;
+import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.ProfessorService;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,6 +11,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,14 +40,18 @@ public class ProfessorServiceImpl implements ProfessorService {
 	@Autowired
     private BookingRepository bookingRepository;
 	
+	@Autowired
+    private BookingService bookingService;
+	
 	
     @Autowired
-    public ProfessorServiceImpl(ProfessorRepository professorRepository, JavaMailSender javaMailSender, LectureRepository lectureRepository, BookingRepository bookingRepository)
+    public ProfessorServiceImpl(ProfessorRepository professorRepository, JavaMailSender javaMailSender, LectureRepository lectureRepository, BookingRepository bookingRepository,BookingService bookingService)
     {
     	this.professorRepository = professorRepository;
     	this.javaMailSender = javaMailSender;
     	this.bookingRepository = bookingRepository;
     	this.lectureRepository = lectureRepository;
+    	this.bookingService = bookingService;
     }
     
     
@@ -160,5 +168,31 @@ public class ProfessorServiceImpl implements ProfessorService {
 		}
 		
 	}
+
+	
+	@Override
+	public List<StudentDto> getContactedStudents(ProfessorDto professorDto, Date date) {
+		List<StudentDto> contactedStudents = new ArrayList<>();
+		if(professorDto != null) {			
+			List<BookingDto> bookingDtos =  bookingService.getListAllBookings();
+			for (BookingDto bookingDto : bookingDtos) {
+				if ((bookingDto.getLectureDto().getDate()).compareTo(date) >= 0 && bookingDto.getLectureDto().getProfessorDto().getEmail().equals(professorDto.getEmail())) {
+					
+					boolean contains = false;
+					for (StudentDto contactedStudent : contactedStudents) {
+						if(contactedStudent.getEmail().equals(bookingDto.getStudentDto().getEmail())) {
+							contains = true;
+							break;
+						}
+					}
+					if(contains) {
+						continue;
+					}
+					contactedStudents.add(bookingDto.getStudentDto());
+				}
+			}
+		}
+		return contactedStudents;
+	}	
 
 }

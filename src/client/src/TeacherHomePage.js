@@ -1,5 +1,4 @@
 import React from 'react';
-import TeacherNotification from './TeacherNotification';
 import TeacherModifyLecture from './TecaherModifyLecture';
 import TeacherStatistics from './TeacherStatistics';
 import API from './API.js';
@@ -140,9 +139,6 @@ class TeacherHomePage extends React.Component {
             </Route>
             <Route exact path="/teacherportal/statistics">
                 <TeacherStatistics allLectures={this.state.allLectures} lectures={this.state.lectures} bookings={this.state.bookings} />
-            </Route>
-            <Route exact path="/teacherportal/notifications">
-                <TeacherNotification teacher={this.state.teacher} />
             </Route>
         </Switch>
 

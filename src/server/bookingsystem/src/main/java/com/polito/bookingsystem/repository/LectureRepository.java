@@ -9,4 +9,5 @@ import com.polito.bookingsystem.entity.Professor;
 public interface LectureRepository extends JpaRepository<Lecture,Integer>{
   Lecture findByLectureId(Integer lectureId);
   List<Lecture> findByProfessor(Professor professor);
+  Long deleteByLectureId(Integer lectureId);
 }

@@ -40,11 +40,15 @@ import com.polito.bookingsystem.repository.RoomRepository;
 import com.polito.bookingsystem.repository.LectureRepository;
 import com.polito.bookingsystem.repository.CourseRepository;
 import com.polito.bookingsystem.repository.ProfessorRepository;
+import com.polito.bookingsystem.repository.HolidayRepository;
 import com.polito.bookingsystem.repository.StudentRepository;
 import com.polito.bookingsystem.service.StudentService;
+import com.polito.bookingsystem.service.ProfessorService;
+import com.polito.bookingsystem.service.BookingService;
 import com.polito.bookingsystem.service.impl.LectureServiceImpl;
 import com.polito.bookingsystem.service.impl.CourseServiceImpl;
 import com.polito.bookingsystem.utils.BookingInfo;
+import com.polito.bookingsystem.utils.Schedule;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -52,6 +56,8 @@ class LectureServiceTests {
 
 	@Autowired
 	private LectureRepository lectureRepository;
+	@Autowired
+	private HolidayRepository holidayRepository;
 	@Autowired
 	private StudentRepository studentRepository;
 	@Autowired
@@ -64,8 +70,14 @@ class LectureServiceTests {
 	private RoomRepository roomRepository;
 	
 	private StudentService studentService;
+
+	private ProfessorService professorService;
+
+	private BookingService bookingService;
 	
 	private LectureServiceImpl lectureServiceImpl;
+	
+	private ArrayList<Schedule> scheduleCourses;
 	
 	
 	
@@ -73,15 +85,25 @@ class LectureServiceTests {
 	public void setUp() throws Exception {
 
 		bookingRepository = mock(BookingRepository.class);
+		holidayRepository = mock(HolidayRepository.class);
 		studentRepository = mock(StudentRepository.class);
 		lectureRepository = mock(LectureRepository.class);
 		roomRepository = mock(RoomRepository.class);
 		courseRepository = mock(CourseRepository.class);
 		studentService = mock(StudentService.class);
-		professorRepository = mock(ProfessorRepository.class);
-		
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository);
-		
+		professorService = mock(ProfessorService.class);
+		professorRepository = mock(ProfessorRepository.class);		
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService);
+		bookingService = mock(BookingService.class);
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(1, "testName1", "XY1212",1,1);
+		Schedule schedule1 = new Schedule(1,"Mon",120,"12:00",room,course1);
+		Schedule schedule2 = new Schedule(2,"Tue",120,"12:00",room,course2);
+		scheduleCourses = new ArrayList<>();
+		scheduleCourses.add(schedule1);
+		scheduleCourses.add(schedule2);
+
 	}
 	
 
@@ -570,8 +592,191 @@ class LectureServiceTests {
 		
 		assertNull("Expected",lectureServiceImpl.getFirstDate(testCalendar, day));
 	}
+	
+	@Test
+	void testRemoveHolidays1() throws ParseException {
+		String fileName = "../../test-files/Holidays.csv";
+		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
+		Date date1 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("06-01-2021-12.00.00");
+		Date date2 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("25-12-2020-12.00.00");
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "B",1,1);
+		Course course3 = new Course(3, "testName3", "C",1,1);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date, 90, "testDetails", room);
+		Lecture lecture2 = new Lecture(1, 10, course2, professor1, true, date1, 90, "testDetails", room);
+		Lecture lecture3 = new Lecture(1, 10, course3, professor1, true, date2, 90, "testDetails", room);
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+		lectures.add(lecture2);
+		lectures.add(lecture3);
+		Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		Student student2 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");
+		BookingInfo bookingInfo = BookingInfo.WAITING;
+		BookingInfo bookingInfo1 = BookingInfo.ATTENDED;
+		Booking booking10 = new Booking(1, student1, lecture2, bookingInfo);
+		Booking booking11 = new Booking(1, student2, lecture2, bookingInfo1);
+		List<Booking> bookings1 = new ArrayList<>();
+		bookings1.add(booking10);
+		bookings1.add(booking11);
+		Booking booking20 = new Booking(1, student1, lecture3, bookingInfo);
+		Booking booking21 = new Booking(1, student2, lecture3, bookingInfo1);
+		List<Booking> bookings2 = new ArrayList<>();
+		bookings2.add(booking20);
+		bookings2.add(booking21);
+		try {
+			when(lectureRepository.findAll()).thenReturn(lectures);
+			when(holidayRepository.save(anyObject())).thenReturn(null);
+			when(bookingRepository.findByLecture(anyObject())).thenReturn(bookings1).thenReturn(bookings2);
+			doNothing().when(bookingRepository).deleteById(anyInt());
+			doNothing().when(lectureRepository).deleteById(anyInt());
+			doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+			doNothing().when(professorService).sendEmail(anyObject(), anyString(), anyString());
+			
+			lectureServiceImpl.removeHolidays(fileName);
+		
+		}catch(Exception e) {
+	          System.out.println(e.getMessage());
+	          e.printStackTrace();
+	       }
+	}
+
+		
+	void testModifySchedule1() throws ParseException  {
+		//String day="Monday"
+		Room room = new Room(1, "testName", 100);
+		Date date = new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1997");
+		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("11-01-2021-12.00.00");
+		Date date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("09-12-2020-12.00.00");
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "XY1212",2,2);
+		Course course3 = new Course(3, "testName3", "XY1213",3,3);
+		List<Course> courses = new ArrayList<>();
+		List<Course> courses1 = new ArrayList<>();
+		courses.add(course2);
+		courses.add(course1);
+		courses1.add(course3);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		Professor professor2 = new Professor(2, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses1,"d1");
+		List<Professor> professors = new ArrayList<>();
+		Lecture lecture1 = new Lecture(1, 10, course1, professor1, true, date2, 120, "testDetails", room);//lecture passed not on monday
+		Lecture lecture2 = new Lecture(2, 10, course1, professor1, true, date1, 120, "testDetails", room);//lecture future monday 
+		Lecture lecture3 = new Lecture(1, 10, course2, professor1, true, date1, 120, "testDetails", room);//lecture of another course
+		List<Lecture> lectures = new ArrayList<>();
+		lectures.add(lecture1);
+		lectures.add(lecture2);
+		lectures.add(lecture3);
+		BookingInfo bookingInfo = BookingInfo.BOOKED;
+        Student student1 = new Student(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");	
+        Student student2 = new Student(2, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", date, courses, "testMatricola");	
+		Booking booking1 = new Booking(1, student1, lecture2, bookingInfo);	//booking for changing lecture	
+		Booking booking2 = new Booking(2, student2, lecture3, bookingInfo); //booking for not changing lecture
+		List<Booking> bookings = new ArrayList<>();
+		bookings.add(booking1);
+		bookings.add(booking2);
+		professors.add(professor2);
+		professors.add(professor1);
+		List<Student> students = new ArrayList<>();
+		students.add(student1);
+		students.add(student2);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room); //room
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1); //course1 //schedule = Monday 12:00 120 minutes room
+		when(professorRepository.findAll()).thenReturn(professors); //professor1
+		when(lectureRepository.findAll()).thenReturn(lectures); // two lectures of course
+		when(lectureRepository.findByLectureId(anyInt())).thenReturn(lecture2);
+		when(bookingRepository.findAll()).thenReturn(bookings);
+		when(bookingService.deleteBookingOfficer(anyInt())).thenReturn(false);
+		when(lectureRepository.save(anyObject())).thenReturn(null);
+		when(studentRepository.findAll()).thenReturn(students);
+		doNothing().when(studentService).sendEmail(anyObject(), anyString(), anyString());
+		assertTrue("should return true",lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
+		
+	}
 		
 	
+	
+	@Test
+	void testRemoveHolidays2 () {
+		String fileName = "wrong-file-name";
+		
+		try {
+			
+			lectureServiceImpl.removeHolidays(fileName);
+			
+		}catch(Exception e) {
+			fail("Shouldn't get here");
+		}
+		
+	}
+	
+	@Test
+	void testRemoveHolidays3 () {
+		String fileName = "../../test-files/Holidays-wrong.csv";
+		
+		try {
+			when(lectureRepository.findAll()).thenReturn(null);
+			lectureServiceImpl.removeHolidays(fileName);
+			
+		}catch(Exception e) {
+			fail("Shouldn't get here");
+		}
+	}       	
+	
+	
+	@Test
+	void testModifySchedule2() {
+		//room = null
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(null);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
+	}
+		
+	@Test
+	void testModifySchedule3() {
+		//course = null
+		Room room = new Room(1, "testName", 100);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
+		when(courseRepository.findByCode(anyObject())).thenReturn(null);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
+	}
+	
+	@Test
+	void testModifySchedule4() {
+		//course doesn't belong to any professor
+		Room room = new Room(1, "testName", 100);
+		Course course1 = new Course(1, "testName1", "XY1211",1,1);
+		Course course2 = new Course(2, "testName2", "XY1212",2,2);
+		List<Course> courses = new ArrayList<>();
+		courses.add(course2);
+		Professor professor1 = new Professor(1, "testName", "testSurname", "testAddress", "testProfessor@email.com", "testPassword",courses,"d0");
+		List<Professor> professors = new ArrayList<>();
+		professors.add(professor1);
+		when(roomRepository.findByRoomId(anyInt())).thenReturn(room);
+		when(courseRepository.findByCode(anyObject())).thenReturn(course1);
+		when(professorRepository.findAll()).thenReturn(professors);
+		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
+	}
+	
+	@Test
+	void testGetRooms() {
+		Room room1 = new Room(1, "testName", 100);
+		Room room2 = new Room(2, "testName", 100);
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(room1);
+		rooms.add(room2);
+		when(roomRepository.findAll()).thenReturn(rooms);
+		assertTrue("expected two rooms",lectureServiceImpl.getRooms().size()==2);
+		assertTrue("expected room id 1",lectureServiceImpl.getRooms().get(0).getRoomId()==1);
+	}
+	
+	@Test
+	void getScheduleCourses() {
+		assertTrue(lectureServiceImpl.getScheduleCourses("XY1211").get(0).getId()==1);
+	}
 	
 
 	    

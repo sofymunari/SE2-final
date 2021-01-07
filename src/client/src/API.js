@@ -148,6 +148,22 @@ async function uploadCoursesFile(file){
     }
 }
 
+
+async function uploadHolidaysFile(file){
+    let url = BASE_URL+"uploadHolidays"
+    const response = await fetch(url, {
+        method: "POST",
+        body: file
+    })
+    const restext = await response.text();
+    if(response.ok){
+        if(restext){
+            return restext;
+        }
+        throw "error";
+    }
+}
+
 async function sendCourses(courses){
     let url = BASE_URL+"sendCourses"
     const response = await fetch(url, {
@@ -179,7 +195,6 @@ async function sendCourse(course){
 
     throw "error";
 }
-
 
 async function getStudentLectures(username){
     const url= BASE_URL+"studentlectures/"+username;
@@ -481,10 +496,56 @@ async function downloadReportPdf(email, date){
     }
 }
 
+async function getSchedules(courseId){
+    const url = BASE_URL + "getScheduleCourse/" + courseId;
+    const response = await fetch(url);
+    const schedules_json= await response.json();
+        if(response.ok){
+            console.log(schedules_json);
+        return schedules_json.map((n)=>{
+            return {scheduleId:n.id, day:n.day, duration:n.duration, timeStart:n.timeStart, roomId:n.room.roomId, roomName: n.room.name}
+        })
+    }else{
+        throw schedules_json;
+    }
+}
+
+async function getRooms(){
+    const url = BASE_URL + "getRooms/";
+    const response = await fetch(url);
+    const rooms_json= await response.json();
+        if(response.ok){
+        return rooms_json.map((n)=>{
+            return {roomId:n.roomId, name:n.name, numberOfSeat:n.numberOfSeat}
+        })
+    }else{
+        throw rooms_json;
+    }
+}
+
+async function editSchedule(day, duration, roomId, courseCode, timeStart, scheduleId){
+    const url = BASE_URL + "modifySchedule/"+ courseCode + "/" + scheduleId;
+    return new Promise((resolve,reject) =>{
+        fetch(url, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({day: day, duration: duration, timeStart: timeStart, roomId: roomId})
+        }).then((response)=>{
+            if(response.ok){
+                resolve();
+            }
+            reject("connection error");
+        }).catch((err)=>reject(err));
+    })
+}
+
 
 
 const API={loginStudent, loginTeacher, loginManager, loginSupportOfficer, getStudentLectures, getStudentInfo, addBooking,
            getStudentBookings,cancelBooking,getTeacherInfo,getTeacherBookings,getTeacherLectures,getTeacherNotifications,
            teacherDeleteLecture,getManagerInfo,getSupportOfficerInfo, getBookings,teacherRemoteLecture,getLectures, uploadStudentsFile,
-           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences, downloadReportPdf, getCourses, sendCourse, sendCourses}
+           uploadProfessorsFile, uploadEnrollmentFile, uploadLecturesFile, uploadCoursesFile,downloadReportCsv, setAttendences,
+           downloadReportPdf, getCourses, sendCourse, sendCourses, getSchedules, getRooms, editSchedule, uploadHolidaysFile}
 export default API;

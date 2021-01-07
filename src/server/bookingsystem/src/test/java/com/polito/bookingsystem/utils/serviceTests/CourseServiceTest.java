@@ -191,7 +191,7 @@ class CourseServiceTest {
 		Date date = new SimpleDateFormat("dd/MM/yyyy").parse("01/12/2021");
 		Course course1 = new Course(1, "testName", "A", 1,1);
 		CourseDto courseDto1 = new CourseDto(1, "testName", "A", 1,1);
-		CourseDto courseDto2 = new CourseDto(2, "testName2", "A", 1,1);
+		CourseDto courseDto2 = new CourseDto(2, "testName2", "B", 1,1);
 		List<CourseDto> courses = new ArrayList<>();
 		List<LectureDto> lectures = new ArrayList<>();
 		ProfessorDto professorDto1 = new ProfessorDto(1, "testName", "testSurname", "testAddress", "test@email.com", "testPassword", courses, "d0");		 
@@ -204,6 +204,8 @@ class CourseServiceTest {
 		when(lectureRepository.save(anyObject())).thenReturn(null);
 		courseServiceImpl.setCourseToRemote(courseName);
 	}
+	
+	
 	
 	
 

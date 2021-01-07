@@ -28,15 +28,24 @@
 	  		
 	  		<hr/>
 	  		
-	    	<h2>Student</h2>
-	    	<p>Matricola:  ${sourceStudent.matricola}</p>
-	    	<p>Email: ${sourceStudent.email}</p>
-	    	<p>First Name: ${sourceStudent.name}</p>
-	    	<p>Last Name: ${sourceStudent.surname}</p>
-	    	<p>Address: ${sourceStudent.address}</p>
-	    	<p>Date Of Birth: ${sourceStudent.dateOfBirth}</p>
+	    	<h2>${sourceType}</h2>
+      		
+      		<c:choose>
+      		   <c:when test = "${sourceType == 'Student'}"><p>Matricola:  ${source.matricola}</p></c:when>
+      		   <c:otherwise><p>Code:  ${source.code}</p></c:otherwise> 
+      		</c:choose>
+      		
+
+	    	<p>Email: ${source.email}</p>
+	    	<p>First Name: ${source.name}</p>
+	    	<p>Last Name: ${source.surname}</p>
+	    	<p>Address: ${source.address}</p>
+	      	<c:choose>
+      		   <c:when test = "${sourceType == 'Student'}"><p>Date Of Birth: ${source.dateOfBirth}</p></c:when>
+      		</c:choose>
 	    	
 	    	<hr/>
+	    	<h1>Student(s)</h1>
 	    	<table id="traceReport">
 	    		<thead>
 	   				<tr>
@@ -54,6 +63,30 @@
 							<td>${student.name}</td>
 							<td>${student.surname}</td>
 							<td>${student.address}</td>
+						</tr>
+					</c:forEach>
+	    		</thead>
+	    	</table>
+	    	
+	    	<hr/>
+	    	<h1>Professor(s)</h1>
+	    	<table id="traceReport">
+	    		<thead>
+	   				<tr>
+					    <th>Code</th>
+					    <th>Email</th>
+					    <th>First Name</th>
+					    <th>Last Name</th>
+					    <th>Address</th>
+					</tr>
+					
+					<c:forEach var="professor" items="${contactedProfessors}">
+						<tr>
+							<td>${professor.code}</td>
+							<td>${professor.email}</td>
+							<td>${professor.name}</td>
+							<td>${professor.surname}</td>
+							<td>${professor.address}</td>
 						</tr>
 					</c:forEach>
 	    		</thead>

@@ -1,7 +1,11 @@
 package com.polito.bookingsystem.service;
 import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.polito.bookingsystem.dto.ProfessorDto;
+import com.polito.bookingsystem.dto.StudentDto;
 
 @Service
 public interface ProfessorService {
@@ -10,5 +14,6 @@ public interface ProfessorService {
 	public ProfessorDto getProfessor(String email);
 	public void notifyProfessorsAboutNumberOfStudents() throws ParseException;
 	void addProfessors(String fileName);
+	public List<StudentDto> getContactedStudents(ProfessorDto professorDto, Date date);
 	
 }
