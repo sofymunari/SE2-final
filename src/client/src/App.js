@@ -142,6 +142,12 @@ function HomePage(props){
                 <li className="nav-item">
                   <a href="https://www.polito.it/">polito web site</a>
                 </li>
+                 <li className="nav-item">
+                  <a href="https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s/">tutorials for students</a>
+                </li>
+                <li className="nav-item">
+                  <a href="https://www.youtube.com/watch?v=5_J66dQRUuM&t=10s/">tutorials for professorss</a>
+                </li>
               </ul>
             </div>
             <div className="col-sm-6">
