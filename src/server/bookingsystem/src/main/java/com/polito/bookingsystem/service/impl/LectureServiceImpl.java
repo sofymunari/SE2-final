@@ -351,7 +351,7 @@ public class LectureServiceImpl implements LectureService {
 	}
 	
 	
-	private Calendar getFirstDate(Calendar calendar, String day) {
+	public Calendar getFirstDate(Calendar calendar, String day) {
 		
 	   switch(day) {
 	   case "Mon":
