@@ -5,12 +5,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.polito.bookingsystem.converter.CourseConverter;
 import com.polito.bookingsystem.converter.LectureConverter;
 import com.polito.bookingsystem.dto.CourseDto;

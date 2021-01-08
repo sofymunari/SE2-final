@@ -1,6 +1,5 @@
 package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.LectureConverter;
-import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
@@ -442,7 +441,7 @@ public class LectureServiceImpl implements LectureService {
 					}
 				 } 
 				 catch (ParseException e) {
-					e.printStackTrace();
+					 System.out.print(e.getMessage());
 				 }
 		
 			 }
@@ -583,7 +582,7 @@ public class LectureServiceImpl implements LectureService {
 			  newLecture.setLectureId(lectureId+1);
 			  newLecture.setNumberOfLesson(numberOfLesson + 1); 
 			  newLecture.setDeleted(false);
-			  newLecture.setDuration(duration.intValue());
+			  newLecture.setDuration(duration);
 			  newLecture.setCourse(course);
 			  newLecture.setBookedSeats(0);
 			  

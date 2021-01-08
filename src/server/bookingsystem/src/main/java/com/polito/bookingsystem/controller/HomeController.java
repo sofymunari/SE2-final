@@ -333,14 +333,13 @@ public class HomeController {
                 file.getContentType(), file.getSize());
     }
 	
-    @RequestMapping(value = "/sendCourse", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void courseToRemote(@RequestBody HashMap<String, String> course) {
+	@PostMapping(value = "/sendCourse", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	  public void courseToRemote(@RequestBody Map<String, String> course) {
 		courseService.setCourseToRemote(course.get("course"));
 	  }
 	
-    @RequestMapping(value = "/sendCourses", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
-//		courseService.setCourseToRemote(courseName);
+	@PostMapping(value = "/sendCourses", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	  public void coursesToRemote(@RequestBody Map<String,List<String>> courses) {
     	
 		for (String courseCode : courses.get("courses")) {
 			courseService.setCourseToRemote(courseCode);
@@ -374,8 +373,7 @@ public class HomeController {
 		return lectureService.getRooms();
 	}
     
-   
-    @PostMapping(value = "modifySchedule/{courseCode}/{scheduleId}")
+    @PostMapping(value = "modifySchedule/{courseCode}/{scheduleId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void modifySchedule(@RequestBody Map<String, String> scheduleInfo, @PathVariable String courseCode,  @PathVariable Integer scheduleId) {
     	String day = scheduleInfo.get("day");
 		String duration = scheduleInfo.get("duration");
