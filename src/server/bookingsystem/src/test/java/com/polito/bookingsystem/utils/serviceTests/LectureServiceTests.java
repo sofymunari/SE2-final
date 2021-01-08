@@ -102,10 +102,9 @@ class LectureServiceTests {
 		scheduleCourses = new ArrayList<>();
 		scheduleCourses.add(schedule1);
 		scheduleCourses.add(schedule2);
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService,bookingService,scheduleCourses);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService,bookingService, scheduleCourses);
 
 	}
-	
 
 	@Test
 	void testGetListLectures1() {

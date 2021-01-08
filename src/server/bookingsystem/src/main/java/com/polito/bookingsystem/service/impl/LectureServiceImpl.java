@@ -34,12 +34,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
+@Transactional
 public class LectureServiceImpl implements LectureService {
 	private static final Long MILLIHOUR = 3600000L;
 	
@@ -78,7 +78,7 @@ public class LectureServiceImpl implements LectureService {
 	
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,HolidayRepository holidayRepository,ProfessorService professorService,BookingService bookingService,List<Schedule> scheduleCourses )
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,HolidayRepository holidayRepository,ProfessorService professorService,BookingService bookingService, List<Schedule> scheduleCourses )
 	{
 		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
@@ -89,7 +89,10 @@ public class LectureServiceImpl implements LectureService {
 		this.roomRepository= roomRepository;
 		this.holidayRepository=holidayRepository;
 		this.professorService=professorService;
-		this.scheduleCourses = scheduleCourses;
+		if(scheduleCourses == null)
+			this.scheduleCourses = new ArrayList<>();
+		else
+			this.scheduleCourses = scheduleCourses;
 		this.bookingService = bookingService;
 	}
 
@@ -348,7 +351,7 @@ public class LectureServiceImpl implements LectureService {
 	}
 	
 	
-	public Calendar getFirstDate(Calendar calendar, String day) {
+	private Calendar getFirstDate(Calendar calendar, String day) {
 		
 	   switch(day) {
 	   case "Mon":
@@ -448,7 +451,7 @@ public class LectureServiceImpl implements LectureService {
 		}
 	}
 		
-	
+	@Override
 	public List<Schedule> getScheduleCourses(String codeCourse){
 		return scheduleCourses
 				.stream()
@@ -456,11 +459,12 @@ public class LectureServiceImpl implements LectureService {
                 .collect(Collectors.toList());
 	}
 	
+	@Override
 	public List<Room> getRooms(){
 		return roomRepository.findAll();
 	}
 	
-	
+	@Override
 	public Boolean modifySchedule(String day, Integer duration, String timeStart, Integer roomId, String codeCourse, Integer scheduleId) {
 		Room room = roomRepository.findByRoomId(roomId);
 		if(room == null)
@@ -504,22 +508,31 @@ public class LectureServiceImpl implements LectureService {
 		calendar = getFirstDate(calendar, scheduleCourse.getDay());
 		calendar2 = getFirstDate(calendar2, day);
 		
+		String [] time = scheduleCourse.getTimeStart().split(":");
 		//list of day with old schedule
 		while(calendar.before(endSemester)){
 			calendar.set(Calendar.HOUR, 0);
 		    calendar.set(Calendar.MINUTE, 0);
 		    calendar.set(Calendar.SECOND, 0);
 		    calendar.set(Calendar.MILLISECOND, 0);
+		    
+		    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+		    calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+		    
 		    oldScheduleDays.add(calendar.getTime());
 			calendar.add(Calendar.DATE, 7);	
 		}
 		
+		String [] time2 = timeStart.split(":");
 		//list of day with new schedule
 		while(calendar2.before(endSemester)){
 			calendar2.set(Calendar.HOUR, 0);
 			calendar2.set(Calendar.MINUTE, 0);
 			calendar2.set(Calendar.SECOND, 0);
 			calendar2.set(Calendar.MILLISECOND, 0);
+			
+		    calendar2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time2[0]));
+		    calendar2.set(Calendar.MINUTE, Integer.parseInt(time2[1]));
 			newScheduleDays.add(calendar2.getTime());
 			calendar2.add(Calendar.DATE, 7);
 		}
@@ -532,10 +545,6 @@ public class LectureServiceImpl implements LectureService {
 			                                            .filter(l ->{
 			                                            	Calendar c = Calendar.getInstance();
 			                                            	c.setTime(l.getDate());
-			                                            	c.set(Calendar.HOUR, 0);
-			                                    			c.set(Calendar.MINUTE, 0);
-			                                    			c.set(Calendar.SECOND, 0);
-			                                    			c.set(Calendar.MILLISECOND, 0);
 			                                    			int i=0;
 			                                    			for(i=0; i<oldScheduleDays.size();i++) {
 			                                    				Date ca = oldScheduleDays.get(i);
@@ -578,15 +587,8 @@ public class LectureServiceImpl implements LectureService {
 			  newLecture.setCourse(course);
 			  newLecture.setBookedSeats(0);
 			  
-			  String[] time = timeStart.split(":");
 			  Calendar cc = Calendar.getInstance();
 			  cc.setTime(d);
-			  cc.set(Calendar.HOUR, 0);
-			  cc.set(Calendar.MINUTE, 0);
-			  cc.set(Calendar.SECOND, 0);
-			  cc.set(Calendar.MILLISECOND, 0);
-			  cc.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-  			  cc.set(Calendar.MINUTE, Integer.parseInt(time[1]));
 			  newLecture.setDate(cc.getTime());
 			  
 			  newLecture.setProfessor(professor);

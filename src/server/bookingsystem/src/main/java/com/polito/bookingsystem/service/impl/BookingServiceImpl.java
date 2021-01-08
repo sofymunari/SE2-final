@@ -1,10 +1,10 @@
 package com.polito.bookingsystem.service.impl;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.polito.bookingsystem.converter.BookingConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.converter.LectureConverter;
@@ -23,6 +23,7 @@ import com.polito.bookingsystem.utils.BookingEntry;
 import com.polito.bookingsystem.utils.BookingInfo;
 
 @Service
+@Transactional
 public class BookingServiceImpl implements BookingService{
 
 	@Autowired
