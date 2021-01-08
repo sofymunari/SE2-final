@@ -78,7 +78,7 @@ public class LectureServiceImpl implements LectureService {
 	
 	
 	@Autowired
-	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,HolidayRepository holidayRepository,ProfessorService professorService)
+	public LectureServiceImpl(LectureRepository lectureRepository, StudentRepository studentRepository, BookingRepository bookingRepository, StudentService studentService, ProfessorRepository professorRepository,CourseRepository courseRepository,RoomRepository roomRepository,HolidayRepository holidayRepository,ProfessorService professorService,BookingService bookingService,List<Schedule> scheduleCourses )
 	{
 		this.studentService = studentService;
 		this.lectureRepository = lectureRepository;
@@ -89,7 +89,7 @@ public class LectureServiceImpl implements LectureService {
 		this.roomRepository= roomRepository;
 		this.holidayRepository=holidayRepository;
 		this.professorService=professorService;
-		this.scheduleCourses = new ArrayList<Schedule>();
+		this.scheduleCourses = scheduleCourses;
 		this.bookingService = bookingService;
 	}
 

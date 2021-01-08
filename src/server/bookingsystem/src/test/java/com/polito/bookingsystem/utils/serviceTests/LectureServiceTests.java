@@ -93,7 +93,6 @@ class LectureServiceTests {
 		studentService = mock(StudentService.class);
 		professorService = mock(ProfessorService.class);
 		professorRepository = mock(ProfessorRepository.class);		
-		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService);
 		bookingService = mock(BookingService.class);
 		Room room = new Room(1, "testName", 100);
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
@@ -103,6 +102,7 @@ class LectureServiceTests {
 		scheduleCourses = new ArrayList<>();
 		scheduleCourses.add(schedule1);
 		scheduleCourses.add(schedule2);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService,bookingService,scheduleCourses);
 
 	}
 	
@@ -646,13 +646,13 @@ class LectureServiceTests {
 	       }
 	}
 
-		
+	@Test	
 	void testModifySchedule1() throws ParseException  {
 		//String day="Monday"
 		Room room = new Room(1, "testName", 100);
 		Date date = new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1997");
-		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("11-01-2021-12.00.00");
-		Date date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("09-12-2020-12.00.00");
+		Date date1 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("11-01-2021-00.00.00");
+		Date date2 = new SimpleDateFormat("dd-MM-yyyy-HH.mm.ss").parse("09-12-2020-00.00.00");
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
 		Course course2 = new Course(2, "testName2", "XY1212",2,2);
 		Course course3 = new Course(3, "testName3", "XY1213",3,3);
