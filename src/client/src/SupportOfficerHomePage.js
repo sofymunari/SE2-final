@@ -523,7 +523,6 @@ class ModifySchedule extends React.Component {
     componentDidMount() {
         API.getSchedules(this.state.courseCode)
             .then((schedules) => {
-               let s = schedules.map((s)=> s.scheduleId);
                 this.setState({ schedules: schedules });
             }).catch((error) => {
                 this.setState({ 'error': error })
@@ -558,7 +557,8 @@ class ModifySchedule extends React.Component {
             toast.error('edit error');
             this.setState({ 'error': error })
         });
-    }
+
+   }
 
     render() {
 
@@ -610,11 +610,11 @@ class ModifySchedule extends React.Component {
                                         custom
                                         onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)}
                                     >
-                                        <option> Mon</option>
-                                        <option> Tue</option>
-                                        <option> Wed</option>
-                                        <option> Thu</option>
-                                        <option> Fri</option>
+                                        <option>Mon</option>
+                                        <option>Tue</option>
+                                        <option>Wed</option>
+                                        <option>Thu</option>
+                                        <option>Fri</option>
                                     </Form.Control>
                                 </Col>
                                 <Col className="my-1">
@@ -629,10 +629,10 @@ class ModifySchedule extends React.Component {
                                         onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)}
                                         custom
                                     >
-                                        <option>60</option>
+                                        {/* <option>60</option> */}
                                         <option>90</option>
-                                        <option>120</option>
-                                        <option>150</option>
+                                        {/* <option>120</option>
+                                        <option>150</option> */}
                                         <option>180</option>
                                     </Form.Control>
                                 </Col>
