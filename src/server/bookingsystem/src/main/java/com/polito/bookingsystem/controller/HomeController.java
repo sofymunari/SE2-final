@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.polito.bookingsystem.dto.BookingDto;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.dto.ManagerDto;
@@ -238,7 +235,7 @@ public class HomeController {
 	
 
 	@PostMapping(value = "lecture/{lectureId}/attendance")
-	public Boolean attendance(@RequestBody Map<String, List<String>> studentsList, @PathVariable Integer lectureId) {
+	public Boolean attendance(@RequestBody HashMap<String, List<String>> studentsList, @PathVariable Integer lectureId) {
 		List<String> students = studentsList.get("studentIds");
 		BookingDto bookingDto;
 		
@@ -334,12 +331,12 @@ public class HomeController {
     }
 	
 	@PostMapping(value = "/sendCourse", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void courseToRemote(@RequestBody Map<String, String> course) {
+	  public void courseToRemote(@RequestBody HashMap<String, String> course) {
 		courseService.setCourseToRemote(course.get("course"));
 	  }
 	
 	@PostMapping(value = "/sendCourses", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void coursesToRemote(@RequestBody Map<String,List<String>> courses) {
+	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
     	
 		for (String courseCode : courses.get("courses")) {
 			courseService.setCourseToRemote(courseCode);

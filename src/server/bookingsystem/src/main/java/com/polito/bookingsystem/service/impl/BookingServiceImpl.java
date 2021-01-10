@@ -38,6 +38,7 @@ public class BookingServiceImpl implements BookingService{
 	@Autowired
 	private StudentService studentService;
 	
+	private static final String  DEAR = "Dear ";
 	@Autowired
 	public BookingServiceImpl(BookingRepository bookingRepository, LectureRepository lectureRepository, StudentRepository studentRepository, StudentService studentService, NotificationProfessorService notificationProfessorService)
 	{
@@ -101,13 +102,13 @@ public class BookingServiceImpl implements BookingService{
 			lecture.setBookedSeats(numBookingLecture + 1);
 			lecture.setBookedSeats(numBookingLecture + 1);
 			booking.setBookingInfo(BookingInfo.BOOKED);
-			text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
+			text = DEAR +student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" has been confirmed.\n\nBest Regards,\nPolito";
 			studentService.sendEmail(StudentConverter.toDto(student), "Booking Confirmation", text);
 		}
 		else {
 			lecture.setBookedSeats(numSeatAvaiable);
 			booking.setBookingInfo(BookingInfo.WAITING);
-			text = "Dear "+student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been in waiting list. You recieve email if some seats will free.\n\nBest Regards,\nPolito";
+			text = DEAR +student.getName()+" "+student.getSurname()+",\n Your booking for lecture "+lecture.getCourse().getName()+" has been in waiting list. You recieve email if some seats will free.\n\nBest Regards,\nPolito";
 			studentService.sendEmail(StudentConverter.toDto(student), "Waiting confermation", text);
 		}
 		booking.setLecture(lecture);
@@ -136,7 +137,7 @@ public class BookingServiceImpl implements BookingService{
 				bookingWaiting.setBookingInfo(BookingInfo.BOOKED);
 				bookingRepository.save(bookingWaiting);
 				Student student = bookingWaiting.getStudent();
-				String text = "Dear "+student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" is confirmed. Now you are removed to waiting list and add in booking list.\n\nBest Regards,\nPolito";
+				String text = DEAR + student.getName()+" "+student.getSurname()+" \n Your booking for lecture "+lecture.getCourse().getName()+" is confirmed. Now you are removed to waiting list and add in booking list.\n\nBest Regards,\nPolito";
 				studentService.sendEmail(StudentConverter.toDto(student), "Booking confermation (Removed to waiting list)", text);
 			}else {
 				lecture.setBookedSeats(lecture.getBookedSeats() - 1);
