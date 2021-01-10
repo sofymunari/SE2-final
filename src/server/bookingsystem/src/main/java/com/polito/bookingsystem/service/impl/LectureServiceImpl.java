@@ -231,7 +231,7 @@ public class LectureServiceImpl implements LectureService {
 			 Calendar startSemester = Calendar.getInstance();
 			 startSemester.set(2020, 8, 28);
 			 Calendar endSemester = Calendar.getInstance();
-			 endSemester.set(2021, 0, 17);
+			 endSemester.set(2021, 0, 30);
 			 Calendar calendar = Calendar.getInstance();
 			 int idSchedule = 0;
 			 String currentLine = reader.readLine(); //read first line
@@ -492,7 +492,7 @@ public class LectureServiceImpl implements LectureService {
 		startSemester.set(2020, 8, 28);
 		
 		Calendar endSemester = Calendar.getInstance();
-		endSemester.set(2021, 0, 17);
+		endSemester.set(2021, 0, 30);
 		
 		Calendar calendar = Calendar.getInstance();
 		Calendar calendar2 = Calendar.getInstance();

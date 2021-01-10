@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.controller;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 import java.util.Map;
@@ -234,7 +235,7 @@ public class HomeController {
 	
 
 	@PostMapping(value = "lecture/{lectureId}/attendance")
-	public Boolean attendance(@RequestBody Map<String, List<String>> studentsList, @PathVariable Integer lectureId) {
+	public Boolean attendance(@RequestBody HashMap<String, List<String>> studentsList, @PathVariable Integer lectureId) {
 		List<String> students = studentsList.get("studentIds");
 		BookingDto bookingDto;
 		
@@ -330,12 +331,12 @@ public class HomeController {
     }
 	
 	@PostMapping(value = "/sendCourse", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void courseToRemote(@RequestBody Map<String, String> course) {
+	  public void courseToRemote(@RequestBody HashMap<String, String> course) {
 		courseService.setCourseToRemote(course.get("course"));
 	  }
 	
 	@PostMapping(value = "/sendCourses", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	  public void coursesToRemote(@RequestBody Map<String,List<String>> courses) {
+	  public void coursesToRemote(@RequestBody HashMap<String,List<String>> courses) {
     	
 		for (String courseCode : courses.get("courses")) {
 			courseService.setCourseToRemote(courseCode);

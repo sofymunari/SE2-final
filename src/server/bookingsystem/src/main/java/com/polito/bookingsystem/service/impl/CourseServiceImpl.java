@@ -95,10 +95,10 @@ public class CourseServiceImpl implements CourseService{
 		if(courseDto != null) {
 			for (LectureDto lectureDto : lectureDtos) { 
 				if(lectureDto.getCourseDto().getCode().equals(courseDto.getCode())) {
-					if(Boolean.TRUE.equals(lectureDto.getRemotly())) {
+					if(lectureDto.getRemotly()) {
 						continue;
 					}
-					else if(Boolean.TRUE.equals(lectureDto.getDeleted())) {
+					else if(lectureDto.getDeleted()) {
 						continue;
 					}
 					else if((lectureDto.getDate()).compareTo(dateobj) <= 0) {
