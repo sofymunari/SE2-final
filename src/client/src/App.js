@@ -137,16 +137,12 @@ function HomePage(props){
               <h5>this is the future</h5>
               <p>Some text about the university or whatever..</p>
               <h3>Useful Links</h3>
-              <p>navigate to our affiliated universities</p>
               <ul className="nav nav-pills flex-column">
-                <li className="nav-item">
-                  <a href="https://www.polito.it/">polito web site</a>
-                </li>
                  <li className="nav-item">
-                  <a href="https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s/">tutorials for students</a>
+                  <a target="_blank" href="https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s/">STUDENT TUTORIAL</a>
                 </li>
                 <li className="nav-item">
-                  <a href="https://www.youtube.com/watch?v=5_J66dQRUuM&t=10s/">tutorials for professorss</a>
+                  <a target="_blank" href="https://www.youtube.com/watch?v=5_J66dQRUuM&t=10s/">PROFESSOR TUTORIAL</a>
                 </li>
               </ul>
             </div>

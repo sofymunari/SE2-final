@@ -32,15 +32,9 @@ class TeacherHomePage extends React.Component {
         //allLectures are all lectures of a teacher
         //lectures are the lecture of the teacher which are not passed nor deleted
         const lectures = allLectures.filter((l) => {
-            if (l.deleted) {
-                return false;
-            }
             const now = new Date();
             const lectDate = new Date(l.date);
-            if (lectDate < now) {
-                return false;
-            }
-            return true;
+            return !l.deleted && lectDate >= now;
         })
         this.setState({ teacher: teacher, bookings: bookings, lectures: lectures, allLectures: allLectures })
     }
@@ -132,7 +126,7 @@ class TeacherHomePage extends React.Component {
                                 <TeacherModifyLecture back={this.back} deleteandback={this.deleteandback} lecture={this.state.modifylect} /> :
                                 this.state.students ?
                                     <StudentBookingList students={this.state.students} back={this.backList} lectureId={this.state.lectureId} sendAttendences={this.sendAttendences} /> :
-                                    <MainPage lectures={this.state.allLectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
+                                    <MainPage lectures={this.state.lectures} bookings={this.state.bookings} showBookings={this.showBookings} modifyLecture={this.modifyLecture} />}
                         </div>
                     </div>
                 </div>

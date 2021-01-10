@@ -302,7 +302,7 @@ class AllLecturesStats extends React.Component {
     render(){
     let attendency = this.props.bookings.filter(b=>b.bookingInfo==='ATTENDED');
     if(this.state.showList){
-    let cancellations = this.props.bookings.filter((b)=>b.bookingInfo==='CANCELLED_BY_STUD');
+    let cancellations = this.props.bookings.filter((b)=>b.bookingInfo==='CANCELED_BY_STUD');
     
     return  <>
             <ul className="list-group list-group-flush">
