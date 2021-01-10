@@ -76,7 +76,7 @@ public class CourseServiceImpl implements CourseService{
 				  }
 			 }
 		}catch(IOException e) {
-			System.err.println(e.getMessage());
+			System.out.println(e.getMessage());
 		} 
 	}
 	
@@ -89,17 +89,16 @@ public class CourseServiceImpl implements CourseService{
   
 	@Override
 	public void setCourseToRemote(String courseCode) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date dateobj = new Date();
 		CourseDto courseDto = CourseConverter.toDto(courseRepository.findByCode(courseCode));
 		List<LectureDto> lectureDtos = lectureService.getListAllLectures();
 		if(courseDto != null) {
 			for (LectureDto lectureDto : lectureDtos) { 
 				if(lectureDto.getCourseDto().getCode().equals(courseDto.getCode())) {
-					if(lectureDto.getRemotly()) {
+					if(Boolean.TRUE.equals(lectureDto.getRemotly())) {
 						continue;
 					}
-					else if(lectureDto.getDeleted()) {
+					else if(Boolean.TRUE.equals(lectureDto.getDeleted())) {
 						continue;
 					}
 					else if((lectureDto.getDate()).compareTo(dateobj) <= 0) {
@@ -108,7 +107,6 @@ public class CourseServiceImpl implements CourseService{
 					lectureDto.setRemotly(true);
 					Lecture lecture = LectureConverter.toEntity(lectureDto);
 					lectureRepository.save(lecture);
-					System.out.println(lectureDto.getCourseDto().getName());
 				}
 			}
 		}

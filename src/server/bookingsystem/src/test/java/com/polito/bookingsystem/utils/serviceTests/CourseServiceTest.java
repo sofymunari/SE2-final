@@ -50,7 +50,6 @@ import com.polito.bookingsystem.utils.BookingInfo;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-
 class CourseServiceTest {
 	@Autowired
 	private CourseRepository courseRepository;

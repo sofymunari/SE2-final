@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LectureServiceImpl implements LectureService {
 	private static final Long MILLIHOUR = 3600000L;
-	
+	private static final String FORMAT_DATE = "dd/MM/yyyy";
 	@Autowired
 	private LectureRepository lectureRepository;
 	
@@ -183,7 +183,7 @@ public class LectureServiceImpl implements LectureService {
 			booking.setLecture(lecture);
 			booking.setBookingInfo(BookingInfo.CANCELED_BY_PROF);
 			Student student = booking.getStudent();
-			String date = new SimpleDateFormat("dd/MM/yyyy").format(lecture.getDate());
+			String date = new SimpleDateFormat(FORMAT_DATE).format(lecture.getDate());
 			String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse().getName() + " is cancelled";
 			String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + " of course " 
 			               + lecture.getCourse().getName() + " in date " + date 
@@ -398,7 +398,7 @@ public class LectureServiceImpl implements LectureService {
 			 String currentLine = reader.readLine(); //read first line (header)
 			 while((currentLine = reader.readLine()) != null){
 				 try {
-					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(currentLine);
+					Date date = new SimpleDateFormat(FORMAT_DATE).parse(currentLine);
 					
 					//saving the new holiday on database
 					Holiday holiday = new Holiday(date);
@@ -414,7 +414,7 @@ public class LectureServiceImpl implements LectureService {
 								bookingService.deleteBookingOfficer(booking.getBookingId());
 								
 								//send email to booked students to inform lecture has been deleted
-								String dateEmail = new SimpleDateFormat("dd/MM/yyyy").format(date);
+								String dateEmail = new SimpleDateFormat(FORMAT_DATE).format(date);
 								String subject = "Lecture " + lecture.getNumberOfLesson() + "-" + lecture.getCourse().getName() + " cancellation";
 								String text = "Dear student,\n"+ "The lecture " + lecture.getNumberOfLesson() + " of course " 
 								               + lecture.getCourse().getName() + " in date " + dateEmail 
