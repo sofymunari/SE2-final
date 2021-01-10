@@ -239,7 +239,7 @@ public class LectureServiceImpl implements LectureService {
 			 while((currentLine = reader.readLine()) != null){
 				  Schedule schedule = new Schedule();
 				  schedule.setId(idSchedule);
-				  idSchedule++;
+				  idSchedule++;		 
 				  String[] fields = currentLine.split(",");
 				  calendar = Calendar.getInstance();
 				  if(calendar.before(startSemester)) {
@@ -314,6 +314,7 @@ public class LectureServiceImpl implements LectureService {
 		                                               .max()
 									                   .orElse(0);
 										  
+										 
 										  Integer numberOfLesson = lectureRepository.findAll().stream()
 												                   .filter(l -> l.getCourse().getCode().compareTo(fields[0]) == 0)
 												                   .mapToInt(Lecture::getNumberOfLesson)

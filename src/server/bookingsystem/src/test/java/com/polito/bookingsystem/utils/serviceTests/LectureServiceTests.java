@@ -79,6 +79,22 @@ class LectureServiceTests {
 	
 	private ArrayList<Schedule> scheduleCourses;
 	
+	@Test
+	void testSetUp() throws Exception {
+
+		bookingRepository = mock(BookingRepository.class);
+		holidayRepository = mock(HolidayRepository.class);
+		studentRepository = mock(StudentRepository.class);
+		lectureRepository = mock(LectureRepository.class);
+		roomRepository = mock(RoomRepository.class);
+		courseRepository = mock(CourseRepository.class);
+		studentService = mock(StudentService.class);
+		professorService = mock(ProfessorService.class);
+		professorRepository = mock(ProfessorRepository.class);		
+		bookingService = mock(BookingService.class);
+		lectureServiceImpl = new LectureServiceImpl(lectureRepository, studentRepository, bookingRepository, studentService, professorRepository,courseRepository,roomRepository,holidayRepository,professorService,bookingService, null);
+
+	}
 	
 	
 	@BeforeEach
@@ -569,6 +585,25 @@ class LectureServiceTests {
 		       }
 		}
 	
+	
+	
+	@Test
+	void testAddLectures4() throws ParseException {
+		String fileName = "../../test-files/Schedule.csv";
+	
+		try {
+		     
+			when(courseRepository.findByCode(anyObject())).thenReturn(null);
+			
+			lectureServiceImpl.addLectures(fileName);
+		        
+
+		} catch (Exception e) {
+		          System.out.println(e.getMessage());
+		          e.printStackTrace();
+		       }
+	}
+	
 	@Test
 	void testGetFirstDate1() {
 		Calendar myCalendar = Calendar.getInstance();
@@ -596,7 +631,7 @@ class LectureServiceTests {
 	void testRemoveHolidays1() throws ParseException {
 		String fileName = "../../test-files/Holidays.csv";
 		Date date = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-05-2021-12.00.00");
-		Date date1 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("06-01-2021-12.00.00");
+		Date date1 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("20-01-2021-12.00.00");
 		Date date2 = new SimpleDateFormat("dd-MM-yy-HH.mm.ss").parse("25-12-2020-12.00.00");
 		Room room = new Room(1, "testName", 100);
 		Course course1 = new Course(1, "testName1", "XY1211",1,1);
@@ -759,6 +794,7 @@ class LectureServiceTests {
 		when(professorRepository.findAll()).thenReturn(professors);
 		assertFalse(lectureServiceImpl.modifySchedule("Tue", 120, "13:00", 1,"XY1211" , 1));
 	}
+	
 	
 	@Test
 	void testGetRooms() {
