@@ -74,7 +74,7 @@ function AppNavbar(props){
                         </li>    
                         <li className="nav-item pr-1">
                         <Link to="/supportOfficerlogin">
-                        <button className="btn btn-success text-dark font-weight-bold" >Support Officer</button>
+                        <button className="btn btn-success text-dark font-weight-bold" id="officerlogin" >Support Officer</button>
                         </Link>
                         </li>    
                     </ul>
@@ -92,7 +92,7 @@ function AppNavbar(props){
                     </li>
                     
                     <li className="nav-item pr-1">
-                        <button className="btn btn-lg btn-success text-dark font-weight-bold" onClick={ev=>props.logOut()} >LOG OUT</button>
+                        <button className="btn btn-lg btn-success text-dark font-weight-bold" onClick={ev=>props.logOut()} id="logout" >LOG OUT</button>
                     </li>    
                     </ul>
                 </div>  
@@ -169,7 +169,7 @@ function AppNavbar(props){
                     </li>
                     </Link>
                     <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" onClick={(ev) => props.logOut()} >LOG OUT</button>
+                        <button className="btn btn-success text-dark font-weight-bold" id="logout" onClick={(ev) => props.logOut()} >LOG OUT</button>
                     </li>     
                     </ul>
                 </div>  

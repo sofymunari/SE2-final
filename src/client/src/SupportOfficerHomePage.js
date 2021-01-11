@@ -247,7 +247,7 @@ class SupportOfficerHomePage extends React.Component {
                         </Alert>
                     } */}
                     <div className="form-group">
-                        <ToastContainer />
+                        <ToastContainer id="toast" />
                     </div>
                     <Switch>
                         <Route exact path="/supportOfficerportal">
@@ -261,8 +261,8 @@ class SupportOfficerHomePage extends React.Component {
                                             </div>
                                             <div className="col-2">
                                                 <form encType="multipart/form-data">
-                                                    <input type="file" name="studentsfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <input type="file" name="studentsfile" id="studentsfile" onChange={(event) => this.addFile(event, event.target.name)} />
+                                                    <button type="button" className="btn btn-success btn-block" id="upload_students" onClick={(event) => this.uploadFile(event)}>Upload</button>
                                                     <div className="form-group">
                                                         {
                                                             this.state.studentsPressed ?
@@ -445,7 +445,7 @@ function Aside(props) {
     return (
         <div className="container-fluid">
             <h3>Support Officer</h3>
-            <h4>{props.supportOfficer.name} {props.supportOfficer.surname}</h4>
+            <h4 id="officerInfo">{props.supportOfficer.name} {props.supportOfficer.surname}</h4>
             <h4>{props.supportOfficer.address}</h4>
         </div>
     )

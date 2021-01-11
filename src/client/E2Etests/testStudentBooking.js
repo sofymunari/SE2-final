@@ -5,6 +5,9 @@ fixture `Booking tests`
     .page `http://localhost:3000`;
 
 
+//BEFORE RUNNING THESE TESTS YOU MUST UPLOAD FILE: scheduleInit
+
+
 //booking on student home page
 test('BookingHomeTest', async t => {
 
@@ -17,7 +20,7 @@ test('BookingHomeTest', async t => {
     .typeText('#form_project','password')
     .click('#submit_button')
     .expect(Selector('#main').exists).ok()
-    .expect(bookings.childElementCount).eql(6)
+    .expect(bookings.childElementCount).eql(44)
     .click('#show_bookings')
     .expect(bookings.childElementCount).eql(2)
 
@@ -43,7 +46,7 @@ test('BookTaskTest', async t => {
     .click('#submit_button')
     .click(book)
     .click(book)
-    .expect(bookings.childElementCount).eql(4)
+    .expect(bookings.childElementCount).eql(42)
     .click('#show_bookings')
     .expect(bookings.childElementCount).eql(4)
     
@@ -68,4 +71,38 @@ test('BookTaskTest', async t => {
     .click('#show_bookings')
     .click(trash_bin)
     .expect(bookings.childElementCount).eql(3)
+});
+
+
+//waiting list Booking prparation
+test('BookTaskTest', async t => {
+
+    const book = Selector(() => {
+        return document.getElementsByTagName('svg')[1];
+    })
+    const bookings = Selector(() => {
+        return document.getElementsByTagName('ul')[1].children[1];
+    })
+
+    await t
+    .click('#studentlogin')
+    .typeText('#form_description','s0003@studenti.polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .click(book)
+    .click('#logout')
+    .click('#studentlogin')
+    .typeText('#form_description','silviogiro@gmail.com')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .click(book)
+    .click('#logout')
+    .click('#studentlogin')
+    .typeText('#form_description','tony.y.saliba00@gmail.com')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .click(book)
+    .click('#show_bookings')
+    .expect(bookings.innerText).contains("yes","expected Waiting list");
+
 });

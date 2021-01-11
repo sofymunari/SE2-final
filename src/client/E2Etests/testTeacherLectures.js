@@ -5,39 +5,90 @@ fixture `Lecture tests`
     .page `http://localhost:3000`;
 
 
-//booking on student home page
-/*test('LectureHomeTest', async t => {
+//BEFORE RUNNING THESE TESTS YOU NEED TO UPLOAD ScheduleInit
+test('preparation',async t=>{
+    const book = Selector(() => {
+        return document.getElementsByTagName('svg')[1];
+    })
+    await t
+    .click('#studentlogin')
+    .typeText('#form_description','s0000@studenti.polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .click(book)
+});
+
+//verify bookings on teacher side
+test('LectureHomeTest', async t => {
     const lectures = Selector(()=>{
         return document.getElementsByTagName('ul')[1];
     })
     const svg1 = Selector(()=>{
         return document.getElementsByTagName('svg')[1];
     })
-
-    const svg2 = Selector(()=>{
-        return document.getElementsByTagName('svg')[2];
+    const bookings = Selector(()=>{
+        return document.getElementsByTagName('ul')[1];
     })
-    
     const back = Selector(()=>{
         return document.getElementsByTagName('button')[2];
     })
     
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
-    .expect(lectures.childElementCount).eql(5)
+    .expect(lectures.childElementCount).eql(15)
     .click(svg1)
-    .expect(svg1.exists).ok()
+    .expect(bookings.childElementCount).eql(2)
     .click(back)
-    .click(svg2)
-    .expect(svg2.exists).ok()
+    .expect(lectures.childElementCount).eql(15)
+});
+
+//verify modify lecture page
+test('LectureHomeTest', async t => {
+    const lectures = Selector(()=>{
+        return document.getElementsByTagName('ul')[1];
+    })
+    const modify = Selector(()=>{
+        return document.getElementsByTagName('svg')[13];
+    })
+
+    const trash_bin = Selector(()=>{
+        return document.getElementsByTagName('svg')[1];
+    })
+
+    /*const modify_past = Selector(()=>{
+        return document.getElementsByTagName('svg')[0];
+    })*/
+
+    const remoting = Selector(()=>{
+        return document.getElementsByTagName('svg')[0];
+    })
+
+    const back = Selector(()=>{
+        return document.getElementsByTagName('button')[2];
+    })
+    
+    await t
+    .click('#teacherlogin')
+    .typeText('#form_description','d0000@polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .expect(lectures.childElementCount).eql(15)
+    .click(modify)
+    .expect(trash_bin.exists).ok();
+    //.click(back)
+    //.click(modify_past)
+    //.expect(remoting.exists).notOk();
 });
 
 //delete a lecture
 test('LectureDeleteTest', async t => {
-    const svg1 = Selector(()=>{
+    const modify = Selector(()=>{
+        return document.getElementsByTagName('svg')[2];
+    })
+    const trash_bin = Selector(()=>{
         return document.getElementsByTagName('svg')[1];
     })
     const lectures = Selector(()=>{
@@ -45,52 +96,45 @@ test('LectureDeleteTest', async t => {
     })
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
-    .click(svg1)
-    .click(svg1)
-    .expect(lectures.childElementCount).eql(4)
+    .click(modify)
+    .click(trash_bin)
+    .expect(lectures.childElementCount).eql(14)
 
 
 });
 
 //make lecture remote
-test('LectureDeleteTest', async t => {
-    const svg1 = Selector(()=>{
+test('LectureRemoteTest', async t => {
+    const modify = Selector(()=>{
+        return document.getElementsByTagName('svg')[12];
+    })
+    const remote = Selector(()=>{
+        return document.getElementsByTagName('svg')[0];
+    })
+    const remoting = Selector(()=>{
         return document.getElementsByTagName('svg')[1];
     })
-    const svg2 = Selector(()=>{
-        return document.getElementsByTagName('svg')[2];
+    const back = Selector(()=>{
+        return document.getElementsByTagName('button')[2];
+    })
+    const lecture_remote = Selector(()=>{
+        return document.getElementsByTagName('ul')[1].children[13];
     })
    
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
-    .click(svg1)
-    .click(svg1)
-    .expect(svg2.exists).notOk()
+    .click(modify)
+    .click(remote)
+    .expect(remoting.exists).notOk()
+    .click(back)
+    .expect(lecture_remote.innerText).contains("Remote","expected Remote");
     
-});*/
-
-//check list of students booked for a lecture
-test('BookingsLectureTest',async t =>{
-    const svg = Selector(()=>{
-        return document.getElementsByTagName('svg')[7];
-    })
-    const students = Selector(()=>{
-        return document.getElementsByTagName('ul')[1];
-    })
-    await t
-    .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
-    .typeText('#form_project','password')
-    .click('#submit_button')
-    .click(svg)
-    .expect(students.childElementCount).eql(2)
-
 });
 
 //check stats for all lectures
@@ -102,11 +146,11 @@ test('StatsAllLecturesTest',async t =>{
 
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
     .click('#statsButton')
-    .expect(stats.childElementCount).eql(11);
+    .expect(stats.childElementCount).eql(4);
 });
 
 //check stats for per week lectures
@@ -119,12 +163,12 @@ test('StatsPerWeekBookingsTest',async t =>{
     })
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
     .click('#statsButton')
     .click(button)
-    .expect(stats.childElementCount).eql(6);
+    .expect(stats.childElementCount).eql(3);
 })
 
 //check stats for per month lectures
@@ -137,10 +181,10 @@ test('StatsPerWeekBookingsTest',async t =>{
     })
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
     .click('#statsButton')
     .click(button)
-    .expect(stats.childElementCount).eql(4);
+    .expect(stats.childElementCount).eql(2);
 })

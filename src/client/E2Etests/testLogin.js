@@ -11,7 +11,7 @@ test('StudentLoginTest', async t => {
       .typeText('#form_description','s0000@studenti.polito.it')
       .typeText('#form_project','password')
       .click('#submit_button')
-      .expect(Selector('#matricola').innerText).eql('0000');
+      .expect(Selector('#matricola').innerText).eql('s0000');
 
 });
 
@@ -41,7 +41,7 @@ test('StudentLoginFail2Test', async t => {
 test('TeacherLoginTest', async t => {
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0000@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
     .expect(Selector('#professorInfo').innerText).eql('Marco Torchiano');
@@ -102,6 +102,44 @@ test('ManagerLoginFail2Test', async t => {
     await t
     .click('#managerlogin')
     .typeText('#form_description','manager@polito.it')
+    .typeText('#form_project','wrong')
+    .click('#submit_button')
+    .expect(Selector('#wrongAuthentication').innerText).eql('wrong username or password');
+
+});
+
+
+//corret Officer authentication
+test('OfficerLoginTest', async t => {
+    
+    await t
+    .click('#officerlogin')
+    .typeText('#form_description','officer@polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .expect(Selector('#officerInfo').innerText).eql('Mario Rossi');
+
+});
+
+//wrong username Manager authentication
+test('OfficerLoginFail1Test', async t => {
+    
+    await t
+    .click('#officerlogin')
+    .typeText('#form_description','wrong')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .expect(Selector('#wrongAuthentication').innerText).eql('wrong username or password');
+
+});
+
+
+//wrong password Manager authentication
+test('OfficerLoginFail2Test', async t => {
+    
+    await t
+    .click('#officerlogin')
+    .typeText('#form_description','officer@polito.it')
     .typeText('#form_project','wrong')
     .click('#submit_button')
     .expect(Selector('#wrongAuthentication').innerText).eql('wrong username or password');
