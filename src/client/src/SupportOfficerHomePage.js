@@ -503,7 +503,7 @@ function CourseItem(props) {
                     <h4>{props.course.courseName}</h4>
                 </div>
                 <div className="col-2">
-                    <Link id="updateschedule_link" to={`/supportOfficerportal/updateSchedule/${props.course.courseCode}`}> Edit </Link>
+                    <Link name="updateschedule_link" to={`/supportOfficerportal/updateSchedule/${props.course.courseCode}`}> Edit </Link>
                 </div>
             </div>
         </li>
@@ -675,7 +675,7 @@ class ModifySchedule extends React.Component {
                                     </Form.Control>
                                 </Col>
                                 <Col className="my-1">
-                                    <Button type="submit">Submit</Button>
+                                    <Button id = "update_button" type="submit">Submit</Button>
                                 </Col>
                             </Form.Row>        
                         </Form>
@@ -704,7 +704,7 @@ function ScheduleList(props) {
                     <h4>{props.schedule.roomName}</h4>
                 </div>
                 <div className="col-2">
-                    <Button onClick={() => props.showModal(props.schedule.scheduleId)}> Edit </Button>
+                    <Button name = "edit_schedule_button" onClick={() => props.showModal(props.schedule.scheduleId)}> Edit </Button>
                 </div>
             </div>
         </li>

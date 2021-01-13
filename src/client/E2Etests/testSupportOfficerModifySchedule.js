@@ -8,6 +8,13 @@ fixture `Officer tests`
 
 //officer update schedule
 test('OfficerUpdateScheduleTest', async t => {
+    const updateschedule_link = Selector(()=>{
+        return document.getElementsByName('updateschedule_link')[0];
+    })
+
+    const edit_schedule_button = Selector(()=>{
+        return document.getElementsByName('edit_schedule_button')[0];
+    })
 
     await t
     .click('#officerlogin')
@@ -15,7 +22,10 @@ test('OfficerUpdateScheduleTest', async t => {
     .typeText('#form_project','password')
     .click('#submit_button')
     .click('#updateschedule_button')
-    .click('#updateschedule_link')
+    .click(updateschedule_link)
+    .click(edit_schedule_button)
+    .click('#update_button')
+    .expect(document.body.innerHTML).contains('<div role="alert" class="Toastify__toast-body">edit success</div>');
 
 
 });
