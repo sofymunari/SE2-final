@@ -108,7 +108,6 @@ test('BookTaskTest', async t => {
 });
 
 //moving a student from the wait list to the book list
-
 test('MovetoBookTest', async t=> {
 
     const book = Selector(() => {
@@ -135,7 +134,6 @@ test('MovetoBookTest', async t=> {
     .typeText('#form_description','tony.y.saliba00@gmail.com')
     .typeText('#form_project','password')
     .click('#submit_button')
-    .click(book)
     .click('#show_bookings')
     .expect(bookings.innerText).contains("no","expected no Waiting list");
 

@@ -189,7 +189,7 @@ test('StatsPerWeekBookingsTest',async t =>{
     .expect(stats.childElementCount).eql(2);
 })
 
-
+//test for set the attendences
 test('AttendencesTest', async t => {
 
     const list = Selector(()=>{
@@ -202,12 +202,11 @@ test('AttendencesTest', async t => {
 
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','d0002@polito.it')
+    .typeText('#form_description','d0003@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
     .click(list)
     .click('#checkbox')
-    .click('sendattendences')
     .click('#sendattendences')
     .expect(bookings.innerText).contains("ATTENDED", "expected attended")
 })
