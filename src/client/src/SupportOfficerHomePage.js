@@ -503,7 +503,7 @@ function CourseItem(props) {
                     <h4>{props.course.courseName}</h4>
                 </div>
                 <div className="col-2">
-                    <Link to={`/supportOfficerportal/updateSchedule/${props.course.courseCode}`}> Edit </Link>
+                    <Link id="updateschedule_link" to={`/supportOfficerportal/updateSchedule/${props.course.courseCode}`}> Edit </Link>
                 </div>
             </div>
         </li>

@@ -82,7 +82,10 @@ function BookingItem(props){
     let expired = false;
     if(dateSet.getTime() < today.getTime()) expired = true;
     console.log(props.booking);
-    return  <li className="list-group-item" id = {props.booking.bookingId}>
+    var ret = <></>;
+    {
+        props.booking.bookingInfo==='BOOKED' || props.booking.bookingInfo==='ATTENDED' || props.booking.bookingInfo==='WAITING' ?
+        ret =  <li className="list-group-item" id = {props.booking.bookingId}>
             <div className="d-flex w-100 justify-content-between">
                 <div className="col-2">
                 <h4>{props.booking.courseDto.name}</h4>
@@ -110,6 +113,10 @@ function BookingItem(props){
                 </div>
             </div>
             </li>
+            :
+            ret = <></>;
+    } 
+    return ret;
 }
 
 export default StudentBooking;
