@@ -139,7 +139,7 @@ function HomePage(props){
               <h3>Useful Links</h3>
               <ul className="nav nav-pills flex-column">
                  <li className="nav-item">
-                  <a target="_blank" href="https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s/">STUDENT TUTORIAL</a>
+                  <a id = "studenttutorial_link" target="_blank" href="https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s/">STUDENT TUTORIAL</a>
                 </li>
                 <li className="nav-item">
                   <a target="_blank" href="https://www.youtube.com/watch?v=5_J66dQRUuM&t=10s/">PROFESSOR TUTORIAL</a>
