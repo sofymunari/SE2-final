@@ -617,7 +617,7 @@ public class LectureServiceImpl implements LectureService {
 					       +"\n\n\n Also all your booking is cancelled. Remember to booked if you are interested at some lessons of course!";
 			try {
 			  //commenta solo durante demo (o con mail preimpostate)
-			  //studentService.sendEmail(StudentConverter.toDto(s), subject, text);
+			  studentService.sendEmail(StudentConverter.toDto(s), subject, text);
 			}catch(Exception e) {
 				System.out.print(e.getMessage());
 			}
