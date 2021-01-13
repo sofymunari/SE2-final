@@ -367,7 +367,7 @@ class SupportOfficerHomePage extends React.Component {
                                             <div className="col-2">
                                                 <form encType="multipart/form-data">
                                                     <input type="file" name="holidaysfile" onChange={(event) => this.addFile(event, event.target.name)} />
-                                                    <button type="button" className="btn btn-success btn-block" onClick={(event) => this.uploadFile(event)}>Upload</button>
+                                                    <button type="button" className="btn btn-success btn-block" id="upload_holidays" onClick={(event) => this.uploadFile(event)}>Upload</button>
                                                     <div className="form-group">
                                                         {
                                                             this.state.holidaysPressed ?

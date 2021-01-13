@@ -31,3 +31,18 @@ test('OfficerLoginTest', async t => {
 
 });
 
+
+
+//officer upload Holidays
+test('OfficerUploadHolidaysTest', async t => {
+    await t
+    .click('#officerlogin')
+    .typeText('#form_description','officer@polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .setFilesToUpload('#studentsfile','../../InitFiles/holidays.csv')
+    .click('#upload_holidays')
+    .expect(document.body.innerHTML).contains('<div role="alert" class="Toastify__toast-body">upload success</div>');
+
+});
+
