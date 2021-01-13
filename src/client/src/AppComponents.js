@@ -160,7 +160,7 @@ function AppNavbar(props){
                     </Link>
                     <Link to="/supportOfficerportal/updatelectures">
                     <li className="nav-item pr-1">
-                        <button className="btn btn-success text-dark font-weight-bold" >UPDATE LECTURES</button>
+                        <button className="btn btn-success text-dark font-weight-bold" id="updatelecture">UPDATE LECTURES</button>
                     </li>
                     </Link>
                     <Link to="/supportOfficerportal/updateSchedule">
