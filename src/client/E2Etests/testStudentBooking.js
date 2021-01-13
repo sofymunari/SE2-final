@@ -106,3 +106,35 @@ test('BookTaskTest', async t => {
     .expect(bookings.innerText).contains("yes","expected Waiting list");
 
 });
+
+//moving a student from the wait list to the book list
+test('MovetoBookTest', async t=> {
+
+    const book = Selector(() => {
+        return document.getElementsByTagName('svg')[1];
+    })
+
+    const bookings = Selector(() => {
+        return document.getElementsByTagName('ul')[1].children[1];
+    })
+    
+    const trash_bin = Selector(() => {
+        return document.getElementsByTagName('svg')[1];
+    })
+
+    await t
+    .click('#studentlogin')
+    .typeText('#form_description','s0000@studenti.polito.it')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    click('#show_bookings')
+    .click(trash_bin)
+    .click('#logout')
+    .click('#studentlogin')
+    .typeText('#form_description','tony.y.saliba00@gmail.com')
+    .typeText('#form_project','password')
+    .click('#submit_button')
+    .click('#show_bookings')
+    .expect(bookings.innerText).contains("no","expected no Waiting list");
+
+})

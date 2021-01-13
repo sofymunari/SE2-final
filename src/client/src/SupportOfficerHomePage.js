@@ -389,21 +389,21 @@ class SupportOfficerHomePage extends React.Component {
                                     <h3>Which lectures do you want to move remotely?</h3>
                                     <Form onSubmit={(event) => this.sendCourses(event, "first")}>
                                         <div className="form-group">
-                                            <Button variant="primary" type="submit">
+                                            <Button variant="primary" type="submit" id="firstYear">
                                                 First year
                                             </Button>
                                         </div>
                                     </Form>
                                     <Form onSubmit={(event) => this.sendCourses(event, "second")}>
                                         <div className="form-group">
-                                            <Button variant="primary" type="submit">
+                                            <Button variant="primary" type="submit" id="secondyear">
                                                 Second year
                                             </Button>
                                         </div>
                                     </Form>
                                     <Form onSubmit={(event) => this.sendCourses(event, "third")}>
                                         <div className="form-group">
-                                            <Button variant="primary" type="submit">
+                                            <Button variant="primary" type="submit" id="thirdyear">
                                                 Third year
                                             </Button>
                                         </div>
@@ -412,14 +412,14 @@ class SupportOfficerHomePage extends React.Component {
                                     <Form onSubmit={(event) => this.sendCourses(event, this.state.selectedCourse)}>
                                         <Form.Row className="align-items-center">
                                             <Col className="my-1 ">
-                                                <Form.Control as="select" name="selectedCourse" value={this.state.selectedCourse} onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} >
+                                                <Form.Control as="select" id="select" name="selectedCourse" value={this.state.selectedCourse} onChange={(ev) => this.onChangeHandler(ev.target.name, ev.target.value)} >
                                                     {
-                                                        this.state.courses.map((c) => <option key={c.courseId}> {c.courseCode}, {c.courseName} </option>)
+                                                        this.state.courses.map((c) => <option key={c.courseId} id={c.courseCode}> {c.courseCode}, {c.courseName} </option>)
                                                     }
                                                 </Form.Control>
                                             </Col>
                                             <Col xs="auto" className="my-1">
-                                                <Button type="submit">Submit</Button>
+                                                <Button type="submit" id="submit">Submit</Button>
                                             </Col>
                                         </Form.Row>
                                     </Form>

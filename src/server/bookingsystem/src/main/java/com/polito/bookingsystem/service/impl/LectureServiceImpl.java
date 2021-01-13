@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.LectureConverter;
+import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
@@ -400,7 +401,7 @@ public class LectureServiceImpl implements LectureService {
 			 String currentLine = reader.readLine(); //read first line (header)
 			 while((currentLine = reader.readLine()) != null){
 				 try {
-					Date date = new SimpleDateFormat(FORMAT_DATE).parse(currentLine);
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(currentLine);
 					
 					//saving the new holiday on database
 					Holiday holiday = new Holiday(date);
@@ -422,7 +423,7 @@ public class LectureServiceImpl implements LectureService {
 								               + lecture.getCourse().getName() + " in date " + dateEmail 
 										       + " has been cancelled since the university will be closed that day.\nBest regard";
 								 //commenta solo durante demo (o con mail preimpostate)
-								//studentService.sendEmail(StudentConverter.toDto(booking.getStudent()), subject, text);
+								studentService.sendEmail(StudentConverter.toDto(booking.getStudent()), subject, text);
 							}
 							lecture.setDeleted(true);
 							lectureRepository.save(lecture);
@@ -435,9 +436,7 @@ public class LectureServiceImpl implements LectureService {
 							               + lecture.getCourse().getName() + " in date " + dateEmail 
 									       + " has been cancelled since the university will be closed that day.\nBest regard";
 							 //commenta solo durante demo (o con mail preimpostate)
-							//professorService.sendEmail(ProfessorConverter.toDto(lecture.getProfessor()), subject, text);
-							
-							
+							professorService.sendEmail(ProfessorConverter.toDto(lecture.getProfessor()), subject, text);
 							
 						} 
 					}
@@ -618,7 +617,7 @@ public class LectureServiceImpl implements LectureService {
 					       +"\n\n\n Also all your booking is cancelled. Remember to booked if you are interested at some lessons of course!";
 			try {
 			  //commenta solo durante demo (o con mail preimpostate)
-			  //studentService.sendEmail(StudentConverter.toDto(s), subject, text);
+			  studentService.sendEmail(StudentConverter.toDto(s), subject, text);
 			}catch(Exception e) {
 				System.out.print(e.getMessage());
 			}

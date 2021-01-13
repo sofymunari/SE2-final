@@ -308,7 +308,7 @@ class StudentBookingList extends React.Component {
                 </Col>
                 <Col className="col-3 d-flex justify-content-between ">
                     <button type="button" className="btn btn-success" onClick={(ev) => this.props.back()} >BACK</button>
-                    <button type="button" className="btn btn-success" onClick={(ev) => this.sendAttendences()} > SEND ATTENDENCES</button>
+                    <button type="button" id="sendattendences" className="btn btn-success" onClick={(ev) => this.sendAttendences()} > SEND ATTENDENCES</button>
                 </Col>
             </Row>
         </>
@@ -348,7 +348,7 @@ function StudentItem(props) {
                             </div>
                             :
                             <div className="col-2">
-                                <input name="presente" type="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)} />
+                                <input name="presente" type="checkbox" id="checkbox" onChange={(ev) => props.handleCheck(ev, props.student.studentEmail)} />
                             </div>
 
                 }
