@@ -10,6 +10,6 @@ test('StudentTutorialTest', async t => {
 
     await t
     .click('#studenttutorial_link')
-    .expect(document.location.href).contains('example.com');
+    .expect(document.location.href).contains('https://www.youtube.com/watch?v=D2xTQ2kcV4w&t=14s');
 
 });
