@@ -210,5 +210,3 @@ test('AttendencesTest', async t => {
     .click('#sendattendences')
     .expect(bookings.innerText).contains("ATTENDED", "expected attended")
 })
-
-test('Statistics ')

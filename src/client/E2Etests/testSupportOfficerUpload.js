@@ -9,11 +9,6 @@ fixture `Officer tests`
 //officer upload
 test('OfficerLoginTest', async t => {
     
-    
-
-    const result = Selector(()=>{
-        return document.getElementById("toast");
-    })
 
     await t
     .click('#officerlogin')

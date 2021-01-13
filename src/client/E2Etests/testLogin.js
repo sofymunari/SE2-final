@@ -8,10 +8,10 @@ fixture `Authentication tests`
 test('StudentLoginTest', async t => {
       await t
       .click('#studentlogin')
-      .typeText('#form_description','s0000@studenti.polito.it')
+      .typeText('#form_description','s0003@studenti.polito.it')
       .typeText('#form_project','password')
       .click('#submit_button')
-      .expect(Selector('#matricola').innerText).eql('s0000');
+      .expect(Selector('#matricola').innerText).eql('s0003');
 
 });
 
@@ -30,7 +30,7 @@ test('StudentLoginFail1Test', async t => {
 test('StudentLoginFail2Test', async t => {
     await t
     .click('#studentlogin')
-    .typeText('#form_description','s0000@stduenti.polito.it')
+    .typeText('#form_description','s0003@stduenti.polito.it')
     .typeText('#form_project','wrong')
     .click('#submit_button')
     .expect(Selector('#wrongAuthentication').innerText).eql('wrong username or password');
@@ -41,10 +41,10 @@ test('StudentLoginFail2Test', async t => {
 test('TeacherLoginTest', async t => {
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','d0000@polito.it')
+    .typeText('#form_description','d0001@polito.it')
     .typeText('#form_project','password')
     .click('#submit_button')
-    .expect(Selector('#professorInfo').innerText).eql('Marco Torchiano');
+    .expect(Selector('#professorInfo').innerText).eql('Giorgio Bruno');
 
 });
 
@@ -63,7 +63,7 @@ test('TeacherLoginFail1Test', async t => {
 test('TeacherLoginFail2Test', async t => {
     await t
     .click('#teacherlogin')
-    .typeText('#form_description','p0000@polito.it')
+    .typeText('#form_description','d0001@polito.it')
     .typeText('#form_project','wrong')
     .click('#submit_button')
     .expect(Selector('#wrongAuthentication').innerText).eql('wrong username or password');
