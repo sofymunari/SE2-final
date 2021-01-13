@@ -4,13 +4,13 @@ INSERT INTO MANAGER(USER_ID,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'Giu
 INSERT INTO OFFICER(USER_ID,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'Mario', 'Rossi', 'Via quella 12', 'officer@polito.it', 'password');
 
 
-INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'd0000', 'Marco', 'Torchiano', 'Corso Duca degli Abruzzi 8', 'fiorentino.cairone@gmail.com', 'password');
+INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'd0000', 'Marco', 'Torchiano', 'Corso Duca degli Abruzzi 8', 's277922@studenti.polito.it', 'password');
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (1, 'd0001', 'Giorgio', 'Bruno', 'Corso Galileo Ferraris 89', 'd0002@polito.it', 'password');
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (2, 'd0002', 'Gianpiero', 'Cabodi', 'Corso Inghilterra 16' , 'd0002@polito.it', 'password');
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (3, 'd0003', 'Antonio', 'Lioy', 'Via Roma 45', 'd0003@polito.it', 'password');
 
 
-INSERT INTO STUDENT(USER_ID,MATRICOLA,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (0,'s0000','Andrea', 'Rubiolo', 'Via Roma 3', '1996-12-25', 'fiorentino.cairone@gmail.com', 'password');
+INSERT INTO STUDENT(USER_ID,MATRICOLA,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (0,'s0000','Andrea', 'Rubiolo', 'Via Roma 3', '1996-12-25', 's277922@studenti.polito.it', 'password');
 INSERT INTO STUDENT(USER_ID,MATRICOLA,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (1,'s0001','Tony', 'Saliba', 'Corso Galileo Ferraris 19', '1995-02-25', 'tony.y.saliba00@gmail.com', 'password');
 INSERT INTO STUDENT(USER_ID,MATRICOLA,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (2,'s0002','Fiorentino', 'Cairone', 'Corso Re Umberto 39', '1994-08-27', 'silviogiro@gmail.com', 'password');
 INSERT INTO STUDENT(USER_ID,MATRICOLA,NAME,SURNAME,ADDRESS,DATE_OF_BIRTH,EMAIL,PASSWORD) VALUES (3,'s0003','Peng', 'Cao', 'Corso Stati Uniti 1', '1995-01-08', 's0003@studenti.polito.it', 'password');
