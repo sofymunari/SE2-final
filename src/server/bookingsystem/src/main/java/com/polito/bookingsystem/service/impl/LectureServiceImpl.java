@@ -1,5 +1,6 @@
 package com.polito.bookingsystem.service.impl;
 import com.polito.bookingsystem.converter.LectureConverter;
+import com.polito.bookingsystem.converter.ProfessorConverter;
 import com.polito.bookingsystem.converter.StudentConverter;
 import com.polito.bookingsystem.dto.LectureDto;
 import com.polito.bookingsystem.entity.Booking;
@@ -422,7 +423,7 @@ public class LectureServiceImpl implements LectureService {
 								               + lecture.getCourse().getName() + " in date " + dateEmail 
 										       + " has been cancelled since the university will be closed that day.\nBest regard";
 								 //commenta solo durante demo (o con mail preimpostate)
-								//studentService.sendEmail(StudentConverter.toDto(booking.getStudent()), subject, text);
+								studentService.sendEmail(StudentConverter.toDto(booking.getStudent()), subject, text);
 							}
 							lecture.setDeleted(true);
 							lectureRepository.save(lecture);
@@ -435,9 +436,7 @@ public class LectureServiceImpl implements LectureService {
 							               + lecture.getCourse().getName() + " in date " + dateEmail 
 									       + " has been cancelled since the university will be closed that day.\nBest regard";
 							 //commenta solo durante demo (o con mail preimpostate)
-							//professorService.sendEmail(ProfessorConverter.toDto(lecture.getProfessor()), subject, text);
-							
-							
+							professorService.sendEmail(ProfessorConverter.toDto(lecture.getProfessor()), subject, text);
 							
 						} 
 					}
