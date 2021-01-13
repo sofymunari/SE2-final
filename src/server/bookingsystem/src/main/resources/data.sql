@@ -5,7 +5,7 @@ INSERT INTO OFFICER(USER_ID,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'Mar
 
 
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (0, 'd0000', 'Marco', 'Torchiano', 'Corso Duca degli Abruzzi 8', 's277922@studenti.polito.it', 'password');
-INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (1, 'd0001', 'Giorgio', 'Bruno', 'Corso Galileo Ferraris 89', 'd0002@polito.it', 'password');
+INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (1, 'd0001', 'Giorgio', 'Bruno', 'Corso Galileo Ferraris 89', 'd0001@polito.it', 'password');
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (2, 'd0002', 'Gianpiero', 'Cabodi', 'Corso Inghilterra 16' , 'd0002@polito.it', 'password');
 INSERT INTO PROFESSOR(USER_ID,CODE,NAME,SURNAME,ADDRESS,EMAIL,PASSWORD) VALUES (3, 'd0003', 'Antonio', 'Lioy', 'Via Roma 45', 'd0003@polito.it', 'password');
 
