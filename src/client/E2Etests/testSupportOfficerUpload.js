@@ -37,7 +37,7 @@ test('OfficerUploadHolidaysTest', async t => {
     .click('#submit_button')
     .setFilesToUpload('#studentsfile','../../InitFiles/holidays.csv')
     .click('#upload_holidays')
-    .expect(document.body.innerHTML).contains('<div role="alert" class="Toastify__toast-body">upload success</div>');
+    .expect(Selector(document.body).innerHTML).contains('<div role="alert" class="Toastify__toast-body">upload success</div>');
 
 });
 
