@@ -1,10 +1,13 @@
-backend:
-  image: se2final/se2final:backend_release3
-  ports:
-   - "8080:8080"
-  links:
-   - "frontend"
-frontend:
-  image: se2final/se2final:frontend_release3
-  ports:
-   - "3000:3000"
+services:
+ backend:
+   build: ./src/server/bookingsystem/
+   image: se2final/se2final:backend_release3.1
+   ports:
+    - "8080:8080"
+   links:
+    - "frontend"
+ frontend:
+   build: ./src/client/
+   image: se2final/se2final:frontend_release3.1
+   ports:
+    - "3000:3000"
